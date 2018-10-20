@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/main :: header">
+<body th:style="'background:url(' + @{/pic/m9.jpg} + ');'">
+<script th:src="@{/js/login.js}" defer></script>
+<div id="loginDialog" class="modal-body invisible">
+    <form th:action="@{/login}" class="form-horizontal" name="detailsForm" method="post">
+        <table class="table">
+            <tr align="center">
+                <td>Имя</td>
+                <td >
+                    <input class="ui-button ui-corner-all " style="width: 200px"
+                           type="name" name="name"/>
+                </td>
+            </tr>
+
+            <tr align="center">
+                <td>Пароль</td>
+                <td>
+                    <input class="ui-button ui-corner-all " style="width: 200px"
+                           type="password" name="password"/>
+                </td>
+            </tr>
+
+            <tr align="center">
+                <td>
+                    <div><input class="ui-button ui-corner-all" type="submit" value="Вход"/></div>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div th:replace="fragments/main :: dialog-error"></div>
+</body>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<!--UserSetting-->
+<div th:fragment="userSettingDialog" class="modal-body">
+    <form name="detailsForm" class="form-horizontal">
+        <input th:value="${userSetting != null} ? ${userSetting.id} : '' " class="dialog-data" type="hidden" name="id">
+
+        <table style="border-collapse: separate; border-spacing: 10px">
+            <tr style="text-align: left; vertical-align: top">
+                <td>
+                    <div class="form-group no-displayable">
+                        <label class="control-label col-xs-3">Пользователь</label>
+
+                        <div class="col-xs-9">
+                            <select class="btn btn-default parameterized dialog-data form-control" name="user">
+                                <option th:each="user : ${users}"
+                                        th:value="${user.id}"
+                                        th:text="${user.name}"
+                                        th:selected="${userSetting != null ? userSetting.user.id == user.id : false}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Тип файла</label>
+
+                        <div class="col-xs-9">
+                            <select class="btn btn-default dialog-data form-control" name="fileType">
+                                <option th:each="fileType : ${fileTypes}"
+                                        th:value="${fileType.id}"
+                                        th:text="${fileType.name}"
+                                        th:selected="${userSetting != null ? userSetting.fileType.id == fileType.id : false}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Шаблон квитанции</label>
+
+                        <div class="col-xs-9">
+                            <select class="btn btn-default dialog-data form-control" name="template">
+                                <option th:each="template : ${templates}"
+                                        th:value="${template.id}"
+                                        th:text="${template.name}"
+                                        th:selected="${userSetting != null ? userSetting.template.id == template.id : false}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Шаблон файла</label>
+
+                        <div class="col-xs-9">
+                            <select class="btn btn-default dialog-data form-control" name="fileTemplate">
+                                <option th:each="fileTemplate : ${fileTemplates}"
+                                        th:value="${fileTemplate.id}"
+                                        th:text="${fileTemplate.name}"
+                                        th:selected="${userSetting != null ? userSetting.template.id == fileTemplate.id : false}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Наименование настроек</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.name} : '' "
+                                   class="dialog-data form-control" name="name"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Наименование организации</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.orgName} : '' "
+                                   class="dialog-data form-control" name="orgName"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">ИНН</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.orgInn} : '' "
+                                   class="dialog-data form-control" name="orgInn"/>
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">КПП</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.orgKpp} : '' "
+                                   class="dialog-data form-control" name="orgKpp"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Р/с</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.orgPayAcc} : '' "
+                                   class="dialog-data form-control" name="orgPayAcc"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Банк</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.orgBank} : '' "
+                                   class="dialog-data form-control" name="orgBank"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">БИК</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.orgBic} : '' "
+                                   class="dialog-data form-control" name="orgBic"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">К/с</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.orgCorAcc} : '' "
+                                   class="dialog-data form-control" name="orgCorAcc"/>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr style="text-align: left; vertical-align: top">
+                <td colspan="2">
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Доп информация</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.orgAddInfo} : '' "
+                                   class="dialog-data form-control" name="orgAddInfo"/>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+
+<!--User-->
+<div th:fragment="userDialog" class="modal-body">
+    <form name="detailsForm" class="form-horizontal">
+        <input th:value="${user != null} ? ${user.id} : '' " class="dialog-data" type="hidden" name="id">
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Роль</label>
+
+            <div class="col-xs-9">
+                <select class="btn btn-default parameterized dialog-data form-control" name="role">
+                    <option th:each="role : ${roles}"
+                            th:value="${role.id}"
+                            th:text="${role.name}"
+                            th:selected="${user != null ? user.role.id == role.id : false}">
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Имя</label>
+
+            <div class="col-xs-9">
+                <input th:value="${user != null} ? ${user.name} : '' " class="dialog-data form-control"
+                       name="name"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Пароль</label>
+
+            <div class="col-xs-9">
+                <input th:value="${user != null} ? ${user.password} : '' " type="password"
+                       class="dialog-data form-control"
+                       name="password"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Почта</label>
+
+            <div class="col-xs-9">
+                <input th:value="${user != null} ? ${user.email} : '' " type="email" class="dialog-data form-control"
+                       name="email"/>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+<!--FileMainField-->
+<div th:fragment="fileMainFieldDialog" class="modal-body">
+    <form name="detailsForm" class="form-horizontal">
+        <input th:value="${fileMainField != null} ? ${fileMainField.id} : '' " class="dialog-data" type="hidden"
+               name="id">
+
+        <table style="border-collapse: separate; border-spacing: 10px">
+            <tr style="text-align: left; vertical-align: top">
+                <td colspan="2">
+                    <div class="form-group no-displayable">
+                        <label class="control-label col-xs-3">Пользовательская настройка</label>
+
+                        <div class="col-xs-9">
+                            <select class="btn btn-default parameterized dialog-data form-control" name="userSetting">
+                                <option th:each="userSetting : ${userSettings}"
+                                        th:value="${userSetting.id}"
+                                        th:text="${userSetting.name}"
+                                        th:selected="${fileMainField != null ? fileMainField.userSetting.id == userSetting.id : false}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <tr style="text-align: left; vertical-align: top">
+                <td>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Лицевой счет (поле)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.ls} : '' "
+                                   class="dialog-data form-control" name="ls"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Адрес (поле)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.adr} : '' "
+                                   class="dialog-data form-control" name="adr"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">ФИО (поле)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.fio} : '' "
+                                   class="dialog-data form-control" name="fio"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Период (поле)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.period} : '' "
+                                   class="dialog-data form-control" name="period"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Сумма (поле)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.period} : '' "
+                                   class="dialog-data form-control" name="period"/>
+                        </div>
+                    </div>
+                </td>
+                <td>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Лицевой счет (наименование)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.lsName} : '' "
+                                   class="dialog-data form-control" name="lsName"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Адрес (наименование)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.adrName} : '' "
+                                   class="dialog-data form-control" name="adrName"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">ФИО (наименование)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.fioName} : '' "
+                                   class="dialog-data form-control" name="fioName"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Период (наименование)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.periodName} : '' "
+                                   class="dialog-data form-control" name="periodName"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Сумма (наименование)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.periodName} : '' "
+                                   class="dialog-data form-control" name="periodName"/>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+    </form>
+</div>
+
+<!--FileUniqueField-->
+<div th:fragment="fileUniqueFieldDialog" class="modal-body">
+    <form name="detailsForm" class="form-horizontal">
+        <input th:value="${fileUniqueField != null} ? ${fileUniqueField.id} : '' " class="dialog-data" type="hidden"
+               name="id">
+
+        <div class="form-group no-displayable">
+            <label class="control-label col-xs-3">Пользовательская настройка</label>
+
+            <div class="col-xs-9">
+                <select class="btn btn-default parameterized dialog-data form-control" name="userSetting">
+                    <option th:each="userSetting : ${userSettings}"
+                            th:value="${userSetting.id}"
+                            th:text="${userSetting.name}"
+                            th:selected="${fileUniqueField != null ? fileUniqueField.userSetting.id == userSetting.id : false}">
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Наименование</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileUniqueField != null} ? ${fileUniqueField.name} : '' "
+                       class="dialog-data form-control" name="name"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Значение</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileUniqueField != null} ? ${fileUniqueField.value} : '' "
+                       class="dialog-data form-control" name="value"/>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--FileSumField-->
+<div th:fragment="fileSumFieldDialog" class="modal-body">
+    <form name="detailsForm" class="form-horizontal">
+        <input th:value="${fileSumField != null} ? ${fileSumField.id} : '' " class="dialog-data" type="hidden"
+               name="id">
+
+        <div class="form-group no-displayable">
+            <label class="control-label col-xs-3">Пользовательская настройка</label>
+
+            <div class="col-xs-9">
+                <select class="btn btn-default parameterized dialog-data form-control" name="userSetting">
+                    <option th:each="userSetting : ${userSettings}"
+                            th:value="${userSetting.id}"
+                            th:text="${userSetting.name}"
+                            th:selected="${fileUniqueField != null ? fileUniqueField.userSetting.id == userSetting.id : false}">
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Наименование</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileSumField != null} ? ${fileSumField.name} : '' "
+                       class="dialog-data form-control" name="name"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Текущее</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileSumField != null} ? ${fileSumField.current} : '' "
+                       class="dialog-data form-control" name="current"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Долг</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileSumField != null} ? ${fileSumField.debt} : '' "
+                       class="dialog-data form-control" name="debt"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Итого</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileSumField != null} ? ${fileSumField.total} : '' "
+                       class="dialog-data form-control" name="total"/>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--FileCounterField-->
+<div th:fragment="fileCounterFieldDialog" class="modal-body">
+    <form name="detailsForm" class="form-horizontal">
+        <input th:value="${fileCounterField != null} ? ${fileCounterField.id} : '' " class="dialog-data" type="hidden"
+               name="id">
+
+        <div class="form-group no-displayable">
+            <label class="control-label col-xs-3">Пользовательская настройка</label>
+
+            <div class="col-xs-9">
+                <select class="btn btn-default parameterized dialog-data form-control" name="userSetting">
+                    <option th:each="userSetting : ${userSettings}"
+                            th:value="${userSetting.id}"
+                            th:text="${userSetting.name}"
+                            th:selected="${fileCounterField != null ? fileCounterField.userSetting.id == userSetting.id : false}">
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Наименование</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileCounterField != null} ? ${fileCounterField.name} : '' "
+                       class="dialog-data form-control" name="name"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Ед измерения</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileCounterField != null} ? ${fileCounterField.mesure} : '' "
+                       class="dialog-data form-control" name="mesure"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Тариф</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileCounterField != null} ? ${fileCounterField.tariff} : '' "
+                       class="dialog-data form-control" name="tariff"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Текущие</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileCounterField != null} ? ${fileCounterField.current} : '' "
+                       class="dialog-data form-control" name="current"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Предыдущие</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileCounterField != null} ? ${fileCounterField.previous} : '' "
+                       class="dialog-data form-control" name="previous"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Расход</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileCounterField != null} ? ${fileCounterField.consumption} : '' "
+                       class="dialog-data form-control" name="consumption"/>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

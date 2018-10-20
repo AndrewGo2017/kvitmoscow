@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<!--UserSetting-->
+<div th:fragment="userSettingList">
+    <table class="display main-table" style="width:100%">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+
+            <th>#</th>
+            <th>Id</th>
+            <th>Пользователь</th>
+            <th>Тип файла</th>
+            <th>Шаблон квитанции</th>
+            <th>Шаблон файла</th>
+            <th>Наименование настроек</th>
+            <th>Наименование организации</th>
+            <th>ИНН </th>
+            <th>КПП</th>
+            <th>Р/с</th>
+            <th>Банк</th>
+            <th>БИК</th>
+            <th>К/с</th>
+            <th>Доп информация</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="userSetting,iter: ${userSettings}">
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|updateRow('${userSetting.id}')|">Редактировать
+                    <span class='ui-icon ui-icon-gear' aria-hidden='true'></span></button>
+            </td>
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|removeRow('${userSetting.id}')|">Удалить
+                    <span class='ui-icon ui-icon-trash' aria-hidden='true'></span></button>
+            </td>
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|showDictionaries('${userSetting.id}')|">Справочники
+                    <span class='ui-icon ui-icon-newwin' aria-hidden='true'></span></button>
+            </td>
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|createStandardStructure('${userSetting.id}','${userSetting.template.id}')|">Заполнить справочники
+                    <span class='ui-icon ui-icon-star' aria-hidden='true'></span></button>
+            </td>
+            <td th:text="${iter.count}"></td>
+            <td th:text="${userSetting.id}"></td>
+            <td th:text="${userSetting.user.name}"></td>
+            <td th:text="${userSetting.fileType.name}"></td>
+            <td th:text="${userSetting.template.name}"></td>
+            <td th:text="${userSetting.fileTemplate.name}"></td>
+            <td th:text="${userSetting.name}"></td>
+            <td th:text="${userSetting.orgName}"></td>
+            <td th:text="${userSetting.orgInn}"></td>
+            <td th:text="${userSetting.orgKpp}"></td>
+            <td th:text="${userSetting.orgPayAcc}"></td>
+            <td th:text="${userSetting.orgBank}"></td>
+            <td th:text="${userSetting.orgBic}"></td>
+            <td th:text="${userSetting.orgCorAcc}"></td>
+            <td th:text="${userSetting.orgAddInfo}"></td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!--User-->
+<div th:fragment="usersList">
+    <table class="display main-table" style="width:100%">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+
+            <th>#</th>
+            <th>Id</th>
+            <th>Роль</th>
+            <th>Имя</th>
+            <th>Пароль</th>
+            <th>Почта</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user,iter: ${users}">
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|updateRow('${user.id}')|">Редактировать
+                    <span class='ui-icon ui-icon-gear' aria-hidden='true'></span></button>
+            </td>
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|removeRow('${user.id}')|">Удалить
+                    <span class='ui-icon ui-icon-trash' aria-hidden='true'></span></button>
+            </td>
+            <td th:text="${iter.count}"></td>
+            <td th:text="${user.id}"></td>
+            <td th:utext="${user.role.name}"></td>
+            <td th:utext="${user.name}"></td>
+            <td th:utext="${user.password}"></td>
+            <td th:utext="${user.email}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!--FileMainField-->
+<div th:fragment="fileMainFieldList">
+    <table class="display main-table" style="width:100%">
+        <thead>
+        <tr>
+            <th></th>
+            <!--<th></th>-->
+            <th>#</th>
+            <th>Id</th>
+            <th>Лицевой счет (поле)</th>
+            <th>Лицевой счет (наименование)</th>
+            <th>Адрес (поле)</th>
+            <th>Адрес(наименование)</th>
+            <th>ФИО (поле)</th>
+            <th>ФИО (наименование)</th>
+            <th>Период (поле)</th>
+            <th>Период(наименование)</th>
+            <th>Сумма(поле)</th>>
+            <th>Сумма(наименование)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fileMainField,iter: ${fileMainFields}">
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|updateRow('${fileMainField.id}')|">Редактировать
+                    <span class='ui-icon ui-icon-gear' aria-hidden='true'></span></button>
+            </td>
+            <!--<td>-->
+                <!--<button class="ui-button ui-corner-all" th:onclick="|removeRow('${fileMainField.id}')|">Удалить-->
+                    <!--<span class='ui-icon ui-icon-trash' aria-hidden='true'></span></button>-->
+            <!--</td>-->
+            <td th:text="${iter.count}"></td>
+            <td th:text="${fileMainField.id}"></td>
+            <td th:utext="${fileMainField.ls}"></td>
+            <td th:utext="${fileMainField.lsName}"></td>
+            <td th:utext="${fileMainField.adr}"></td>
+            <td th:utext="${fileMainField.adrName}"></td>
+            <td th:utext="${fileMainField.fio}"></td>
+            <td th:utext="${fileMainField.fioName}"></td>
+            <td th:utext="${fileMainField.period}"></td>
+            <td th:utext="${fileMainField.periodName}"></td>
+            <td th:utext="${fileMainField.sum}"></td>
+            <td th:utext="${fileMainField.sumName}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!--FileUniqueField-->
+<div th:fragment="fileUniqueFieldList">
+    <table class="display main-table" style="width:100%">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+
+            <th>#</th>
+            <th>Id</th>
+            <th>Наименование</th>
+            <th>Значение</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fileUniqueField,iter: ${fileUniqueFields}">
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|updateRow('${fileUniqueField.id}')|">Редактировать
+                    <span class='ui-icon ui-icon-gear' aria-hidden='true'></span></button>
+            </td>
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|removeRow('${fileUniqueField.id}')|">Удалить
+                    <span class='ui-icon ui-icon-trash' aria-hidden='true'></span></button>
+            </td>
+            <td th:text="${iter.count}"></td>
+            <td th:text="${fileUniqueField.id}"></td>
+            <td th:utext="${fileUniqueField.name}"></td>
+            <td th:utext="${fileUniqueField.value}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<!--FileSumField-->
+<div th:fragment="fileSumFieldList">
+    <table class="display main-table" style="width:100%">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+
+            <th>#</th>
+            <th>Id</th>
+            <th>Наименование</th>
+            <th>Текущее</th>
+            <th>Долг</th>
+            <th>Итого</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fileSumField,iter: ${fileSumFields}">
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|updateRow('${fileSumField.id}')|">Редактировать
+                    <span class='ui-icon ui-icon-gear' aria-hidden='true'></span></button>
+            </td>
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|removeRow('${fileSumField.id}')|">Удалить
+                    <span class='ui-icon ui-icon-trash' aria-hidden='true'></span></button>
+            </td>
+            <td th:text="${iter.count}"></td>
+            <td th:text="${fileSumField.id}"></td>
+            <td th:utext="${fileSumField.name}"></td>
+            <td th:utext="${fileSumField.current}"></td>
+            <td th:utext="${fileSumField.debt}"></td>
+            <td th:utext="${fileSumField.total}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!--FileCounterField-->
+<div th:fragment="fileCounterFieldList">
+    <table class="display main-table" style="width:100%">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+
+            <th>#</th>
+            <th>Id</th>
+            <th>Наименование</th>
+            <th>Ед измерения</th>
+            <th>Тариф</th>
+            <th>Текущие</th>
+            <th>Предыдущие</th>
+            <th>Расход</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fileCounterField,iter: ${fileCounterFields}">
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|updateRow('${fileCounterField.id}')|">Редактировать
+                    <span class='ui-icon ui-icon-gear' aria-hidden='true'></span></button>
+            </td>
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|removeRow('${fileCounterField.id}')|">Удалить
+                    <span class='ui-icon ui-icon-trash' aria-hidden='true'></span></button>
+            </td>
+            <td th:text="${iter.count}"></td>
+            <td th:text="${fileCounterField.id}"></td>
+            <td th:utext="${fileCounterField.name}"></td>
+            <td th:utext="${fileCounterField.mesure}"></td>
+            <td th:utext="${fileCounterField.tariff}"></td>
+            <td th:utext="${fileCounterField.current}"></td>
+            <td th:utext="${fileCounterField.previous}"></td>
+            <td th:utext="${fileCounterField.consumption}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

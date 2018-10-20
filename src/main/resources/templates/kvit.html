@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/main :: header">
+</head>
+<body class="invisible" th:style="'background:url(' + @{/pic/m9.jpg} + ');'">
+
+<div th:replace="fragments/main :: navbar"></div>
+
+<h1 th:text="${title}"></h1>
+<input th:value="${status != null} ? ${status} : '0' " class="dialog-data" type="hidden" name="status" id="status">
+
+<form id="fileupload" th:action="${'kvit'}" method="POST" enctype="multipart/form-data">
+    <table class="ui-table display main-table" style="width:100%">
+        <thead>
+        <tr>
+            <!--<th>Функции</th>-->
+            <th>Настройка</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <!--<td>-->
+                <!--<div class="col-xs-9">-->
+                    <!--<select class="select" name="jobType">-->
+                        <!--<option th:each="type : ${jobType}"-->
+                                <!--th:value="${type}"-->
+                                <!--th:text="${type.str}"></option>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</td>-->
+            <td>
+                <div class="col-xs-9">
+                    <select class="select" name="userSetting">
+                        <option th:each="userSetting : ${userSettings}"
+                                th:value="${userSetting.id}"
+                                th:text="${userSetting.name}"></option>
+                    </select>
+                </div>
+            </td>
+            <td>
+                <div class="fileUpload ui-button ui-widget ui-corner-all">
+                    <span>Выбрать файл</span>
+                    <input id="uploadFile" class="upload" type="file" name="file" >
+                </div>
+
+                <input id="sentFile" class="ui-button ui-widget ui-corner-all invisible" type="submit"
+                       content="Выбрать файл">
+                <span class="fileUploadName" id="labelFileName"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+
+
+
+<div th:replace="fragments/main :: dialog-confirm"></div>
+<div th:replace="fragments/main :: dialog-dictionary"></div>
+<div th:replace="fragments/main :: dialog-function"></div>
+<div th:replace="fragments/main :: dialog-error"></div>
+<div th:replace="fragments/main :: dialog-loading"></div>
+<div th:replace="fragments/main :: dialog-info"></div>
+
+
+</body>
+</html>

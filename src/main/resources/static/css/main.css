@@ -1,0 +1,76 @@
+span {
+    /*color: black;*/
+}
+
+body{
+    width: 75%;
+    margin: 40px auto;
+
+    padding-top: 70px;
+
+    /*https://stackoverflow.com/questions/7276844/jquery-ui-theme-too-big*/
+    font-size:10px;
+    background-size: cover;
+}
+
+/*https://stackoverflow.com/questions/7276844/jquery-ui-theme-too-big*/
+/*.ui-widget{font-size:15px;}*/
+
+.invisible{
+    visibility: hidden;
+}
+
+.no-displayable{
+    display:none;
+}
+
+.borderless td, .borderless th {
+    border: none;
+}
+
+h1, h2, h3 {
+    /*https://stackoverflow.com/questions/2570972/css-font-border*/
+    /*text-shadow: -2px 0 black, 0 2px white, 2px 0 black, 0 -2px black;*/
+    color: white;
+}
+
+.nav{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    font-family: Verdana, serif;
+    font-size: 15px;
+}
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.fileUploadName {
+    color: black;
+}
+
+/*https://stackoverflow.com/questions/20541306/how-to-write-a-css-hack-for-ie-11*/
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    .logo { height: 70px; width: 140px; } /* IE11 */
+}
+
+.ui-widget-overlay {
+    opacity: .50 !important; /* Make sure to change both of these, as IE only sees the second one */
+    filter: Alpha(Opacity=50) !important;
+    background: rgb(50, 50, 50) !important; /* This will make it darker */
+}
+

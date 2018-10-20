@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header">
+    <meta http-equiv=”Content-Type” content=”text/html; charset=utf-8″>
+    <title th:text="${title}"></title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/dataTables.jqueryui.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/jquery-ui.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+
+    <script th:src="@{/js/jquery-3.3.1.min.js}" defer></script>
+    <script th:src="@{/js/jquery.dataTables.min.js}" defer></script>
+    <script th:src="@{/js/dataTables.jqueryui.min.js}" defer></script>
+    <script th:src="@{/js/bootstrap.min.js}" defer></script>
+    <script th:src="@{/js/jquery-ui.min.js}" defer></script>
+    <script th:src="@{/js/main.js}" defer></script>
+</head>
+
+<body>
+<div th:fragment="navbar">
+    <nav th:style="'background:url(' + @{/pic/bar.jpg} + ');'" class="nav navbar navbar-expand-md navbar-dark bg-dark">
+        <img th:src="@{/pic/logo.png}" class="navbar-brand logo" width="70" height="70" href="#"/>
+
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/setting}">Главная</a>
+                </li>
+                <!--<li class="nav-item">-->
+                    <!--<a class="nav-link" href="#" id="dictionaries">Структура</a>-->
+                <!--</li>-->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/kvit}">Квитанции</a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Выход</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+<div id="confirm-dialog" th:fragment="dialog-confirm" class="confirm-dialog invisible" title="">
+    <div id="confirm-dialog-text"></div>
+</div>
+
+<div th:fragment="dialog-error" id="errorMessageDialog">
+    <div></div>
+</div>
+
+<div th:fragment="dialog-loading" id="loadDialog" title="Обработка">
+    <div id="progressbar"></div>
+</div>
+
+<div th:fragment="dialog-dictionary" id="dictionaryDialog" class="invisible" title="Справочники">
+    <ul class="menu">
+        <li>
+            <div><a id="dialog-dictionary-mfield" th:href="@{/mfield}">Основные</a></div>
+        </li>
+        <li>
+            <div><a id="dialog-dictionary-ufield" th:href="@{/ufield}">Уникальные</a></div>
+        </li>
+        <li>
+            <div><a id="dialog-dictionary-sfield" th:href="@{/sfield}">Суммы</a></div>
+        </li>
+        <li>
+            <div><a id="dialog-dictionary-cfield" th:href="@{/cfield}">Счетчики</a></div>
+        </li>
+    </ul>
+</div>
+
+<div th:fragment="dialog-function" id="functionDialog" class="invisible" title="Функции">
+    <ul class="menu">
+        <li>
+            <div><a th:href="@{/register-in-upload}">Загрузка реестров задолженности</a></div>
+        </li>
+    </ul>
+</div>
+
+<div th:fragment="dialog-info" id="infoDialog">
+    <div></div>
+</div>
+
+</body>
+</html>
