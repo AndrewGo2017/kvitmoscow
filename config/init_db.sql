@@ -86,7 +86,7 @@ create table user_settings (
   ,
   foreign key (template_id) references templates (id) on delete cascade
   ,
-  foreign key (file_template_id) references file_template (id) on delete cascade
+  foreign key (file_template_id) references file_templates (id) on delete cascade
 );
 
 -- editable
