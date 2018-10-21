@@ -1,6 +1,5 @@
 package ru.sber.kvitmoscow.controller;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -11,16 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import ru.sber.kvitmoscow.handler.file.FileHandler;
+import ru.sber.kvitmoscow.handler.FileHandler;
 import ru.sber.kvitmoscow.model.Function;
 import ru.sber.kvitmoscow.model.UserSetting;
 import ru.sber.kvitmoscow.service.FunctionService;
 import ru.sber.kvitmoscow.service.UserSettingService;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -57,19 +54,17 @@ public class KvitController {
                        @RequestParam("userSetting") Integer userSetting,
                        @RequestParam("function") Integer function,
                        Model m) throws Exception {
-
-        if (1 == 1){
-            response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "filename=\"pdf1.pdf\"");
-            File srcFile = new File("temp/pdf1.pdf");
-            FileUtils.copyFile(srcFile, response.getOutputStream());
-
+        response.setContentType("application/octet-stream");
+        response.setCharacterEncoding("Cp1251");
+        String fileName = "";
+        if (function == 1){
+            fileName = "kvit.pdf";
         } else {
-            ByteArrayOutputStream baos = fileHandler.handle(file, userSetting);
-            response.setContentType("application/pdf");
-            baos.writeTo(response.getOutputStream());
-            response.flushBuffer();
+            fileName = "kvit.txt";
         }
+        response.setHeader("Content-Disposition", "filename="+ fileName);
+        ByteArrayOutputStream baos = fileHandler.handle(file, userSetting, function);
+        baos.writeTo(response.getOutputStream());
     }
 
     public ResponseEntity f() throws IOException {

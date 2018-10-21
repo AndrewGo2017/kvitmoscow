@@ -1,4 +1,4 @@
-package ru.sber.kvitmoscow.handler.qr;
+package ru.sber.kvitmoscow.handler.bill.qr;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

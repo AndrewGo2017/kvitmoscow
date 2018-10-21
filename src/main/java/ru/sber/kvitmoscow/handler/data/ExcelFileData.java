@@ -1,9 +1,9 @@
-package ru.sber.kvitmoscow.handler.file.data;
+package ru.sber.kvitmoscow.handler.data;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import ru.sber.kvitmoscow.handler.file.model.FileRow;
+import ru.sber.kvitmoscow.handler.model.FileRow;
 
 import java.io.InputStream;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package ru.sber.kvitmoscow.handler.file.model;
+package ru.sber.kvitmoscow.handler.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,9 +12,11 @@ public class MainColEntity {
     public String adr;
     public String fio;
     public String period;
+    public String sum;
 
     public String lsName;
     public String adrName;
     public String fioName;
     public String periodName;
+    public String sumName;
 }

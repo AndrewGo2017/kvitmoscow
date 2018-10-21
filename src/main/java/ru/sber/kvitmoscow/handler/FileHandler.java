@@ -1,15 +1,16 @@
-package ru.sber.kvitmoscow.handler.file;
+package ru.sber.kvitmoscow.handler;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import ru.sber.kvitmoscow.Authorization;
-import ru.sber.kvitmoscow.handler.file.data.ExcelFileData;
-import ru.sber.kvitmoscow.handler.file.data.FileData;
-import ru.sber.kvitmoscow.handler.file.data.TextFileData;
-import ru.sber.kvitmoscow.handler.file.model.*;
-import ru.sber.kvitmoscow.handler.pdf.PdfHandler;
+import ru.sber.kvitmoscow.handler.conversion.ConversionRegisterInHandler;
+import ru.sber.kvitmoscow.handler.data.ExcelFileData;
+import ru.sber.kvitmoscow.handler.data.FileData;
+import ru.sber.kvitmoscow.handler.data.TextFileData;
+import ru.sber.kvitmoscow.handler.bill.pdf.PdfHandler;
+import ru.sber.kvitmoscow.handler.model.*;
 import ru.sber.kvitmoscow.model.UserSetting;
 import ru.sber.kvitmoscow.service.*;
 
@@ -37,7 +38,7 @@ public class FileHandler {
     @Autowired
     private FileCounterFieldService fileCounterFieldService;
 
-    public ByteArrayOutputStream handle(MultipartFile file, int userSettingId) throws Exception {
+    public ByteArrayOutputStream handle(MultipartFile file, int userSettingId, int functionId) throws Exception {
         //get user columns from settings
         List<String> columnNameListFromSettings = new ArrayList<>();
 
@@ -51,16 +52,19 @@ public class FileHandler {
             columnNameListFromSettings.add(f.getFio());
             columnNameListFromSettings.add(f.getAdr());
             columnNameListFromSettings.add(f.getPeriod());
+            columnNameListFromSettings.add(f.getSum());
 
             mainColumns.setLs(f.getLs());
             mainColumns.setAdr(f.getAdr());
             mainColumns.setFio(f.getFio());
             mainColumns.setPeriod(f.getPeriod());
+            mainColumns.setSum(f.getSum());
 
             mainColumns.setLsName(f.getLsName());
             mainColumns.setAdrName(f.getAdrName());
             mainColumns.setFioName(f.getFioName());
             mainColumns.setPeriodName(f.getPeriodName());
+            mainColumns.setSumName(f.getSumName());
         });
 
         fileUniqueFieldService.getAllByUserSettingId(userSettingId).forEach(f -> {
@@ -110,8 +114,13 @@ public class FileHandler {
 
         List<FileRow> fileRowList = fileData.handle();
         List<String> columnNameListFromFile = fileData.getColumnNameListFromFile();
+        ByteArrayOutputStream baos = null;
+        if (functionId == 1){
+            baos = new PdfHandler().handle(fileRowList, payReqs, mainColumns, sumColumnList, uniqueColumnList,  counterColumnList, columnNameListFromFile);
+        } else {
+            baos = new ConversionRegisterInHandler().handle(fileRowList, mainColumns, columnNameListFromFile);
+        }
 
-        ByteArrayOutputStream baos = new PdfHandler().handle(fileRowList, payReqs, mainColumns, sumColumnList, uniqueColumnList,  counterColumnList, columnNameListFromFile);
         return baos;
     }
 }

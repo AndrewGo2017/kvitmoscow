@@ -1,6 +1,6 @@
-package ru.sber.kvitmoscow.handler.file.data;
+package ru.sber.kvitmoscow.handler.data;
 
-import ru.sber.kvitmoscow.handler.file.model.FileRow;
+import ru.sber.kvitmoscow.handler.model.FileRow;
 
 import java.io.*;
 import java.util.ArrayList;

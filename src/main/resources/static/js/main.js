@@ -93,11 +93,12 @@ $(function () {
 
 
 
-    $('#fileupload').submit(function() {
-        this.submit();
-        showLoadEffect(true);
-        return false;
-    });
+    // $('#fileupload').submit(function() {
+    //     showLoadEffect(true);
+    //     this.submit();
+    //     showLoadEffect(false);
+    //     return false;
+    // });
 
     //shows upload status
     //0 - nothing to show; 1 - success; else - error

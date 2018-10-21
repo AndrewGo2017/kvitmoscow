@@ -1,4 +1,4 @@
-package ru.sber.kvitmoscow.handler.pdf;
+package ru.sber.kvitmoscow.handler.bill.pdf;
 
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;

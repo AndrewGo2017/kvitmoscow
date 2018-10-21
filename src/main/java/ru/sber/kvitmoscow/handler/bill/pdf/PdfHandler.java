@@ -1,18 +1,15 @@
-package ru.sber.kvitmoscow.handler.pdf;
+package ru.sber.kvitmoscow.handler.bill.pdf;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import org.springframework.core.io.ClassPathResource;
-import ru.sber.kvitmoscow.handler.file.model.*;
-import ru.sber.kvitmoscow.handler.qr.QrHandler;
-import ru.sber.kvitmoscow.handler.qr.QrStructure;
+import ru.sber.kvitmoscow.handler.bill.qr.QrHandler;
+import ru.sber.kvitmoscow.handler.bill.qr.QrStructure;
+import ru.sber.kvitmoscow.handler.model.*;
 import ru.sber.kvitmoscow.model.UserSetting;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.util.List;
 
 public class PdfHandler {

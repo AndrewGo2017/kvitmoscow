@@ -9,7 +9,7 @@
 <h1 th:text="${title}"></h1>
 <input th:value="${status != null} ? ${status} : '0' " class="dialog-data" type="hidden" name="status" id="status">
 
-<form id="fileupload" th:action="${'kvit'}" method="POST" enctype="multipart/form-data">
+<form id="fileupload" th:action="${'kvit'}" method="POST" enctype="multipart/form-data" target="_blank">
     <table class="ui-table display main-table" style="width:100%">
         <thead>
         <tr>

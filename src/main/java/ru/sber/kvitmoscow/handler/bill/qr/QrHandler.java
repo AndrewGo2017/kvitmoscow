@@ -1,4 +1,4 @@
-package ru.sber.kvitmoscow.handler.qr;
+package ru.sber.kvitmoscow.handler.bill.qr;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;

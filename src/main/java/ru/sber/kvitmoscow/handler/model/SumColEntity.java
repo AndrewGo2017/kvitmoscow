@@ -1,4 +1,4 @@
-package ru.sber.kvitmoscow.handler.file.model;
+package ru.sber.kvitmoscow.handler.model;
 
 import lombok.AllArgsConstructor;
 
