@@ -67,6 +67,7 @@ public class KvitController {
         baos.writeTo(response.getOutputStream());
     }
 
+    @GetMapping("/text1")
     public ResponseEntity f() throws IOException {
         List<String> lines = Arrays.asList("The first line", "The second line");
         Path file = Paths.get("the-file-name.txt");
@@ -74,6 +75,17 @@ public class KvitController {
 
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFileName() + "\"").body(file);
+    }
+
+    @GetMapping("/text2")
+    public void f2(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        response.setCharacterEncoding("Cp1251");
+        response.setHeader("Content-Disposition", "filename.txt");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        String s = "sdg";
+        baos.write(s.getBytes());
+        baos.writeTo(response.getOutputStream());
     }
 }
 
