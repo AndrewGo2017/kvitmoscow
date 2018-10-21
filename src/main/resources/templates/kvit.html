@@ -13,22 +13,22 @@
     <table class="ui-table display main-table" style="width:100%">
         <thead>
         <tr>
-            <!--<th>Функции</th>-->
+            <th>Функция</th>
             <th>Настройка</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <!--<td>-->
-                <!--<div class="col-xs-9">-->
-                    <!--<select class="select" name="jobType">-->
-                        <!--<option th:each="type : ${jobType}"-->
-                                <!--th:value="${type}"-->
-                                <!--th:text="${type.str}"></option>-->
-                    <!--</select>-->
-                <!--</div>-->
-            <!--</td>-->
+            <td>
+                <div class="col-xs-9">
+                    <select class="select" name="function">
+                        <option th:each="function : ${functions}"
+                                th:value="${function.id}"
+                                th:text="${function.name}"></option>
+                    </select>
+                </div>
+            </td>
             <td>
                 <div class="col-xs-9">
                     <select class="select" name="userSetting">

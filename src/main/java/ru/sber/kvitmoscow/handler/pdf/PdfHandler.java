@@ -31,12 +31,22 @@ public class PdfHandler {
         PdfWriter.getInstance(document, baos);
         document.open();
 
-        int rowCount = -1;
+        FontFactory.register("static/font/times.ttf", "mytime");
+        FontFactory.register("static/font/timesbd.ttf", "mytimebd");
+
+        Font font3 =  FontFactory.getFont("mytime", "Cp1251", true,  4 ); //new Font(baseFont, 3 + 1);
+        Font font7 = FontFactory.getFont("mytime", "Cp1251", true, 8 );
+        Font font10 =  FontFactory.getFont("mytime", "Cp1251", true, 11 );
+
+        Font font7Bd = FontFactory.getFont("mytimebd", "Cp1251", true, 8 );
+        Font font10Bd = FontFactory.getFont("mytimebd", "Cp1251", true, 11 );
+
+
+        int rowCount = 0;
 
 //        try {
             for (FileRow row : fileRowList) {
                 rowCount++;
-//                if (rowCount == 0) continue;
 
                 PdfPTable tableL0 = new PdfPTable(2);
                 tableL0.setPaddingTop(0);
@@ -51,22 +61,6 @@ public class PdfHandler {
                 tableL1.getDefaultCell().setBorder(Rectangle.NO_BORDER);
                 tableL1.getDefaultCell().setPadding(1);
                 tableL1.setHorizontalAlignment(1);
-
-
-                FontFactory.register("static/font/times.ttf", "mytime");
-                FontFactory.register("static/font/timesbd.ttf", "mytimebd");
-
-
-//                File times = new ClassPathResource("/static/font/times.ttf").getFile();
-//                BaseFont baseFont = BaseFont.createFont(times.getPath(), "cp1251", BaseFont.EMBEDDED);
-                Font font3 =  FontFactory.getFont("mytime", "Cp1251", true,  4 ); //new Font(baseFont, 3 + 1);
-                Font font7 = FontFactory.getFont("mytime", "Cp1251", true, 8 );
-                Font font10 =  FontFactory.getFont("mytime", "Cp1251", true, 11 );
-
-//                File timesbd = new ClassPathResource("/static/font/timesbd.ttf").getFile();
-//                BaseFont baseFontBold = BaseFont.createFont(timesbd.getPath(), "cp1251", BaseFont.EMBEDDED);
-                Font font7Bd = FontFactory.getFont("mytimebd", "Cp1251", true, 8 );
-                Font font10Bd = FontFactory.getFont("mytimebd", "Cp1251", true, 11 );
 
                 //header
 
@@ -312,12 +306,12 @@ public class PdfHandler {
 
                 document.add(borderTable);
 
-                if (rowCount % 2 == 0 && rowCount >= 2)
-                    document.newPage();
-
                 PdfPTable emptyTable = new PdfPTable(1);
                 emptyTable.addCell(new PdfCellBuilder(" ", font3).border(0).build());
                 document.add(emptyTable);
+
+                if (rowCount % 2 == 0)
+                    document.newPage();
 
             }
 //        } catch (Exception e) {

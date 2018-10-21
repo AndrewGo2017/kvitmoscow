@@ -21,8 +21,9 @@
             <th>Пользователь</th>
             <th>Тип файла</th>
             <th>Шаблон квитанции</th>
-            <th>Шаблон файла</th>
+            <th>Шаблон реестра задолженности</th>
             <th>Наименование настроек</th>
+            <th>Маска файла</th>
             <th>Наименование организации</th>
             <th>ИНН </th>
             <th>КПП</th>
@@ -58,6 +59,7 @@
             <td th:text="${userSetting.template.name}"></td>
             <td th:text="${userSetting.fileTemplate.name}"></td>
             <td th:text="${userSetting.name}"></td>
+            <td th:text="${userSetting.fileMask}"></td>
             <td th:text="${userSetting.orgName}"></td>
             <td th:text="${userSetting.orgInn}"></td>
             <td th:text="${userSetting.orgKpp}"></td>

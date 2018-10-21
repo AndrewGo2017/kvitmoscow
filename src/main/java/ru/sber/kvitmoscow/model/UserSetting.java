@@ -36,6 +36,9 @@ public class UserSetting extends BaseEntity {
     @NotBlank(message = "Поле Наименование настроек не может быть пустым!")
     private String name;
 
+    @Column(name = "file_mask")
+    private String fileMask;
+
     @Column(name = "org_name")
     @NotBlank(message = "Поле Наименование организации не может быть пустым!")
     private String orgName;
@@ -64,13 +67,14 @@ public class UserSetting extends BaseEntity {
     @Column(name = "org_add_info")
     private String orgAddInfo;
 
-    public UserSetting(Integer id, User user, FileType fileType, Template template, FileTemplate fileTemplate, @NotBlank(message = "Поле Наименование настроек не может быть пустым!") String name, @NotBlank(message = "Поле Наименование организации не может быть пустым!") String orgName, @NotBlank(message = "Поле ИНН не может быть пустым!") String orgInn, String orgKpp, @NotBlank(message = "Поле Р/с не может быть пустым!") String orgPayAcc, @NotBlank(message = "Поле Банк не может быть пустым!") String orgBank, String orgBic, String orgCorAcc, String orgAddInfo) {
+    public UserSetting(Integer id, User user, FileType fileType, Template template, FileTemplate fileTemplate, @NotBlank(message = "Поле Наименование настроек не может быть пустым!") String name, String fileMask, @NotBlank(message = "Поле Наименование организации не может быть пустым!") String orgName, @NotBlank(message = "Поле ИНН не может быть пустым!") String orgInn, String orgKpp, @NotBlank(message = "Поле Р/с не может быть пустым!") String orgPayAcc, @NotBlank(message = "Поле Банк не может быть пустым!") String orgBank, String orgBic, String orgCorAcc, String orgAddInfo) {
         super(id);
         this.user = user;
         this.fileType = fileType;
         this.template = template;
         this.fileTemplate = fileTemplate;
         this.name = name;
+        this.fileMask = fileMask;
         this.orgName = orgName;
         this.orgInn = orgInn;
         this.orgKpp = orgKpp;

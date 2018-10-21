@@ -39,6 +39,7 @@ public class UserSettingServiceImpl implements UserSettingService {
                 templateRepository.getOne(entity.getTemplate()),
                 fileTemplateRepository.getOne(entity.getFileTemplate()),
                 entity.getName(),
+                entity.getFileMask(),
                 entity.getOrgName(),
                 entity.getOrgInn(),
                 entity.getOrgKpp(),
@@ -52,7 +53,7 @@ public class UserSettingServiceImpl implements UserSettingService {
         UserSetting newUserSetting = userSettingRepository.save(userSetting);
 
         if (entity.isNew()){
-            FileMainFieldTo f = FileMainFieldTo.getDefaultMainFieldTo();
+            FileMainFieldTo f = FileMainFieldTo.getDefaultMainFieldTo(newUserSetting.getId());
             fileMainFieldService.save(f);
         }
 

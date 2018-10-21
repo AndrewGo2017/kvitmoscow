@@ -61,7 +61,8 @@ public class FileMainFieldTo extends BaseTo {
         }
     }
 
-    public static FileMainFieldTo getDefaultMainFieldTo() {
-        return new FileMainFieldTo(null, "", "", "", "", "", LS_NAME, ADR_NAME, FIO_NAME, PERIOD_NAME, SUM_NAME);
+    public static FileMainFieldTo getDefaultMainFieldTo(int settingId) {
+        return new FileMainFieldTo(settingId
+                , "", "", "", "", "", LS_NAME, ADR_NAME, FIO_NAME, PERIOD_NAME, SUM_NAME);
     }
 }

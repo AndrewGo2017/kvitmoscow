@@ -10,6 +10,14 @@ drop table if exists users;
 drop table if exists templates;
 drop table if exists roles;
 drop table if exists file_templates;
+drop table if exists functions;
+
+
+create table functions (
+  id   serial primary key
+  ,
+  name text
+);
 
 create table file_templates (
   id   serial primary key
@@ -17,7 +25,7 @@ create table file_templates (
   name text
 );
 
-  create table roles (
+create table roles (
   id   serial primary key
   ,
   name text
@@ -61,6 +69,8 @@ create table user_settings (
   template_id      integer
   ,
   file_template_id integer
+  ,
+  file_mask        text
   ,
   name             text
   ,
@@ -115,7 +125,7 @@ create table file_main_fields (
   ,
   sum_name         text
   ,
-  foreign key (user_settings_id) references user_settings (id)
+  foreign key (user_settings_id) references user_settings (id) on delete cascade
 );
 
 -- editable
