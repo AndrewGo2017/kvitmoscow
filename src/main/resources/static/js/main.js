@@ -163,6 +163,11 @@ shows create dialog
 function createRow() {
     var dialog = $('#main_edit_create_dialog');
     var dialog_data = $('form[name="detailsForm"]');
+
+    disableSelect();
+    dialog.dialog('option', 'buttons', dialog_buttons);
+    dialog.dialog('open');
+
     var dialog_buttons = {
         Добавить: function () {
             createOrUpdate(dialog_data);
@@ -172,15 +177,13 @@ function createRow() {
             dialog.dialog('close');
         }
     };
-    disableSelect();
-    dialog.dialog('option', 'buttons', dialog_buttons);
-    dialog.dialog('open');
 }
 
 /*
 shows update dialog and fills it with data using row id
  */
 function updateRow(id) {
+    showLoadEffect(true);
     $.ajax({
         url: entity + '/' + id,
         success: function (data) {
@@ -231,6 +234,9 @@ function updateRow(id) {
         error:function (xhr) {
             var err = JSON.parse(xhr.responseText);
             showErrorMessage(err.message, 'Ошибка ' + err.status);
+        },
+        complete:function(){
+            showLoadEffect(false);
         }
     });
 }
@@ -515,4 +521,12 @@ function createStandardStructure(settingId, templateId) {
             }
         }
     });
+}
+
+/*
+create template excel file as an example for base in file
+ */
+function createExample() {
+    var templateId = $('#userSetting').val();
+    window.open(entity + "/example/"+templateId);
 }

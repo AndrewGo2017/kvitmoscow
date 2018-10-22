@@ -17,7 +17,7 @@ insert into user_settings(user_id, file_type_id, template_id, file_template_id, 
 values (1,1,1,1, 'file_mask', 'Коммуналка', 'ТСЖ Москва река', '7707707700', '770410001', '407028100450000654987', 'ПАО Сбербанк', '045209672','40101001010110101010','доп информация 202020');
 
 insert into file_main_fields(user_settings_id, ls, adr, fio, period, sum, ls_name, adr_name, fio_name, period_name, sum_name)
-values (1, 'LS', 'ADR', 'FIO', 'PER', 'SUM','Лицевой счет', 'Адрес', 'ФИО', 'Период', 'Сумма платежа');
+values (1, 'LS', 'ADR', 'FIO', 'PERIOD', 'SUM','Лицевой счет', 'Адрес', 'ФИО', 'Период', 'Сумма платежа');
 
 insert into  file_unique_fields(user_settings_id, name, value)
 values (1, 'DOP_NAME', 'DOP_VAL');

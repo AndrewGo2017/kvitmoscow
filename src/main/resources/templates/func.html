@@ -16,6 +16,7 @@
             <th>Функция</th>
             <th>Настройка</th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -31,7 +32,7 @@
             </td>
             <td>
                 <div class="col-xs-9">
-                    <select class="select" name="userSetting">
+                    <select class="select" name="userSetting" id="userSetting">
                         <option th:each="userSetting : ${userSettings}"
                                 th:value="${userSetting.id}"
                                 th:text="${userSetting.name}"></option>
@@ -48,13 +49,14 @@
                        content="Выбрать файл">
                 <span class="fileUploadName" id="labelFileName"></span>
             </td>
+            <td>
+                <button id="createExampleBtn" class="ui-button ui-widget ui-corner-all" type="button" onclick="createExample()">Создать заготовку
+                    <span class='ui-icon ui-icon-clipboard' aria-hidden='true' ></span></button>
+            </td>
         </tr>
         </tbody>
     </table>
 </form>
-
-
-
 
 <div th:replace="fragments/main :: dialog-confirm"></div>
 <div th:replace="fragments/main :: dialog-dictionary"></div>
@@ -62,7 +64,6 @@
 <div th:replace="fragments/main :: dialog-error"></div>
 <div th:replace="fragments/main :: dialog-loading"></div>
 <div th:replace="fragments/main :: dialog-info"></div>
-
 
 </body>
 </html>

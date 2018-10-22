@@ -117,7 +117,7 @@ public class FileHandler {
         ByteArrayOutputStream baos = null;
         if (functionId == 1){
             baos = new PdfHandler().handle(fileRowList, payReqs, mainColumns, sumColumnList, uniqueColumnList,  counterColumnList, columnNameListFromFile);
-        } else {
+        } else  {
             baos = new ConversionRegisterInHandler().handle(fileRowList, mainColumns, columnNameListFromFile);
         }
 
