@@ -17,10 +17,10 @@ public class ConversionRegisterInHandler {
         for (FileRow row : fileRows) {
             String ls = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getLs()));
             stringBuilder.append(ls).append(DELIMITER);
-            String adr = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getAdr()));
-            stringBuilder.append(adr).append(DELIMITER);
             String fio = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getFio()));
             stringBuilder.append(fio).append(DELIMITER);
+            String adr = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getAdr()));
+            stringBuilder.append(adr).append(DELIMITER);
             String period = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getPeriod()));
             stringBuilder.append(period).append(DELIMITER);
             String sum = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getSum()));

@@ -4,6 +4,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.decimal4j.util.DoubleRounder;
 import ru.sber.kvitmoscow.handler.bill.qr.QrHandler;
 import ru.sber.kvitmoscow.handler.bill.qr.QrStructure;
 import ru.sber.kvitmoscow.handler.model.*;
@@ -118,14 +119,16 @@ public class PdfHandler {
                     tableL2.addCell(new PdfCellBuilder(ls, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
 
                 }
+                String fio = "";
                 if (!mainColumns.getFio().isEmpty()) {
                     tableL2.addCell(new Phrase(mainColumns.getFioName(), font10));
-                    String fio = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getFio()));
+                    fio = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getFio()));
                     tableL2.addCell(new PdfCellBuilder(fio, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
                 }
+                String adr = "";
                 if (!mainColumns.getAdr().isEmpty()) {
                     tableL2.addCell(new Phrase(mainColumns.getAdrName(), font10));
-                    String adr = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getAdr()));
+                    adr = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getAdr()));
                     tableL2.addCell(new PdfCellBuilder(adr, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
                 }
 
@@ -137,6 +140,16 @@ public class PdfHandler {
 
                     tableL2.addCell(new Phrase(name, font10));
                     tableL2.addCell(new PdfCellBuilder(value, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
+                }
+
+                //sum
+                Double sum = 0d;
+                if (sumColumnList.size() > 0){
+                    if (!mainColumns.getSum().equals("")){
+                        tableL2.addCell(new Phrase(mainColumns.getSumName(), font10));
+                        sum = Double.parseDouble( row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getSum())) );
+                        tableL2.addCell(new PdfCellBuilder(sum.toString(), font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
+                    }
                 }
 
                 //counters
@@ -257,20 +270,20 @@ public class PdfHandler {
                     }
 
                     tableL4.addCell(new PdfCellBuilder( "Итого к оплате", font7Bd).border(0).horizontalAlignment(1).verticalAlignment(1).build());
-                    tableL4.addCell(new PdfCellBuilder(Double.toString(totalSum), font7Bd).border(0).horizontalAlignment(1).verticalAlignment(1).build());
+                    tableL4.addCell(new PdfCellBuilder(Double.toString(DoubleRounder.round(totalSum, 2)), font7Bd).border(0).horizontalAlignment(1).verticalAlignment(1).build());
 
                     if (!isDebtColEmpty) {
                         tableL4.addCell(new PdfCellBuilder().border(0).borderWidth(0).build());
                     }
 
                     if (!isTotalColEmpty) {
-                        tableL4.addCell(new PdfCellBuilder(Double.toString(totalSumPlusDebt), font7Bd).border(0).horizontalAlignment(1).verticalAlignment(1).build());
+                        tableL4.addCell(new PdfCellBuilder(Double.toString(DoubleRounder.round(totalSumPlusDebt, 2)), font7Bd).border(0).horizontalAlignment(1).verticalAlignment(1).build());
                     }
                 }
 
                 //QR
                 Image imgQR = Image.getInstance(new QrHandler().handle(
-                        new QrStructure(payReqs.getOrgName(), payReqs.getOrgPayAcc(), payReqs.getOrgBank(), payReqs.getOrgBic(), payReqs.getOrgCorAcc(), payReqs.getOrgInn(), payReqs.getOrgKpp(), ls)
+                        new QrStructure(payReqs.getOrgName(), payReqs.getOrgPayAcc(), payReqs.getOrgBank(), payReqs.getOrgBic(), payReqs.getOrgCorAcc(), payReqs.getOrgInn(), payReqs.getOrgKpp(), ls, sum, fio, adr)
                 ));
                 imgQR.scaleAbsolute(80, 80);
 

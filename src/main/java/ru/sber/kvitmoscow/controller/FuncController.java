@@ -64,7 +64,7 @@ public class FuncController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
 
-        return ResponseEntity.ok().body("");
+        return ResponseEntity.ok().build();
     }
 
     @Autowired
@@ -79,9 +79,6 @@ public class FuncController {
         ByteArrayOutputStream baos = exampleHandler.handle(userSettingId);
         baos.writeTo(response.getOutputStream());
         baos.flush();
-
-
-
     }
 }
 

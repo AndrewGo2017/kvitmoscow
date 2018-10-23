@@ -32,7 +32,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter   {
                 .usernameParameter("name")
                 .passwordParameter("password")
                 .loginPage("/login")
-                .defaultSuccessUrl("/kvit")
+                .defaultSuccessUrl("/setting")
                 .permitAll()
                 .and()
                 .logout()

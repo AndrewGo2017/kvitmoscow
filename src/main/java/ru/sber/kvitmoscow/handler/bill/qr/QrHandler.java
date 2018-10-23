@@ -17,21 +17,27 @@ public class QrHandler {
         String ver = "ST00012";
         String del = "|";
 
-        String text = ver + del +
-                "Name=" + qrStructure.name + del +
-                "PersonalAcc=" + qrStructure.pAcc + del +
-                "BankName=" + qrStructure.bank + del +
-                "BIC=" + qrStructure.bic + del +
-                "CorrespAcc=" + qrStructure.cAcc + del +
-                "PayeeINN=" + qrStructure.inn + del +
-                "KPP=" + qrStructure.kpp +
-                "PersAcc=" + qrStructure.ls;
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(ver).append(del)
+                .append("Name=").append(qrStructure.name).append(del)
+                .append("PersonalAcc=").append(qrStructure.pAcc).append(del)
+                .append("BankName=").append(qrStructure.bank).append(del)
+                .append("BIC=").append(qrStructure.bic).append(del )
+                .append("CorrespAcc=").append(qrStructure.cAcc).append(del)
+                .append("PayeeINN=").append(qrStructure.inn).append(del)
+                .append("KPP=").append(qrStructure.kpp).append(del)
+                .append("PersAcc=").append(qrStructure.ls).append(del)
+                .append("Sum=").append((qrStructure.sum * 100)).append(del)
+                .append("LastName=").append(qrStructure.fio).append(del)
+                .append("PayerAddress=").append(qrStructure.adr).append(del)
+                ;
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
         hints.put(EncodeHintType.CHARACTER_SET, "windows-1251");
 
-        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, 120, 120, hints);
+        BitMatrix bitMatrix = qrCodeWriter.encode(stringBuilder.toString(), BarcodeFormat.QR_CODE, 150, 150, hints);
 
 //        Path path = FileSystems.getDefault().getPath("D:\\1.png");
 //        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);

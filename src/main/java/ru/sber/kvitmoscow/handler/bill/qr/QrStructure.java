@@ -14,4 +14,9 @@ public class QrStructure {
     String inn;
     String kpp;
     String ls;
+
+    Double sum;
+
+    String fio;
+    String adr;
 }

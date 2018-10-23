@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:fragment="header">
     <meta http-equiv=”Content-Type” content=”text/html; charset=utf-8″>
     <title th:text="${title}"></title>
@@ -31,7 +31,7 @@
                     <!--<a class="nav-link" href="#" id="dictionaries">Структура</a>-->
                 <!--</li>-->
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/func}">Квитанции</a>
+                    <a class="nav-link" th:href="@{/func}">Функции</a>
                 </li>
             </ul>
         </div>
@@ -86,6 +86,8 @@
 <div th:fragment="dialog-info" id="infoDialog">
     <div></div>
 </div>
+
+
 
 </body>
 </html>
