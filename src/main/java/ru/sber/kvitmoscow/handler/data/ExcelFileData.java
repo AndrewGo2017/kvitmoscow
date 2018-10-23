@@ -28,7 +28,7 @@ public class ExcelFileData implements FileData {
             workbook = new XSSFWorkbook(inputStream);
             this.sheet = workbook.getSheetAt(0);
         } else {
-            throw new Exception("something went wrong ...");
+            throw new Exception("что-то пошло не так ...");
         }
     }
 
@@ -67,7 +67,7 @@ public class ExcelFileData implements FileData {
         });
 
         if (noColumnList.size() > 0) {
-            throw new Exception("no columns : " + noColumnList.toString());
+            throw new Exception("не найдены поля : " + noColumnList.toString());
         }
     }
 

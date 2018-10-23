@@ -42,7 +42,7 @@ public class PdfHandler {
 
         int rowCount = 0;
 
-//        try {
+        try {
             for (FileRow row : fileRowList) {
                 rowCount++;
 
@@ -147,7 +147,7 @@ public class PdfHandler {
                 if (sumColumnList.size() > 0){
                     if (!mainColumns.getSum().equals("")){
                         tableL2.addCell(new Phrase(mainColumns.getSumName(), font10));
-                        sum = Double.parseDouble( row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getSum())) );
+                        sum = toDouble( row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getSum())) );
                         tableL2.addCell(new PdfCellBuilder(sum.toString(), font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
                     }
                 }
@@ -324,9 +324,9 @@ public class PdfHandler {
                     document.newPage();
 
             }
-//        } catch (Exception e) {
-//            throw new Exception("row " + rowCount + ";\n" + e.getMessage());
-//        }
+        } catch (Exception e) {
+            throw new Exception("ряд  " + rowCount + ";\n" + e.getMessage());
+        }
 
         //close pdf
         document.close();

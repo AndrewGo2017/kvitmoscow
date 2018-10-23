@@ -54,7 +54,10 @@ public class FuncController {
             if (function == 1){
                 fileName = "kvit.pdf";
             } else {
-                fileName = "kvit.txt";
+                String mask = userSettingService.get(userSetting).getFileMask();
+                if (!mask.isEmpty()){
+                    fileName = mask + ".txt";
+                }
             }
             response.setHeader("Content-Disposition", "filename="+ fileName);
             ByteArrayOutputStream baos = fileHandler.handle(file, userSetting, function);
