@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.sber.kvitmoscow.Authorization;
 import ru.sber.kvitmoscow.example.ExampleHandler;
 import ru.sber.kvitmoscow.handler.FileHandler;
 import ru.sber.kvitmoscow.model.Function;
@@ -32,7 +33,7 @@ public class FuncController {
 
     @GetMapping
     public String index(Model m) {
-        List<UserSetting> userSettings = userSettingService.getAll();
+        List<UserSetting> userSettings = userSettingService.getAllByUserId(Authorization.id());
         List<Function> functions = functionService.getAll();
         m.addAttribute("noEdit", "");
         m.addAttribute("userSettings", userSettings);
