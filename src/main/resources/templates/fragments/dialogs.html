@@ -288,8 +288,8 @@
                         <label class="control-label col-xs-3">Сумма (поле)</label>
 
                         <div class="col-xs-9">
-                            <input th:value="${fileMainField != null} ? ${fileMainField.period} : '' "
-                                   class="dialog-data form-control" name="period"/>
+                            <input th:value="${fileMainField != null} ? ${fileMainField.sum} : '' "
+                                   class="dialog-data form-control" name="sum"/>
                         </div>
                     </div>
                 </td>
@@ -336,8 +336,8 @@
                         <label class="control-label col-xs-3">Сумма (наименование)</label>
 
                         <div class="col-xs-9">
-                            <input th:value="${fileMainField != null} ? ${fileMainField.periodName} : '' "
-                                   class="dialog-data form-control" name="periodName"/>
+                            <input th:value="${fileMainField != null} ? ${fileMainField.sumName} : '' "
+                                   class="dialog-data form-control" name="sumName"/>
                         </div>
                     </div>
                 </td>
