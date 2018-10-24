@@ -164,12 +164,12 @@ public class PdfHandler {
                         int counterColCount = 1;
                         CounterColEntity counterColEntity = counterColumnList.get(i);
 
-                        String name = row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.name));
-                        String measure = row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.measure));
-                        String tariff = row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.tariff));
-                        String current = row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.current));
-                        String previous = row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.previous));
-                        String consumption = row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.consumption));
+                        String name = !counterColEntity.name.equals("") ? row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.name)) : "";
+                        String measure = !counterColEntity.measure.equals("") ?  row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.measure)) : "";
+                        String tariff = !counterColEntity.tariff.equals("") ? row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.tariff)) : "";
+                        String current = !counterColEntity.current.equals("") ? row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.current)) : "";
+                        String previous = !counterColEntity.previous.equals("") ? row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.previous)) : "";
+                        String consumption = !counterColEntity.consumption.equals("") ? row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.consumption)) : "";
 
                         isMeasureEmpty = measure.isEmpty();
                         isTariffEmpty = tariff.isEmpty();
