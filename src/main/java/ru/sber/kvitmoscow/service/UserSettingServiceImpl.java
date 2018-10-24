@@ -40,6 +40,8 @@ public class UserSettingServiceImpl implements UserSettingService {
                 fileTemplateRepository.getOne(entity.getFileTemplate()),
                 entity.getName(),
                 entity.getFileMask(),
+                entity.getQrAddInfo(),
+                entity.getBillQuantity(),
                 entity.getOrgName(),
                 entity.getOrgInn(),
                 entity.getOrgKpp(),

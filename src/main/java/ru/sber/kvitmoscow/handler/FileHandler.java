@@ -38,6 +38,8 @@ public class FileHandler {
     @Autowired
     private FileCounterFieldService fileCounterFieldService;
 
+    private String lastMask;
+
     public ByteArrayOutputStream handle(MultipartFile file, int userSettingId, int functionId) throws Exception {
         //get user columns from settings
         List<String> columnNameListFromSettings = new ArrayList<>();
@@ -116,11 +118,18 @@ public class FileHandler {
         List<String> columnNameListFromFile = fileData.getColumnNameListFromFile();
         ByteArrayOutputStream baos = null;
         if (functionId == 1){
-            baos = new PdfHandler().handle(fileRowList, payReqs, mainColumns, sumColumnList, uniqueColumnList,  counterColumnList, columnNameListFromFile);
+            PdfHandler pdfHandler = new PdfHandler();
+            baos = pdfHandler.handle(fileRowList, payReqs, mainColumns, sumColumnList, uniqueColumnList,  counterColumnList, columnNameListFromFile);
+            lastMask = pdfHandler.getPeriodFromLastLine();
+
         } else  {
             baos = new ConversionRegisterInHandler().handle(fileRowList, mainColumns, columnNameListFromFile);
         }
 
         return baos;
+    }
+
+    public String getLastMask() {
+        return lastMask;
     }
 }

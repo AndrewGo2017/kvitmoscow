@@ -51,17 +51,19 @@ public class FuncController {
         try{
             response.setContentType("application/octet-stream");
             response.setCharacterEncoding("Cp1251");
+            ByteArrayOutputStream baos = fileHandler.handle(file, userSetting, function);
+
             String fileName = "";
             if (function == 1){
                 fileName = "kvit.pdf";
             } else {
                 String mask = userSettingService.get(userSetting).getFileMask();
                 if (!mask.isEmpty()){
-                    fileName = mask + ".txt";
+                    fileName = mask + "_" + fileHandler.getLastMask() + ".txt";
                 }
             }
             response.setHeader("Content-Disposition", "filename="+ fileName);
-            ByteArrayOutputStream baos = fileHandler.handle(file, userSetting, function);
+
             baos.writeTo(response.getOutputStream());
             baos.flush();
         } catch (Exception ex){

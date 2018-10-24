@@ -79,6 +79,24 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="control-label col-xs-3">Количество квитанций на лист</label>
+
+                        <div class="col-xs-9">
+                            <input type="number" th:value="${userSetting != null} ? ${userSetting.billQuantity} : '' "
+                                   class="dialog-data form-control" name="billQuantity"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Доп информация в ШК</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.qrAddInfo} : '' "
+                                   class="dialog-data form-control" name="qrAddInfo"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="control-label col-xs-3">Маска файла</label>
 
                         <div class="col-xs-9">
@@ -87,6 +105,9 @@
                         </div>
                     </div>
 
+                </td>
+
+                <td>
                     <div class="form-group">
                         <label class="control-label col-xs-3">Наименование организации</label>
 
@@ -95,9 +116,7 @@
                                    class="dialog-data form-control" name="orgName"/>
                         </div>
                     </div>
-                </td>
 
-                <td>
                     <div class="form-group">
                         <label class="control-label col-xs-3">ИНН</label>
 

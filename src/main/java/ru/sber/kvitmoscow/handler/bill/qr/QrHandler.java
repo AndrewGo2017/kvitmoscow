@@ -28,14 +28,15 @@ public class QrHandler {
                 .append("PayeeINN=").append(qrStructure.inn).append(del)
                 .append("KPP=").append(qrStructure.kpp).append(del)
                 .append("PersAcc=").append(qrStructure.ls).append(del)
-                .append("Sum=").append((qrStructure.sum * 100)).append(del)
+                .append("Sum=").append((long)(qrStructure.sum * 100)).append(del)
                 .append("LastName=").append(qrStructure.fio).append(del)
                 .append("PayerAddress=").append(qrStructure.adr).append(del)
+                .append(qrStructure.addInfo).append(del)
                 ;
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
-        hints.put(EncodeHintType.CHARACTER_SET, "windows-1251");
+        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
 
         BitMatrix bitMatrix = qrCodeWriter.encode(stringBuilder.toString(), BarcodeFormat.QR_CODE, 150, 150, hints);
 

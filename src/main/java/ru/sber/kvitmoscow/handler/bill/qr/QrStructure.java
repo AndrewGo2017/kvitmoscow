@@ -19,4 +19,6 @@ public class QrStructure {
 
     String fio;
     String adr;
+
+    String addInfo;
 }

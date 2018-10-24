@@ -21,6 +21,10 @@ public class UserSettingTo extends BaseTo{
 
     private String fileMask;
 
+    private String qrAddInfo;
+
+    private Integer billQuantity;
+
     private String orgName;
 
     private String orgInn;
@@ -37,7 +41,7 @@ public class UserSettingTo extends BaseTo{
 
     private String orgAddInfo;
 
-    public UserSettingTo(Integer id, Integer user, Integer fileType, Integer template, Integer fileTemplate, String name, String fileMask, String orgName, String orgInn, String orgKpp, String orgPayAcc, String orgBank, String orgBic, String orgCorAcc, String orgAddInfo) {
+    public UserSettingTo(Integer id, Integer user, Integer fileType, Integer template, Integer fileTemplate, String name, String fileMask, String qrAddInfo, Integer billQuantity, String orgName, String orgInn, String orgKpp, String orgPayAcc, String orgBank, String orgBic, String orgCorAcc, String orgAddInfo) {
         super(id);
         this.user = user;
         this.fileType = fileType;
@@ -45,6 +49,8 @@ public class UserSettingTo extends BaseTo{
         this.fileTemplate = fileTemplate;
         this.name = name;
         this.fileMask = fileMask;
+        this.qrAddInfo = qrAddInfo;
+        this.billQuantity = billQuantity;
         this.orgName = orgName;
         this.orgInn = orgInn;
         this.orgKpp = orgKpp;

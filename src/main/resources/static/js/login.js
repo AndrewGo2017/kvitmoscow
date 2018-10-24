@@ -14,7 +14,7 @@ setTimeout('duration time') may be used as an alternative.
  */
 $(function () {
     if (loginPageStatus === "error"){
-        showErrorMessage("Неверный пароль!",null, showLogInDialog)
+        showErrorMessage("Указан неверный пользователь или пароль!",null, showLogInDialog)
     } else {
         showLogInDialog();
     }

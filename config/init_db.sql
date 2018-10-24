@@ -72,6 +72,10 @@ create table user_settings (
   ,
   file_mask        text
   ,
+  qr_add_info      text
+  ,
+  bill_quantity    integer
+  ,
   name             text
   ,
   org_name         text
@@ -138,7 +142,7 @@ create table file_unique_fields (
   ,
   value            text
   ,
-  foreign key (user_settings_id) references user_settings (id)
+  foreign key (user_settings_id) references user_settings (id) on delete cascade
 );
 
 -- editable
@@ -159,7 +163,7 @@ create table file_counter_fields (
   ,
   consumption      text
   ,
-  foreign key (user_settings_id) references user_settings (id)
+  foreign key (user_settings_id) references user_settings (id) on delete cascade
 );
 
 --editable
@@ -188,7 +192,7 @@ create table file_misc_fields (
   ,
   sum              text
   ,
-  foreign key (user_settings_id) references user_settings (id)
+  foreign key (user_settings_id) references user_settings (id) on delete cascade
 );
 
 create table file_sum_fields (

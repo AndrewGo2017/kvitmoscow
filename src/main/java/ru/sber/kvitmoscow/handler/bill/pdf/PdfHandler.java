@@ -14,6 +14,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 public class PdfHandler {
+    private String periodFromLastLine;
+
     public ByteArrayOutputStream handle(
             List<FileRow> fileRowList,
             UserSetting payReqs,
@@ -39,6 +41,10 @@ public class PdfHandler {
         Font font7Bd = FontFactory.getFont("mytimebd", "Cp1251", true, 8 );
         Font font10Bd = FontFactory.getFont("mytimebd", "Cp1251", true, 11 );
 
+        int billQuantity = 2;
+        if (payReqs.getBillQuantity() != null && payReqs.getBillQuantity() > 0){
+            billQuantity = payReqs.getBillQuantity();
+        }
 
         int rowCount = 0;
 
@@ -85,6 +91,7 @@ public class PdfHandler {
 
                 if (!mainColumns.getPeriod().isEmpty()) {
                     String period = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getPeriod()));
+                    periodFromLastLine = period;
                     tableL1.addCell(new PdfCellBuilder(period, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
 
                 } else {
@@ -232,7 +239,7 @@ public class PdfHandler {
                         double total = 0;
                         if (!isTotalColEmpty) {
                             total = toDouble(row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.total)));
-                            totalSumPlusDebt += (current + debt);
+                            totalSumPlusDebt += total;
                         }
 
                         if (i == 0) {
@@ -283,7 +290,7 @@ public class PdfHandler {
 
                 //QR
                 Image imgQR = Image.getInstance(new QrHandler().handle(
-                        new QrStructure(payReqs.getOrgName(), payReqs.getOrgPayAcc(), payReqs.getOrgBank(), payReqs.getOrgBic(), payReqs.getOrgCorAcc(), payReqs.getOrgInn(), payReqs.getOrgKpp(), ls, sum, fio, adr)
+                        new QrStructure(payReqs.getOrgName(), payReqs.getOrgPayAcc(), payReqs.getOrgBank(), payReqs.getOrgBic(), payReqs.getOrgCorAcc(), payReqs.getOrgInn(), payReqs.getOrgKpp(), ls, sum, fio, adr, payReqs.getQrAddInfo())
                 ));
                 imgQR.scaleAbsolute(80, 80);
 
@@ -320,7 +327,7 @@ public class PdfHandler {
                 emptyTable.addCell(new PdfCellBuilder(" ", font3).border(0).build());
                 document.add(emptyTable);
 
-                if (rowCount % 2 == 0)
+                if (rowCount % billQuantity == 0)
                     document.newPage();
 
             }
@@ -337,5 +344,9 @@ public class PdfHandler {
     private double toDouble(String str) {
         String newStr = str.replace(",", ".").replace(" ", "");
         return Double.parseDouble(newStr);
+    }
+
+    public String getPeriodFromLastLine() {
+        return periodFromLastLine;
     }
 }
