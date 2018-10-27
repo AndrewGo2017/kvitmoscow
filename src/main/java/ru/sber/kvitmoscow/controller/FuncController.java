@@ -1,6 +1,7 @@
 package ru.sber.kvitmoscow.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -43,14 +44,14 @@ public class FuncController {
     }
 
     @PostMapping
-    public ResponseEntity upload(HttpServletResponse response,
+    public ResponseEntity<String> upload(HttpServletResponse response,
                        @RequestParam("file") MultipartFile file,
                        @RequestParam("userSetting") Integer userSetting,
                        @RequestParam("function") Integer function,
                        Model m) throws Exception {
-        try{
-            response.setContentType("application/octet-stream");
-            response.setCharacterEncoding("Cp1251");
+
+//            response.setContentType("application/octet-stream");
+//            response.setCharacterEncoding("Cp1251");
             ByteArrayOutputStream baos = fileHandler.handle(file, userSetting, function);
 
             String fileName = "";
@@ -62,15 +63,23 @@ public class FuncController {
                     fileName = mask + "_" + fileHandler.getLastMask() + ".txt";
                 }
             }
-            response.setHeader("Content-Disposition", "filename="+ fileName);
+//            response.setHeader("Content-Disposition", "filename="+ fileName);
+//
+//            baos.writeTo(response.getOutputStream());
+//            baos.flush();
 
-            baos.writeTo(response.getOutputStream());
-            baos.flush();
-        } catch (Exception ex){
-            return ResponseEntity.badRequest().body(ex.getMessage());
-        }
+//        ClassLoader classLoader = getClass().getClassLoader();
+//            String str  = classLoader.getResource(".").getFile();
 
-        return ResponseEntity.ok().build();
+        File f = new File(new ClassPathResource("static/content").getFile().getPath() + "/" + Authorization.id() + fileName);
+
+        try(OutputStream outputStream = new FileOutputStream( f)) {
+                baos.writeTo(outputStream);
+            }
+
+            return ResponseEntity.ok(f.getName());
+
+//        return ResponseEntity.ok().build();
     }
 
     @Autowired

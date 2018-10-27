@@ -87,20 +87,11 @@ public class FileHandler {
                 sumColumnList.add(new SumColEntity(f.getName(), f.getValue()));
             });
 
-//            int fileSumUFieldIndex = 1;
-//            for (FileSumAddField fileSumUField : fileSumAddFieldService.getAllByUserSettingId(userSettingId)){
-//                for (int i = 1; i <= sumColumnList.size(); i++){
-//                    columnNameListFromSettings.add(fileSumUField.getColumnNames() + fileSumUFieldIndex);
-//                    sumAddColumnList.add(new SumAddColEntity(fileSumUField.getHeaderNames(), fileSumUField.getColumnNames() + fileSumUFieldIndex));
-//                }
-//                fileSumUFieldIndex++;
-//            }
-
             fileSumAddFieldService.getAllByUserSettingId(userSettingId).forEach(f -> {
             IntStream.range(1, sumColumnList.size() + 1)
                     .forEach(index -> {
-                        columnNameListFromSettings.add(f.getName() + index);
-                        sumAddColumnList.add(new SumAddColEntity(f.getName(), f.getValue() + index, index));
+                        columnNameListFromSettings.add(f.getValue() + index);
+                        sumAddColumnList.add(new SumAddColEntity(f.getName(), f.getValue() + index, index, f.getIsBold()));
                     });
         });
 

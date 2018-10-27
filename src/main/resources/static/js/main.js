@@ -117,8 +117,59 @@ $(function () {
     //     $('#add').addClass('invisible');
     // }
 
+    //uploads file
+    $("#sentFile").click(function (e) {
+        e.preventDefault();
+        sentFile();
+    });
 
 });
+
+function sentFile() {
+    var form = $('#fileupload')[0];
+    var data = new FormData(form);
+
+    data.append("CustomField", "This is some extra data, testing");
+
+    $.ajax({
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: "",
+        data: data,
+        processData: false, //prevent jQuery from automatically transforming the data into a query string
+        contentType: false,
+        cache: false,
+        timeout: 600000,
+        success: function (data) {
+            var d = "/kvitmoscow/content/" + data;
+
+            $.ajax({
+                url: d,
+                method: 'GET',
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function (data) {
+                    var a = document.createElement('a');
+                    var url = window.URL.createObjectURL(data);
+                    a.href = url;
+                    a.download = 'kvit.pdf';
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                },
+                error:function (xhr) {
+                    var err = JSON.parse(xhr.responseText);
+                    showErrorMessage(err.message, 'Ошибка ' + err.status);
+                }
+            });
+        },
+        error:function (xhr) {
+            var err = JSON.parse(xhr.responseText);
+            showErrorMessage(err.message, 'Ошибка ' + err.status);
+        }
+    });
+
+}
 
 /*
 shows confirmation dialog and removes selected row
@@ -239,6 +290,8 @@ function updateRow(id) {
             showLoadEffect(false);
         }
     });
+
+
 }
 
 /*
@@ -541,3 +594,4 @@ function createExample() {
     var userSetting = $('#userSetting').val();
     window.open(entity + "/example/"+userSetting);
 }
+

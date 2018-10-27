@@ -7,4 +7,5 @@ public class SumAddColEntity {
     public String header;
     public String colName;
     public Integer index;
+    public Boolean isBold;
 }
