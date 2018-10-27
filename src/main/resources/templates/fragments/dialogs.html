@@ -88,6 +88,20 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="control-label col-xs-3">Ориентация листа</label>
+
+                        <div class="col-xs-9">
+                            <select class="btn btn-default dialog-data form-control" name="sheetPosition">
+                                <option th:each="sheetPosition : ${sheetPositions}"
+                                        th:value="${sheetPosition.id}"
+                                        th:text="${sheetPosition.name}"
+                                        th:selected="${userSetting != null ? userSetting.sheetPosition.id == sheetPosition.id : false}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="control-label col-xs-3">Доп информация в ШК</label>
 
                         <div class="col-xs-9">
@@ -437,31 +451,62 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-xs-3">Текущее</label>
+            <label class="control-label col-xs-3">Значение (текущее начисление)</label>
 
             <div class="col-xs-9">
-                <input th:value="${fileSumField != null} ? ${fileSumField.current} : '' "
-                       class="dialog-data form-control" name="current"/>
+                <input th:value="${fileSumField != null} ? ${fileSumField.value} : '' "
+                       class="dialog-data form-control" name="value"/>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<!--FileSumAddField-->
+<div th:fragment="fileSumAddFieldDialog" class="modal-body">
+    <form name="detailsForm" class="form-horizontal">
+        <input th:value="${fileSumAddField != null} ? ${fileSumAddField.id} : '' " class="dialog-data" type="hidden"
+               name="id">
+
+        <div class="form-group no-displayable">
+            <label class="control-label col-xs-3">Пользовательская настройка</label>
+
+            <div class="col-xs-9">
+                <select class="btn btn-default parameterized dialog-data form-control" name="userSetting">
+                    <option th:each="userSetting : ${userSettings}"
+                            th:value="${userSetting.id}"
+                            th:text="${userSetting.name}"
+                            th:selected="${fileSumAddField != null ? fileSumAddField.userSetting.id == userSetting.id : false}">
+                    </option>
+                </select>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-xs-3">Долг</label>
+            <label class="control-label col-xs-3">Наименвоание (заголовок)</label>
 
             <div class="col-xs-9">
-                <input th:value="${fileSumField != null} ? ${fileSumField.debt} : '' "
-                       class="dialog-data form-control" name="debt"/>
+                <input th:value="${fileSumAddField != null} ? ${fileSumAddField.name} : '' "
+                       class="dialog-data form-control" name="name"/>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-xs-3">Итого</label>
+            <label class="control-label col-xs-3">Имя поле в файле</label>
 
             <div class="col-xs-9">
-                <input th:value="${fileSumField != null} ? ${fileSumField.total} : '' "
-                       class="dialog-data form-control" name="total"/>
+                <input th:value="${fileSumAddField != null} ? ${fileSumAddField.value} : '' "
+                       class="dialog-data form-control" name="value"/>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Выделено</label>
+
+            <input type="checkbox" th:checked="${fileSumAddField != null} ? ${fileSumAddField.isBold} : false "
+                   class="dialog-data form-control" name="isBold"/>
+        </div>
+
     </form>
 </div>
 
@@ -495,49 +540,14 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-xs-3">Ед измерения</label>
+            <label class="control-label col-xs-3">Значение (начальные)</label>
 
             <div class="col-xs-9">
-                <input th:value="${fileCounterField != null} ? ${fileCounterField.mesure} : '' "
+                <input th:value="${fileCounterField != null} ? ${fileCounterField.value} : '' "
                        class="dialog-data form-control" name="mesure"/>
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-xs-3">Тариф</label>
-
-            <div class="col-xs-9">
-                <input th:value="${fileCounterField != null} ? ${fileCounterField.tariff} : '' "
-                       class="dialog-data form-control" name="tariff"/>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-xs-3">Текущие</label>
-
-            <div class="col-xs-9">
-                <input th:value="${fileCounterField != null} ? ${fileCounterField.current} : '' "
-                       class="dialog-data form-control" name="current"/>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-xs-3">Предыдущие</label>
-
-            <div class="col-xs-9">
-                <input th:value="${fileCounterField != null} ? ${fileCounterField.previous} : '' "
-                       class="dialog-data form-control" name="previous"/>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-xs-3">Расход</label>
-
-            <div class="col-xs-9">
-                <input th:value="${fileCounterField != null} ? ${fileCounterField.consumption} : '' "
-                       class="dialog-data form-control" name="consumption"/>
-            </div>
-        </div>
     </form>
 </div>
 

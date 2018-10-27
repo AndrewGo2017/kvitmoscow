@@ -25,6 +25,7 @@
             <th>Наименование настроек</th>
             <th>Маска файла</th>
             <th>Количество квитанций на лист</th>
+            <th>Ориентация листа</th>
             <th>Доп информация в ШК</th>
             <th>Наименование организации</th>
             <th>ИНН </th>
@@ -63,6 +64,7 @@
             <td th:text="${userSetting.name}"></td>
             <td th:text="${userSetting.fileMask}"></td>
             <td th:text="${userSetting.billQuantity}"></td>
+            <td th:text="${userSetting.sheetPosition}"></td>
             <td th:text="${userSetting.qrAddInfo}"></td>
             <td th:text="${userSetting.orgName}"></td>
             <td th:text="${userSetting.orgInn}"></td>
@@ -77,7 +79,6 @@
         </tbody>
     </table>
 </div>
-
 
 <!--User-->
 <div th:fragment="usersList">
@@ -115,7 +116,6 @@
         </tbody>
     </table>
 </div>
-
 
 <!--FileMainField-->
 <div th:fragment="fileMainFieldList">
@@ -165,7 +165,6 @@
     </table>
 </div>
 
-
 <!--FileUniqueField-->
 <div th:fragment="fileUniqueFieldList">
     <table class="display main-table" style="width:100%">
@@ -199,8 +198,6 @@
     </table>
 </div>
 
-
-
 <!--FileSumField-->
 <div th:fragment="fileSumFieldList">
     <table class="display main-table" style="width:100%">
@@ -212,9 +209,7 @@
             <th>#</th>
             <th>Id</th>
             <th>Наименование</th>
-            <th>Текущее</th>
-            <th>Долг</th>
-            <th>Итого</th>
+            <th>Знаечение (текущее)</th>
         </tr>
         </thead>
         <tbody>
@@ -230,14 +225,46 @@
             <td th:text="${iter.count}"></td>
             <td th:text="${fileSumField.id}"></td>
             <td th:utext="${fileSumField.name}"></td>
-            <td th:utext="${fileSumField.current}"></td>
-            <td th:utext="${fileSumField.debt}"></td>
-            <td th:utext="${fileSumField.total}"></td>
+            <td th:utext="${fileSumField.value}"></td>
         </tr>
         </tbody>
     </table>
 </div>
 
+<!--FileSumAddField-->
+<div th:fragment="fileSumAddFieldList">
+    <table class="display main-table" style="width:100%">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+
+            <th>#</th>
+            <th>Id</th>
+            <th>Наименвоание (заголовок)</th>
+            <th>Имя поле в файле</th>
+            <th>Выделение</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fileSumField,iter: ${fileSumAddFields}">
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|updateRow('${fileSumField.id}')|">Редактировать
+                    <span class='ui-icon ui-icon-gear' aria-hidden='true'></span></button>
+            </td>
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|removeRow('${fileSumField.id}')|">Удалить
+                    <span class='ui-icon ui-icon-trash' aria-hidden='true'></span></button>
+            </td>
+            <td th:text="${iter.count}"></td>
+            <td th:text="${fileSumField.id}"></td>
+            <td th:utext="${fileSumField.name}"></td>
+            <td th:utext="${fileSumField.value}"></td>
+            <td th:utext="${fileSumField.isBold != null} ? ${fileSumField.isBold ? 'да' : 'нет'} : 'нет'"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 <!--FileCounterField-->
 <div th:fragment="fileCounterFieldList">
@@ -250,11 +277,7 @@
             <th>#</th>
             <th>Id</th>
             <th>Наименование</th>
-            <th>Ед измерения</th>
-            <th>Тариф</th>
-            <th>Текущие</th>
-            <th>Предыдущие</th>
-            <th>Расход</th>
+            <th>Знаечние (начальные показания)</th>
         </tr>
         </thead>
         <tbody>
@@ -270,11 +293,7 @@
             <td th:text="${iter.count}"></td>
             <td th:text="${fileCounterField.id}"></td>
             <td th:utext="${fileCounterField.name}"></td>
-            <td th:utext="${fileCounterField.mesure}"></td>
-            <td th:utext="${fileCounterField.tariff}"></td>
-            <td th:utext="${fileCounterField.current}"></td>
-            <td th:utext="${fileCounterField.previous}"></td>
-            <td th:utext="${fileCounterField.consumption}"></td>
+            <td th:utext="${fileCounterField.value}"></td>
         </tr>
         </tbody>
     </table>

@@ -285,6 +285,14 @@ function setMainTable(isSearching, isPaging) {
     isSearching = typeof isSearching !== 'undefined' ? isSearching : true;
     isPaging = typeof isPaging !== 'undefined' ? isPaging : true;
 
+    var id = 0;
+    var elem = $('.main-table th');
+    elem.each(function(){
+        if( $(this).text()==='Id') {
+            id = elem.index(this);
+        }
+    });
+
     $('.main-table').DataTable({
         searching : isSearching,
         paging : isPaging,
@@ -307,7 +315,7 @@ function setMainTable(isSearching, isPaging) {
                 "last": "Последняя"
             }
         },
-        // "order": [[3, "asc"]],// 1 and 2 are buttons (usually...)
+        "order": [[id, "asc"]],// 1 and 2 are buttons (usually...)
         "scrollX": true,
         "columnDefs": [
             { "width": "100px", "targets": 0 },
@@ -457,7 +465,6 @@ function showDictionaries(id) {
     var mfield = $('#dialog-dictionary-mfield');
     var mfieldHref = mfield.attr('href');
     mfield.attr('href', mfieldHref + '?idParam=' + id);
-    console.log('mfieldHref', mfieldHref);
 
     var ufield = $('#dialog-dictionary-ufield');
     var ufieldHref = ufield.attr('href');
@@ -470,6 +477,10 @@ function showDictionaries(id) {
     var cfield = $('#dialog-dictionary-cfield');
     var cfieldHref = cfield.attr('href');
     cfield.attr('href', cfieldHref + '?idParam=' + id);
+
+    var safield = $('#dialog-dictionary-safield');
+    var safieldHref = safield.attr('href');
+    safield.attr('href', safieldHref + '?idParam=' + id);
 
     var dictionaryDialog = $('#dictionaryDialog');
     dictionaryDialog.removeClass('invisible');

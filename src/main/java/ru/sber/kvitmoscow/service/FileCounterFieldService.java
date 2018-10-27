@@ -5,6 +5,5 @@ import ru.sber.kvitmoscow.to.FileCounterFieldTo;
 
 import java.util.List;
 
-public interface FileCounterFieldService extends BaseToService<FileCounterField, FileCounterFieldTo>  {
-    List<FileCounterField> getAllByUserSettingId(int userSettingId);
+public interface FileCounterFieldService extends BaseToService<FileCounterField, FileCounterFieldTo>, BaseServiceWithUserSetting<FileCounterField>  {
 }

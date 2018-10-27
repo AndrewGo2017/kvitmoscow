@@ -3,7 +3,6 @@ package ru.sber.kvitmoscow.to;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @NoArgsConstructor
 @Data
@@ -16,6 +15,8 @@ public class UserSettingTo extends BaseTo{
     private Integer template;
 
     private Integer fileTemplate;
+
+    private Integer sheetPosition;
 
     private String name;
 
@@ -41,12 +42,13 @@ public class UserSettingTo extends BaseTo{
 
     private String orgAddInfo;
 
-    public UserSettingTo(Integer id, Integer user, Integer fileType, Integer template, Integer fileTemplate, String name, String fileMask, String qrAddInfo, Integer billQuantity, String orgName, String orgInn, String orgKpp, String orgPayAcc, String orgBank, String orgBic, String orgCorAcc, String orgAddInfo) {
+    public UserSettingTo(Integer id, Integer user, Integer fileType, Integer template, Integer fileTemplate, Integer sheetPosition, String name, String fileMask, String qrAddInfo, Integer billQuantity, String orgName, String orgInn, String orgKpp, String orgPayAcc, String orgBank, String orgBic, String orgCorAcc, String orgAddInfo) {
         super(id);
         this.user = user;
         this.fileType = fileType;
         this.template = template;
         this.fileTemplate = fileTemplate;
+        this.sheetPosition = sheetPosition;
         this.name = name;
         this.fileMask = fileMask;
         this.qrAddInfo = qrAddInfo;

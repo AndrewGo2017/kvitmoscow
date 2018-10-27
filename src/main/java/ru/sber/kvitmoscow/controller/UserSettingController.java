@@ -29,6 +29,9 @@ public class UserSettingController {
     @Autowired
     private FileTemplateService fileTemplateService;
 
+    @Autowired
+    private SheetPositionService sheetPositionService;
+
     @GetMapping
     public String index(Model m, @RequestParam(required = false) Integer idParam){
         m.addAttribute("title", "Настройки пользователя");
@@ -59,12 +62,14 @@ public class UserSettingController {
         UserSetting userSetting = userSettingService.get(id);
         List<FileType> fileTypes = fileTypeService.getAll();
         List<Template> templates = templateService.getAll();
+        List<SheetPosition> sheetPositions = sheetPositionService.getAll();
         List<FileTemplate> fileTemplates = fileTemplateService.getAll();
         List<User> users = userService.getAll();
         m.addAttribute("users",users);
         m.addAttribute("fileTypes", fileTypes);
         m.addAttribute("templates", templates);
         m.addAttribute("userSetting", userSetting);
+        m.addAttribute("sheetPositions", sheetPositions);
         m.addAttribute("fileTemplates", fileTemplates);
 
         return "fragments/dialogs :: userSettingDialog";

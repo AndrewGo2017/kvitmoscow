@@ -1,3 +1,5 @@
+drop table if exists file_counter_add_fields;
+drop table if exists file_sum_add_fields;
 drop table if exists file_main_fields;
 drop table if exists file_sum_fields;
 drop table if exists file_unique_fields;
@@ -11,7 +13,14 @@ drop table if exists templates;
 drop table if exists roles;
 drop table if exists file_templates;
 drop table if exists functions;
+drop table if exists sheet_position;
 
+
+create table sheet_position (
+  id   serial primary key
+  ,
+  name text
+);
 
 create table functions (
   id   serial primary key
@@ -60,39 +69,41 @@ create table templates (
 
 -- editable
 create table user_settings (
-  id               serial primary key
+  id                serial primary key
   ,
-  user_id          integer
+  user_id           integer
   ,
-  file_type_id     integer
+  file_type_id      integer
   ,
-  template_id      integer
+  template_id       integer
   ,
-  file_template_id integer
+  file_template_id  integer
   ,
-  file_mask        text
+  sheet_position_id integer
   ,
-  qr_add_info      text
+  file_mask         text
   ,
-  bill_quantity    integer
+  qr_add_info       text
   ,
-  name             text
+  bill_quantity     integer
   ,
-  org_name         text
+  name              text
   ,
-  org_inn          text
+  org_name          text
   ,
-  org_kpp          text
+  org_inn           text
   ,
-  org_pay_acc      text
+  org_kpp           text
   ,
-  org_bank         text
+  org_pay_acc       text
   ,
-  org_bic          text
+  org_bank          text
   ,
-  org_cor_acc      text
+  org_bic           text
   ,
-  org_add_info     text
+  org_cor_acc       text
+  ,
+  org_add_info      text
   ,
   foreign key (user_id) references users (id) on delete cascade
   ,
@@ -101,6 +112,8 @@ create table user_settings (
   foreign key (template_id) references templates (id) on delete cascade
   ,
   foreign key (file_template_id) references file_templates (id) on delete cascade
+  ,
+  foreign key (sheet_position_id) references sheet_position (id) on delete cascade
 );
 
 -- editable
@@ -153,15 +166,7 @@ create table file_counter_fields (
   ,
   name             text
   ,
-  mesure           text
-  ,
-  tariff           text
-  ,
-  current          text
-  ,
-  previous         text
-  ,
-  consumption      text
+  value             text
   ,
   foreign key (user_settings_id) references user_settings (id) on delete cascade
 );
@@ -202,11 +207,33 @@ create table file_sum_fields (
   ,
   name             text
   ,
-  current          text
-  ,
-  debt             text
-  ,
-  total            text
+  value          text
   ,
   foreign key (user_settings_id) references user_settings (id)
+);
+
+create table file_sum_add_fields (
+  id              serial primary key
+  ,
+  user_setting_id integer
+  ,
+  name    text
+  ,
+  value    text
+  ,
+  is_bold         boolean
+  ,
+  foreign key (user_setting_id) references user_settings (id) on delete cascade
+);
+
+create table file_counter_add_fields (
+  id              serial primary key
+  ,
+  user_setting_id integer
+  ,
+  name    text
+  ,
+  value    text
+  ,
+  foreign key (user_setting_id) references user_settings (id) on delete cascade
 );

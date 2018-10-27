@@ -24,11 +24,7 @@ public class FileCounterFieldServiceImpl implements FileCounterFieldService {
                 entity.getId(),
                 userSettingRepository.getOne(entity.getUserSetting()),
                 entity.getName(),
-                entity.getMesure(),
-                entity.getTariff(),
-                entity.getCurrent(),
-                entity.getPrevious(),
-                entity.getConsumption()
+                entity.getValue()
         );
         return fileCounterFieldRepository.save(fileCounterField);
     }

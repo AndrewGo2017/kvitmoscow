@@ -24,9 +24,7 @@ public class FileSumFieldServiceImpl implements FileSumFieldService {
                 entity.getId(),
                 userSettingRepository.getOne(entity.getUserSetting()),
                 entity.getName(),
-                entity.getCurrent(),
-                entity.getDebt(),
-                entity.getTotal()
+                entity.getValue()
         );
         return fileSumFieldRepository.save(fileSumField);
     }

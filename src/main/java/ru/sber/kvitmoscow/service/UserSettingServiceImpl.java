@@ -30,6 +30,9 @@ public class UserSettingServiceImpl implements UserSettingService {
     @Autowired
     private FileTemplateRepository fileTemplateRepository;
 
+    @Autowired
+    private SheetPositionRepository sheetPositionRepository;
+
     @Override
     public UserSetting save(UserSettingTo entity) {
         UserSetting userSetting = new UserSetting(
@@ -38,6 +41,7 @@ public class UserSettingServiceImpl implements UserSettingService {
                 fileTypeRepository.getOne(entity.getFileType()),
                 templateRepository.getOne(entity.getTemplate()),
                 fileTemplateRepository.getOne(entity.getFileTemplate()),
+                sheetPositionRepository.getOne(entity.getSheetPosition()),
                 entity.getName(),
                 entity.getFileMask(),
                 entity.getQrAddInfo(),

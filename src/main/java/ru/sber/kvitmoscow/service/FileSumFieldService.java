@@ -5,6 +5,5 @@ import ru.sber.kvitmoscow.to.FileSumFieldTo;
 
 import java.util.List;
 
-public interface FileSumFieldService extends BaseToService<FileSumField, FileSumFieldTo> {
-    List<FileSumField> getAllByUserSettingId(int userSettingId);
+public interface FileSumFieldService extends BaseToService<FileSumField, FileSumFieldTo>, BaseServiceWithUserSetting<FileSumField> {
 }

@@ -13,18 +13,12 @@ public class FileSumFieldTo extends BaseTo {
 
     private String name;
 
-    private String current;
+    private String value;
 
-    private String debt;
-
-    private String total;
-
-    public FileSumFieldTo(Integer id, Integer userSetting, String name, String current, String debt, String total) {
+    public FileSumFieldTo(Integer id, Integer userSetting, String name, String value) {
         super(id);
         this.userSetting = userSetting;
         this.name = name;
-        this.current = current;
-        this.debt = debt;
-        this.total = total;
+        this.value = value;
     }
 }

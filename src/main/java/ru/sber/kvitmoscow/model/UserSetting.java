@@ -32,6 +32,11 @@ public class UserSetting extends BaseEntity {
     @NonNull
     private FileTemplate fileTemplate;
 
+    @ManyToOne
+    @JoinColumn(name = "sheet_position_id")
+    @NonNull
+    private SheetPosition sheetPosition;
+
     @Column(name = "name")
     @NotBlank(message = "Поле Наименование настроек не может быть пустым!")
     private String name;
@@ -73,12 +78,13 @@ public class UserSetting extends BaseEntity {
     @Column(name = "org_add_info")
     private String orgAddInfo;
 
-    public UserSetting(Integer id, User user, FileType fileType, Template template, FileTemplate fileTemplate, String name, String fileMask, String qrAddInfo, Integer billQuantity, String orgName, String orgInn, String orgKpp, String orgPayAcc, String orgBank, String orgBic, String orgCorAcc, String orgAddInfo) {
+    public UserSetting(Integer id, User user, FileType fileType, Template template, FileTemplate fileTemplate, SheetPosition sheetPosition, @NotBlank(message = "Поле Наименование настроек не может быть пустым!") String name, String fileMask, String qrAddInfo, Integer billQuantity, @NotBlank(message = "Поле Наименование организации не может быть пустым!") String orgName, @NotBlank(message = "Поле ИНН не может быть пустым!") String orgInn, String orgKpp, @NotBlank(message = "Поле Р/с не может быть пустым!") String orgPayAcc, @NotBlank(message = "Поле Банк не может быть пустым!") String orgBank, String orgBic, String orgCorAcc, String orgAddInfo) {
         super(id);
         this.user = user;
         this.fileType = fileType;
         this.template = template;
         this.fileTemplate = fileTemplate;
+        this.sheetPosition = sheetPosition;
         this.name = name;
         this.fileMask = fileMask;
         this.qrAddInfo = qrAddInfo;

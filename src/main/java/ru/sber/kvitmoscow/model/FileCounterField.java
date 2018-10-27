@@ -21,29 +21,13 @@ public class FileCounterField extends BaseEntity{
     @Column(name = "name")
     private String name;
 
-    @Column(name = "mesure")
-    private String mesure;
+    @Column(name = "value")
+    private String value;
 
-    @Column(name = "tariff")
-    private String tariff;
-
-    @Column(name = "current")
-    private String current;
-
-    @Column(name = "previous")
-    private String previous;
-
-    @Column(name = "consumption")
-    private String consumption;
-
-    public FileCounterField(Integer id, UserSetting userSetting, String name, String mesure, String tariff, String current, String previous, String consumption) {
+    public FileCounterField(Integer id, UserSetting userSetting, String name, String value) {
         super(id);
         this.userSetting = userSetting;
         this.name = name;
-        this.mesure = mesure;
-        this.tariff = tariff;
-        this.current = current;
-        this.previous = previous;
-        this.consumption = consumption;
+        this.value = value;
     }
 }

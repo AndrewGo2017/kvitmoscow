@@ -21,21 +21,13 @@ public class FileSumField extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "current")
-    private String current;
+    @Column(name = "value")
+    private String value;
 
-    @Column(name = "debt")
-    private String debt;
-
-    @Column(name = "total")
-    private String total;
-
-    public FileSumField(Integer id, UserSetting userSetting, String name, String current, String debt, String total) {
+    public FileSumField(Integer id, UserSetting userSetting, String name, String value) {
         super(id);
         this.userSetting = userSetting;
         this.name = name;
-        this.current = current;
-        this.debt = debt;
-        this.total = total;
+        this.value = value;
     }
 }

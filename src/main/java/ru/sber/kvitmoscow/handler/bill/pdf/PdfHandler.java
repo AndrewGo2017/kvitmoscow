@@ -21,12 +21,14 @@ public class PdfHandler {
             UserSetting payReqs,
             MainColEntity mainColumns,
             List<SumColEntity> sumColumnList,
+            List<SumAddColEntity> sumAddColList,
             List<UniqueColEntity> uniqueColumnList,
             List<CounterColEntity> counterColumnList,
             List<String> columnNameListFromFile
     ) throws Exception {
 
         Document document = new Document();
+        document.setPageSize(PageSize.A4.rotate());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter.getInstance(document, baos);
         document.open();
@@ -161,36 +163,17 @@ public class PdfHandler {
 
                 //counters
                 PdfPTable tableL3 = null;
-                boolean isMeasureEmpty = true;
-                boolean isTariffEmpty = true;
-                boolean isCurrentEmpty = true;
-                boolean isPreviousEmpty = true;
-                boolean isConsumptionEmpty = true;
                 if (counterColumnList.size() > 0) {
                     for (int i = 0; i < counterColumnList.size(); i++) {
                         int counterColCount = 1;
                         CounterColEntity counterColEntity = counterColumnList.get(i);
 
                         String name = !counterColEntity.name.equals("") ? row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.name)) : "";
-                        String measure = !counterColEntity.measure.equals("") ?  row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.measure)) : "";
-                        String tariff = !counterColEntity.tariff.equals("") ? row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.tariff)) : "";
-                        String current = !counterColEntity.current.equals("") ? row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.current)) : "";
-                        String previous = !counterColEntity.previous.equals("") ? row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.previous)) : "";
-                        String consumption = !counterColEntity.consumption.equals("") ? row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.consumption)) : "";
+                        String measure = !counterColEntity.value.equals("") ?  row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.value)) : "";
 
-                        isMeasureEmpty = measure.isEmpty();
-                        isTariffEmpty = tariff.isEmpty();
-                        isCurrentEmpty = current.isEmpty();
-                        isPreviousEmpty = previous.isEmpty();
-                        isConsumptionEmpty = consumption.isEmpty();
 
                         if (i == 0) {
                             int couterCol = 1;
-                            if (!isMeasureEmpty) counterColCount++;
-                            if (!isTariffEmpty) counterColCount++;
-                            if (!isCurrentEmpty) counterColCount++;
-                            if (!isPreviousEmpty) counterColCount++;
-                            if (!isConsumptionEmpty) counterColCount++;
 
                             tableL3 = new PdfPTable(counterColCount);
 
@@ -201,28 +184,16 @@ public class PdfHandler {
 
                             tableL3.addCell(new Phrase("Счетчик", font7Bd));
 
-                            if (!isMeasureEmpty) tableL3.addCell(new Phrase("Ед изм", font7Bd));
-                            if (!isTariffEmpty) tableL3.addCell(new Phrase("Тариф", font7Bd));
-                            if (!isCurrentEmpty) tableL3.addCell(new Phrase("Тек пок", font7Bd));
-                            if (!isPreviousEmpty) tableL3.addCell(new Phrase("Пред пок", font7Bd));
-                            if (!isConsumptionEmpty) tableL3.addCell(new Phrase("Расход", font7Bd));
                         }
 
                         tableL3.addCell(new Phrase(name, font7));
-                        if (!isMeasureEmpty) tableL3.addCell(new Phrase(measure, font7));
-                        if (!isTariffEmpty) tableL3.addCell(new Phrase(tariff, font7));
-                        if (!isCurrentEmpty) tableL3.addCell(new Phrase(current, font7));
-                        if (!isPreviousEmpty) tableL3.addCell(new Phrase(previous, font7));
-                        if (!isConsumptionEmpty) tableL3.addCell(new Phrase(consumption, font7));
+
                     }
                 }
 
                 //sum reqs
                 PdfPTable tableL4 = null;
-                double totalSum = 0;
-                double totalSumPlusDebt = 0;
-                boolean isDebtColEmpty = true;
-                boolean isTotalColEmpty = true;
+
                 if (sumColumnList.size() > 0) {
                     for (int i = 0; i < sumColumnList.size(); i++) {
                         SumColEntity sumColEntity = sumColumnList.get(i);
@@ -230,22 +201,11 @@ public class PdfHandler {
                         row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.name));
                         String name = row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.name));
                         double current = toDouble(row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.current)));
-                        totalSum += current;
-                        double debt = 0;
-                        isDebtColEmpty = sumColEntity.debt.isEmpty();
-                        isTotalColEmpty = sumColEntity.total.isEmpty();
-                        if (!isDebtColEmpty)
-                            debt = toDouble(row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.debt)));
-                        double total = 0;
-                        if (!isTotalColEmpty) {
-                            total = toDouble(row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.total)));
-                            totalSumPlusDebt += total;
-                        }
 
                         if (i == 0) {
                             int sumColCount = 2;
-                            if (!isDebtColEmpty) sumColCount++;
-                            if (!isTotalColEmpty) sumColCount++;
+                            int maxIndex = sumAddColList.stream().map(e -> e.index).mapToInt(e -> e).filter(e -> e >= 0).max().orElse(0);
+                            sumColCount += maxIndex;
 
                             tableL4 = new PdfPTable(sumColCount);
                             if (sumColCount == 4) {
@@ -257,6 +217,8 @@ public class PdfHandler {
                             } else if (sumColCount == 2) {
                                 tableL4.setWidths(new int[]{4, 2});
                                 tableL4.setWidthPercentage(40);
+                            } else{
+                                tableL4.setWidthPercentage(98);
                             }
 
                             tableL4.setWidthPercentage(100);
@@ -266,26 +228,29 @@ public class PdfHandler {
 
                             tableL4.addCell(new Phrase("Статья", font7Bd));
                             tableL4.addCell(new Phrase("Начислено", font7Bd));
-                            if (!isDebtColEmpty) tableL4.addCell(new Phrase("Долг", font7Bd));
-                            if (!isTotalColEmpty) tableL4.addCell(new Phrase("Всего", font7Bd));
+                            for (SumAddColEntity sumAddCol : sumAddColList){
+                                if (sumAddCol.index == i + 1){
+                                    tableL4.addCell(new Phrase(sumAddCol.header, font7Bd));
+                                }
+                            }
                         }
 
                         tableL4.addCell(new Phrase(name, font7));
                         tableL4.addCell(new Phrase(Double.toString(current), font7));
-                        if (!isDebtColEmpty) tableL4.addCell(new Phrase(Double.toString(debt), font7));
-                        if (!isTotalColEmpty) tableL4.addCell(new Phrase(Double.toString(total), font7));
+                        for (SumAddColEntity sumAddCol : sumAddColList){
+                            if (sumAddCol.index == i + 1){
+                                int colIndex = columnNameListFromFile.indexOf(sumAddCol.colName);
+                                String addSum = "";
+                                if (colIndex != -1){
+                                    addSum = row.getRowData().get(colIndex);
+                                }
+                                tableL4.addCell(new Phrase(addSum, font7Bd));
+                            }
+                        }
                     }
-
-                    tableL4.addCell(new PdfCellBuilder( "Итого к оплате", font7Bd).border(0).horizontalAlignment(1).verticalAlignment(1).build());
-                    tableL4.addCell(new PdfCellBuilder(Double.toString(DoubleRounder.round(totalSum, 2)), font7Bd).border(0).horizontalAlignment(1).verticalAlignment(1).build());
-
-                    if (!isDebtColEmpty) {
-                        tableL4.addCell(new PdfCellBuilder().border(0).borderWidth(0).build());
-                    }
-
-                    if (!isTotalColEmpty) {
-                        tableL4.addCell(new PdfCellBuilder(Double.toString(DoubleRounder.round(totalSumPlusDebt, 2)), font7Bd).border(0).horizontalAlignment(1).verticalAlignment(1).build());
-                    }
+//                    tableL4.addCell(new PdfCellBuilder( "Итого к оплате", font7Bd).border(0).horizontalAlignment(1).verticalAlignment(1).build());
+//                    tableL4.addCell(new PdfCellBuilder(Double.toString(DoubleRounder.round(totalSum, 2)), font7Bd).border(0).horizontalAlignment(1).verticalAlignment(1).build());
+//
                 }
 
                 //QR
@@ -309,7 +274,12 @@ public class PdfHandler {
                 tableL0.addCell(splitter2);
 
                 tableL0.addCell(splitter3);
-                tableL0.addCell(tableL3);
+                if (tableL3 != null){
+                    tableL0.addCell(tableL3);
+                } else {
+                    tableL0.addCell(splitter2);
+                }
+
 
                 tableL0.addCell(splitter3);
                 tableL0.addCell(splitter2);
