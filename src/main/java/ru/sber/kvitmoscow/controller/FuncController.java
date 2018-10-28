@@ -44,14 +44,13 @@ public class FuncController {
     }
 
     @PostMapping
-    public ResponseEntity<String> upload(HttpServletResponse response,
+    public void upload(HttpServletResponse response,
                        @RequestParam("file") MultipartFile file,
                        @RequestParam("userSetting") Integer userSetting,
                        @RequestParam("function") Integer function,
                        Model m) throws Exception {
 
-//            response.setContentType("application/octet-stream");
-//            response.setCharacterEncoding("Cp1251");
+
             ByteArrayOutputStream baos = fileHandler.handle(file, userSetting, function);
 
             String fileName = "";
@@ -63,21 +62,25 @@ public class FuncController {
                     fileName = mask + "_" + fileHandler.getLastMask() + ".txt";
                 }
             }
-//            response.setHeader("Content-Disposition", "filename="+ fileName);
-//
-//            baos.writeTo(response.getOutputStream());
-//            baos.flush();
+            response.setContentType("application/octet-stream");
+            response.setCharacterEncoding("Cp1251");
+            response.setHeader("Content-Disposition", "filename="+ fileName);
+
+            baos.writeTo(response.getOutputStream());
+            baos.flush();
 
 //        ClassLoader classLoader = getClass().getClassLoader();
 //            String str  = classLoader.getResource(".").getFile();
 
-        File f = new File(new ClassPathResource("static/content").getFile().getPath() + "/" + Authorization.id() + fileName);
 
-        try(OutputStream outputStream = new FileOutputStream( f)) {
-                baos.writeTo(outputStream);
-            }
 
-            return ResponseEntity.ok(f.getName());
+//        File f = new File(new ClassPathResource("static/content").getFile().getPath() + "/" + Authorization.id() + fileName);
+//
+//        try(OutputStream outputStream = new FileOutputStream( f)) {
+//                baos.writeTo(outputStream);
+//            }
+//
+//            return ResponseEntity.ok(f.getName());
 
 //        return ResponseEntity.ok().build();
     }

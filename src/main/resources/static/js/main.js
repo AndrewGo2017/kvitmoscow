@@ -126,13 +126,30 @@ $(function () {
 });
 
 function sentFile() {
+    showLoadEffect(true);
+
     var form = $('#fileupload')[0];
     var data = new FormData(form);
 
-    data.append("CustomField", "This is some extra data, testing");
+    var fileName;
+    if ($('#function').val() === 1){
+        $.ajax({
+            async: false,
+            url: "/fileName",
+            success: function (data) {
+                fileName = data;
+            }
+        });
+    } else  {
+        fileName = "kvit.pdf"
+    }
+
 
     $.ajax({
         type: "POST",
+        xhrFields: {
+            responseType: 'blob'
+        },
         enctype: 'multipart/form-data',
         url: "",
         data: data,
@@ -141,34 +158,21 @@ function sentFile() {
         cache: false,
         timeout: 600000,
         success: function (data) {
-            var d = "/kvitmoscow/content/" + data;
-
-            $.ajax({
-                url: d,
-                method: 'GET',
-                xhrFields: {
-                    responseType: 'blob'
-                },
-                success: function (data) {
-                    var a = document.createElement('a');
-                    var url = window.URL.createObjectURL(data);
-                    a.href = url;
-                    a.download = 'kvit.pdf';
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                },
-                error:function (xhr) {
-                    var err = JSON.parse(xhr.responseText);
-                    showErrorMessage(err.message, 'Ошибка ' + err.status);
-                }
-            });
+            var a = document.createElement('a');
+            var url = window.URL.createObjectURL(data);
+            a.href = url;
+            a.download = fileName;
+            a.click();
+            window.URL.revokeObjectURL(url);
         },
         error:function (xhr) {
             var err = JSON.parse(xhr.responseText);
             showErrorMessage(err.message, 'Ошибка ' + err.status);
+        },
+        complete: function () {
+            showLoadEffect(false);
         }
     });
-
 }
 
 /*

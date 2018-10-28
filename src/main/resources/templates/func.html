@@ -23,7 +23,7 @@
         <tr>
             <td>
                 <div class="col-xs-9">
-                    <select class="select" name="function">
+                    <select class="select" name="function" id="function">
                         <option th:each="function : ${functions}"
                                 th:value="${function.id}"
                                 th:text="${function.name}"></option>
