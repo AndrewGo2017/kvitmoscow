@@ -28,7 +28,10 @@ public class PdfHandler {
     ) throws Exception {
 
         Document document = new Document();
-        document.setPageSize(PageSize.A4.rotate());
+        if (payReqs.getSheetPosition().getId() == 2){
+            document.setPageSize(PageSize.A4.rotate());
+        }
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter.getInstance(document, baos);
         document.open();
@@ -36,12 +39,12 @@ public class PdfHandler {
         FontFactory.register("static/font/times.ttf", "mytime");
         FontFactory.register("static/font/timesbd.ttf", "mytimebd");
 
-        Font font3 =  FontFactory.getFont("mytime", "Cp1251", true,  4 ); //new Font(baseFont, 3 + 1);
-        Font font7 = FontFactory.getFont("mytime", "Cp1251", true, 8 );
-        Font font10 =  FontFactory.getFont("mytime", "Cp1251", true, 11 );
+        Font font3 =  FontFactory.getFont("mytime", "Cp1251", true,  4 + payReqs.getFontSize());
+        Font font7 = FontFactory.getFont("mytime", "Cp1251", true, 8 + payReqs.getFontSize() );
+        Font font10 =  FontFactory.getFont("mytime", "Cp1251", true, 11 + payReqs.getFontSize() );
 
-        Font font7Bd = FontFactory.getFont("mytimebd", "Cp1251", true, 8 );
-        Font font10Bd = FontFactory.getFont("mytimebd", "Cp1251", true, 11 );
+        Font font7Bd = FontFactory.getFont("mytimebd", "Cp1251", true, 8 + payReqs.getFontSize());
+        Font font10Bd = FontFactory.getFont("mytimebd", "Cp1251", true, 11 + payReqs.getFontSize() );
 
         int billQuantity = 2;
         if (payReqs.getBillQuantity() != null && payReqs.getBillQuantity() > 0){
@@ -257,14 +260,14 @@ public class PdfHandler {
                 Image imgQR = Image.getInstance(new QrHandler().handle(
                         new QrStructure(payReqs.getOrgName(), payReqs.getOrgPayAcc(), payReqs.getOrgBank(), payReqs.getOrgBic(), payReqs.getOrgCorAcc(), payReqs.getOrgInn(), payReqs.getOrgKpp(), ls, sum, fio, adr, payReqs.getQrAddInfo())
                 ));
-                imgQR.scaleAbsolute(80, 80);
-
+                imgQR.setWidthPercentage(70);
+                imgQR.setAlignment(1);
                 PdfPCell splitter3 = new PdfCellBuilder(" ").border(Rectangle.RIGHT).padding(0).build();
                 Paragraph splitter2 = new Paragraph(new Phrase(" "));
 
                 tableL0.setWidthPercentage(97);
 
-                tableL0.addCell(new PdfCellBuilder(imgQR).border(Rectangle.RIGHT).rowSpan(1).horizontalAlignment(1).verticalAlignment(1).padding(15).build());
+                tableL0.addCell(new PdfCellBuilder(imgQR).border(Rectangle.RIGHT).rowSpan(1).horizontalAlignment(1).verticalAlignment(1).padding(0).build());
                 tableL0.addCell(tableL1);
 
                 tableL0.addCell(splitter3);

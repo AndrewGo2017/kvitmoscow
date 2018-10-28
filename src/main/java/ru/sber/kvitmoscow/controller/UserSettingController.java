@@ -9,6 +9,8 @@ import ru.sber.kvitmoscow.model.*;
 import ru.sber.kvitmoscow.service.*;
 import ru.sber.kvitmoscow.to.UserSettingTo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -65,12 +67,14 @@ public class UserSettingController {
         List<SheetPosition> sheetPositions = sheetPositionService.getAll();
         List<FileTemplate> fileTemplates = fileTemplateService.getAll();
         List<User> users = userService.getAll();
+        List<Integer> fontSizes = new ArrayList<>(Arrays.asList(-4,-3,-2,-1,0,1,2,3,4));
         m.addAttribute("users",users);
         m.addAttribute("fileTypes", fileTypes);
         m.addAttribute("templates", templates);
         m.addAttribute("userSetting", userSetting);
         m.addAttribute("sheetPositions", sheetPositions);
         m.addAttribute("fileTemplates", fileTemplates);
+        m.addAttribute("fontSizes", fontSizes);
 
         return "fragments/dialogs :: userSettingDialog";
     }

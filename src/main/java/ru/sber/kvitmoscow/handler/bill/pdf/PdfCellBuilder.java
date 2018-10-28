@@ -1,9 +1,6 @@
 package ru.sber.kvitmoscow.handler.bill.pdf;
 
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Phrase;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 
 public class PdfCellBuilder {
@@ -28,9 +25,13 @@ public class PdfCellBuilder {
         this.cell.addElement(element);
     }
 
-    public PdfCellBuilder(Image image) {
+    public  PdfCellBuilder(Image image) {
         this.cell = new PdfPCell();
         this.cell.addElement(image);
+//        image.scaleToFit(PageSize.A4.getWidth(), PageSize.A4.getHeight());
+//        float x = (PageSize.A4.getWidth() - image.getScaledWidth()) / 2;
+//        float y = (PageSize.A4.getHeight() - image.getScaledHeight()) / 2;
+//        image.setAbsolutePosition(x, y);
     }
 
     public PdfCellBuilder border(int val){

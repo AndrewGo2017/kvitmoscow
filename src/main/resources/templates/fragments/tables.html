@@ -25,6 +25,7 @@
             <th>Наименование настроек</th>
             <th>Маска файла</th>
             <th>Количество квитанций на лист</th>
+            <th>Размер шрифта</th>
             <th>Ориентация листа</th>
             <th>Доп информация в ШК</th>
             <th>Наименование организации</th>
@@ -44,16 +45,16 @@
                     <span class='ui-icon ui-icon-gear' aria-hidden='true'></span></button>
             </td>
             <td>
-                <button class="ui-button ui-corner-all" th:onclick="|removeRow('${userSetting.id}')|">Удалить
-                    <span class='ui-icon ui-icon-trash' aria-hidden='true'></span></button>
-            </td>
-            <td>
                 <button class="ui-button ui-corner-all" th:onclick="|showDictionaries('${userSetting.id}')|">Справочники
                     <span class='ui-icon ui-icon-newwin' aria-hidden='true'></span></button>
             </td>
             <td>
                 <button class="ui-button ui-corner-all" th:onclick="|createStandardStructure('${userSetting.id}','${userSetting.template.id}')|">Заполнить справочники
                     <span class='ui-icon ui-icon-star' aria-hidden='true'></span></button>
+            </td>
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|removeRow('${userSetting.id}')|">Удалить
+                    <span class='ui-icon ui-icon-trash' aria-hidden='true'></span></button>
             </td>
             <td th:text="${iter.count}"></td>
             <td th:text="${userSetting.id}"></td>
@@ -64,6 +65,7 @@
             <td th:text="${userSetting.name}"></td>
             <td th:text="${userSetting.fileMask}"></td>
             <td th:text="${userSetting.billQuantity}"></td>
+            <td th:text="${userSetting.fontSize}"></td>
             <td th:text="${userSetting.sheetPosition}"></td>
             <td th:text="${userSetting.qrAddInfo}"></td>
             <td th:text="${userSetting.orgName}"></td>

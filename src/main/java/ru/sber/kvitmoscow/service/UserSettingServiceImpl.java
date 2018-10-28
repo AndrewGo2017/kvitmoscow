@@ -46,6 +46,7 @@ public class UserSettingServiceImpl implements UserSettingService {
                 entity.getFileMask(),
                 entity.getQrAddInfo(),
                 entity.getBillQuantity(),
+                entity.getFontSize(),
                 entity.getOrgName(),
                 entity.getOrgInn(),
                 entity.getOrgKpp(),

@@ -9,118 +9,27 @@
 <div th:fragment="userSettingDialog" class="modal-body">
     <form name="detailsForm" class="form-horizontal">
         <input th:value="${userSetting != null} ? ${userSetting.id} : '' " class="dialog-data" type="hidden" name="id">
+        <div class="form-group no-displayable">
+            <label class="control-label col-xs-3">Пользователь</label>
+
+            <div class="col-xs-9">
+                <select class="btn btn-default parameterized dialog-data form-control" name="user">
+                    <option th:each="user : ${users}"
+                            th:value="${user.id}"
+                            th:text="${user.name}"
+                            th:selected="${userSetting != null ? userSetting.user.id == user.id : false}">
+                    </option>
+                </select>
+            </div>
+        </div>
 
         <table style="border-collapse: separate; border-spacing: 10px">
+            <tr>
+                <th>Реквизиты</th>
+                <th>Настройки квитанций</th>
+                <th>Прочее</th>
+            </tr>
             <tr style="text-align: left; vertical-align: top">
-                <td>
-                    <div class="form-group no-displayable">
-                        <label class="control-label col-xs-3">Пользователь</label>
-
-                        <div class="col-xs-9">
-                            <select class="btn btn-default parameterized dialog-data form-control" name="user">
-                                <option th:each="user : ${users}"
-                                        th:value="${user.id}"
-                                        th:text="${user.name}"
-                                        th:selected="${userSetting != null ? userSetting.user.id == user.id : false}">
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3">Тип файла</label>
-
-                        <div class="col-xs-9">
-                            <select class="btn btn-default dialog-data form-control" name="fileType">
-                                <option th:each="fileType : ${fileTypes}"
-                                        th:value="${fileType.id}"
-                                        th:text="${fileType.name}"
-                                        th:selected="${userSetting != null ? userSetting.fileType.id == fileType.id : false}">
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3">Шаблон квитанции</label>
-
-                        <div class="col-xs-9">
-                            <select class="btn btn-default dialog-data form-control" name="template">
-                                <option th:each="template : ${templates}"
-                                        th:value="${template.id}"
-                                        th:text="${template.name}"
-                                        th:selected="${userSetting != null ? userSetting.template.id == template.id : false}">
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3">Шаблон файла</label>
-
-                        <div class="col-xs-9">
-                            <select class="btn btn-default dialog-data form-control" name="fileTemplate">
-                                <option th:each="fileTemplate : ${fileTemplates}"
-                                        th:value="${fileTemplate.id}"
-                                        th:text="${fileTemplate.name}"
-                                        th:selected="${userSetting != null ? userSetting.template.id == fileTemplate.id : false}">
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3">Наименование настроек</label>
-
-                        <div class="col-xs-9">
-                            <input th:value="${userSetting != null} ? ${userSetting.name} : '' "
-                                   class="dialog-data form-control" name="name"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3">Количество квитанций на лист</label>
-
-                        <div class="col-xs-9">
-                            <input type="number" th:value="${userSetting != null} ? ${userSetting.billQuantity} : '' "
-                                   class="dialog-data form-control" name="billQuantity"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3">Ориентация листа</label>
-
-                        <div class="col-xs-9">
-                            <select class="btn btn-default dialog-data form-control" name="sheetPosition">
-                                <option th:each="sheetPosition : ${sheetPositions}"
-                                        th:value="${sheetPosition.id}"
-                                        th:text="${sheetPosition.name}"
-                                        th:selected="${userSetting != null ? userSetting.sheetPosition.id == sheetPosition.id : false}">
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3">Доп информация в ШК</label>
-
-                        <div class="col-xs-9">
-                            <input th:value="${userSetting != null} ? ${userSetting.qrAddInfo} : '' "
-                                   class="dialog-data form-control" name="qrAddInfo"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-xs-3">Маска файла</label>
-
-                        <div class="col-xs-9">
-                            <input th:value="${userSetting != null} ? ${userSetting.fileMask} : '' "
-                                   class="dialog-data form-control" name="fileMask"/>
-                        </div>
-                    </div>
-
-                </td>
-
                 <td>
                     <div class="form-group">
                         <label class="control-label col-xs-3">Наименование организации</label>
@@ -185,9 +94,119 @@
                         </div>
                     </div>
                 </td>
+                <td>
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Шаблон квитанции</label>
+
+                        <div class="col-xs-9">
+                            <select class="btn btn-default dialog-data form-control" name="template">
+                                <option th:each="template : ${templates}"
+                                        th:value="${template.id}"
+                                        th:text="${template.name}"
+                                        th:selected="${userSetting != null ? userSetting.template.id == template.id : false}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Количество квитанций на лист</label>
+
+                        <div class="col-xs-9">
+                            <input type="number" th:value="${userSetting != null} ? ${userSetting.billQuantity} : '' "
+                                   class="dialog-data form-control" name="billQuantity"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Ориентация листа</label>
+
+                        <div class="col-xs-9">
+                            <select class="btn btn-default dialog-data form-control" name="sheetPosition">
+                                <option th:each="sheetPosition : ${sheetPositions}"
+                                        th:value="${sheetPosition.id}"
+                                        th:text="${sheetPosition.name}"
+                                        th:selected="${userSetting != null ? userSetting.sheetPosition.id == sheetPosition.id : false}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Размер шрифта</label>
+
+                        <div class="col-xs-9">
+                            <select class="btn btn-default dialog-data form-control" name="fontSize">
+                                <option th:each="fontSize : ${fontSizes}"
+                                        th:value="${fontSize}"
+                                        th:text="${fontSize}"
+                                        th:selected="${userSetting != null ? userSetting.fontSize == fontSize : '4'}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Доп информация в ШК</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.qrAddInfo} : '' "
+                                   class="dialog-data form-control" name="qrAddInfo"/>
+                        </div>
+                    </div>
+
+                </td>
+
+                <td>
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Наименование настроек</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.name} : '' "
+                                   class="dialog-data form-control" name="name"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Шаблон файла</label>
+
+                        <div class="col-xs-9">
+                            <select class="btn btn-default dialog-data form-control" name="fileTemplate">
+                                <option th:each="fileTemplate : ${fileTemplates}"
+                                        th:value="${fileTemplate.id}"
+                                        th:text="${fileTemplate.name}"
+                                        th:selected="${userSetting != null ? userSetting.template.id == fileTemplate.id : false}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Тип файла</label>
+
+                        <div class="col-xs-9">
+                            <select class="btn btn-default dialog-data form-control" name="fileType">
+                                <option th:each="fileType : ${fileTypes}"
+                                        th:value="${fileType.id}"
+                                        th:text="${fileType.name}"
+                                        th:selected="${userSetting != null ? userSetting.fileType.id == fileType.id : false}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Маска файла</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${userSetting != null} ? ${userSetting.fileMask} : '' "
+                                   class="dialog-data form-control" name="fileMask"/>
+                        </div>
+                    </div>
+                </td>
             </tr>
             <tr style="text-align: left; vertical-align: top">
-                <td colspan="2">
+                <td colspan="3">
                     <div class="form-group">
                         <label class="control-label col-xs-3">Доп информация</label>
 

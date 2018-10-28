@@ -110,6 +110,17 @@ public class FileHandler {
         String fileName = Objects.requireNonNull(file.getOriginalFilename()).toUpperCase();
         String extension = FilenameUtils.getExtension(fileName);
 
+        int fileTypeId = userSettingService.get(userSettingId).getFileType().getId();
+        if (fileTypeId == 1){
+            if (!extension.equals("XLS") && !extension.equals("XLSX")){
+                throw new Exception("Выбран неверный тип файла. Ожидаемый тип Excel (.xls или .xlsx)");
+            }
+        } else if (fileTypeId == 2){
+            if (!extension.equals("TXT") && !extension.equals("CSV")){
+                throw new Exception("Выбран неверный тип файла. Ожидаемый тип TEXT (.txt или .csv)");
+            }
+        }
+
 
         FileData fileData = null;
         if (extension.equals("XLS") || extension.equals("XLSX")){

@@ -87,6 +87,8 @@ create table user_settings (
   ,
   bill_quantity     integer
   ,
+  font_size         integer
+  ,
   name              text
   ,
   org_name          text
@@ -166,7 +168,7 @@ create table file_counter_fields (
   ,
   name             text
   ,
-  value             text
+  value            text
   ,
   foreign key (user_settings_id) references user_settings (id) on delete cascade
 );
@@ -207,7 +209,7 @@ create table file_sum_fields (
   ,
   name             text
   ,
-  value          text
+  value            text
   ,
   foreign key (user_settings_id) references user_settings (id)
 );
@@ -217,9 +219,9 @@ create table file_sum_add_fields (
   ,
   user_setting_id integer
   ,
-  name    text
+  name            text
   ,
-  value    text
+  value           text
   ,
   is_bold         boolean
   ,
@@ -231,9 +233,9 @@ create table file_counter_add_fields (
   ,
   user_setting_id integer
   ,
-  name    text
+  name            text
   ,
-  value    text
+  value           text
   ,
   foreign key (user_setting_id) references user_settings (id) on delete cascade
 );

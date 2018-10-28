@@ -1,5 +1,6 @@
 package ru.sber.kvitmoscow.controller;
 
+import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -32,6 +33,9 @@ public class FuncController {
     @Autowired
     private FunctionService functionService;
 
+    @Autowired
+    public ExampleHandler exampleHandler;
+
     @GetMapping
     public String index(Model m) {
         List<UserSetting> userSettings = userSettingService.getAllByUserId(Authorization.id());
@@ -45,58 +49,60 @@ public class FuncController {
 
     @PostMapping
     public void upload(HttpServletResponse response,
-                       @RequestParam("file") MultipartFile file,
+                       @RequestParam(value = "file", required = false) MultipartFile file,
                        @RequestParam("userSetting") Integer userSetting,
                        @RequestParam("function") Integer function,
                        Model m) throws Exception {
-
-
-            ByteArrayOutputStream baos = fileHandler.handle(file, userSetting, function);
-
-            String fileName = "";
-            if (function == 1){
-                fileName = "kvit.pdf";
-            } else {
-                String mask = userSettingService.get(userSetting).getFileMask();
-                if (!mask.isEmpty()){
-                    fileName = mask + "_" + fileHandler.getLastMask() + ".txt";
-                }
-            }
-            response.setContentType("application/octet-stream");
-            response.setCharacterEncoding("Cp1251");
-            response.setHeader("Content-Disposition", "filename="+ fileName);
-
+        response.setContentType("application/octet-stream");
+        response.setCharacterEncoding("Cp1251");
+        if (function == 3){
+            ByteArrayOutputStream baos = exampleHandler.handle(userSetting);
             baos.writeTo(response.getOutputStream());
             baos.flush();
+        } else {
+            try {
+                if (file == null){
+                    throw new Exception("Не выбран файл!");
+                }
 
-//        ClassLoader classLoader = getClass().getClassLoader();
-//            String str  = classLoader.getResource(".").getFile();
+                ByteArrayOutputStream baos = fileHandler.handle(file, userSetting, function);
 
+                String fileName = "";
+                if (function == 1) {
+                    fileName = "kvit.pdf";
+                } else {
+                    String mask = userSettingService.get(userSetting).getFileMask();
+                    if (!mask.isEmpty()) {
+                        fileName = mask + "_" + fileHandler.getLastMask() + ".txt";
+                    }
+                }
+                response.setHeader("fileName", fileName);
+                baos.writeTo(response.getOutputStream());
+                baos.flush();
+            } catch (Exception e) {
+                response.addHeader("err", "err");
 
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                String message = "{ \"message\": \"" + e.getMessage() + "\" }";
+                baos.write(message.getBytes());
+                baos.writeTo(response.getOutputStream());
+            }
+        }
 
-//        File f = new File(new ClassPathResource("static/content").getFile().getPath() + "/" + Authorization.id() + fileName);
-//
-//        try(OutputStream outputStream = new FileOutputStream( f)) {
-//                baos.writeTo(outputStream);
-//            }
-//
-//            return ResponseEntity.ok(f.getName());
-
-//        return ResponseEntity.ok().build();
     }
 
-    @Autowired
-    public ExampleHandler exampleHandler;
+
 
     @GetMapping("/example/{userSettingId}")
-    public void createExample(HttpServletResponse response, @PathVariable("userSettingId") Integer userSettingId) throws IOException {
+    public ResponseEntity<byte[]> createExample(HttpServletResponse response, @PathVariable("userSettingId") Integer userSettingId) throws IOException {
         response.setContentType("application/octet-stream");
         response.setCharacterEncoding("Cp1251");
         response.setHeader("Content-Disposition", "filename=example.xlsx");
 
         ByteArrayOutputStream baos = exampleHandler.handle(userSettingId);
-        baos.writeTo(response.getOutputStream());
-        baos.flush();
+        return ResponseEntity.ok(baos.toByteArray());
+//        baos.writeTo(response.getOutputStream());
+//        baos.flush();
     }
 }
 

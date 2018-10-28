@@ -131,24 +131,13 @@ function sentFile() {
     var form = $('#fileupload')[0];
     var data = new FormData(form);
 
-    var fileName;
-    if ($('#function').val() === 1){
-        $.ajax({
-            async: false,
-            url: "/fileName",
-            success: function (data) {
-                fileName = data;
-            }
-        });
-    } else  {
-        fileName = "kvit.pdf"
-    }
-
+    var userSettingId = $('#userSetting').val();
+    var functionId = $('#function').val();
 
     $.ajax({
         type: "POST",
         xhrFields: {
-            responseType: 'blob'
+            responseType: 'arraybuffer'
         },
         enctype: 'multipart/form-data',
         url: "",
@@ -157,22 +146,42 @@ function sentFile() {
         contentType: false,
         cache: false,
         timeout: 600000,
-        success: function (data) {
-            var a = document.createElement('a');
-            var url = window.URL.createObjectURL(data);
-            a.href = url;
-            a.download = fileName;
-            a.click();
-            window.URL.revokeObjectURL(url);
-        },
-        error:function (xhr) {
-            var err = JSON.parse(xhr.responseText);
-            showErrorMessage(err.message, 'Ошибка ' + err.status);
+        success: function (data, d1, d2) {
+            if ( d2.getResponseHeader('err') !== null){
+                if ('TextDecoder' in window) {
+                    var dataView = new DataView(data);
+                    var decoder = new TextDecoder('utf-8');
+                    var response = JSON.parse(decoder.decode(dataView));
+                } else {
+                    // Fallback decode as ASCII
+                    var decodedString = String.fromCharCode.apply(null, new Uint8Array(data));
+                    var response = JSON.parse(decodedString);
+                }
+
+                showErrorMessage(response.message)
+
+            } else {
+                var fileName = d2.getResponseHeader('fileName');
+
+                handleBlob(data, fileName);
+            }
         },
         complete: function () {
             showLoadEffect(false);
         }
     });
+}
+
+function handleBlob(data, fileName){
+    var reader = new FileReader();
+    var blob = new Blob([data]);
+
+    var a = document.createElement('a');
+    var url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
 }
 
 /*
@@ -593,9 +602,22 @@ function createStandardStructure(settingId, templateId) {
 
 /*
 create template excel file as an example for base in file
+*try with no jquery...
  */
 function createExample() {
+    showLoadEffect(true);
     var userSetting = $('#userSetting').val();
-    window.open(entity + "/example/"+userSetting);
+    var url = entity + "/example/"+userSetting;
+
+    var xhr=new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.responseType = 'arraybuffer';
+    xhr.addEventListener('load',function(){
+        if (xhr.status === 200){
+            showLoadEffect(false);
+            handleBlob(xhr.response, 'example.xlsx');
+        }
+    });
+    xhr.send();
 }
 
