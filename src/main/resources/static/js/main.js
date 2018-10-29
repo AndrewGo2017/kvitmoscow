@@ -528,6 +528,7 @@ shows dialog with linked dictionaries
  */
 function showDictionaries(id) {
     //creates dictionary dialog
+    var paramStr = '?idParam=' + id;
     var mfield = $('#dialog-dictionary-mfield');
     var mfieldHref = mfield.attr('href');
     mfield.attr('href', mfieldHref + '?idParam=' + id);

@@ -16,6 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PdfHandler {
+    private static String FONT_TIMES_PATH = "static/font/times.ttf";
+    private static String FONT_TIMES_ALIAS = "mytime";
+    private static String FONT_TIMES_BOLD_PATH = "static/font/timesbd.ttf";
+    private static String FONT_TIMES_BOLD_ALIAS = "mytimebd";
+    private static String FONT_ENCODING = "Cp1251";
+    private static int FONT3_SIZE = 4;
+    private static int FONT7_SIZE = 8;
+    private static int FONT10_SIZE = 11;
+
     private String periodFromLastLine = "_";
 
     public ByteArrayOutputStream handle(
@@ -39,15 +48,15 @@ public class PdfHandler {
         PdfWriter.getInstance(document, baos);
         document.open();
 
-        FontFactory.register("static/font/times.ttf", "mytime");
-        FontFactory.register("static/font/timesbd.ttf", "mytimebd");
+        FontFactory.register(FONT_TIMES_PATH, FONT_TIMES_ALIAS);
+        FontFactory.register(FONT_TIMES_BOLD_PATH, FONT_TIMES_BOLD_ALIAS);
 
-        Font font3 =  FontFactory.getFont("mytime", "Cp1251", true,  4 + payReqs.getFontSize());
-        Font font7 = FontFactory.getFont("mytime", "Cp1251", true, 8 + payReqs.getFontSize() );
-        Font font10 =  FontFactory.getFont("mytime", "Cp1251", true, 11 + payReqs.getFontSize() );
+        Font font3 =  FontFactory.getFont(FONT_TIMES_ALIAS, FONT_ENCODING, true,  FONT3_SIZE + payReqs.getFontSize());
+        Font font7 = FontFactory.getFont(FONT_TIMES_ALIAS, FONT_ENCODING, true, FONT7_SIZE + payReqs.getFontSize() );
+        Font font10 =  FontFactory.getFont(FONT_TIMES_ALIAS, FONT_ENCODING, true, FONT10_SIZE + payReqs.getFontSize() );
 
-        Font font7Bd = FontFactory.getFont("mytimebd", "Cp1251", true, 8 + payReqs.getFontSize());
-        Font font10Bd = FontFactory.getFont("mytimebd", "Cp1251", true, 11 + payReqs.getFontSize() );
+        Font font7Bd = FontFactory.getFont(FONT_TIMES_BOLD_ALIAS, FONT_ENCODING, true, FONT7_SIZE + payReqs.getFontSize());
+        Font font10Bd = FontFactory.getFont(FONT_TIMES_BOLD_ALIAS, FONT_ENCODING, true, FONT10_SIZE + payReqs.getFontSize() );
 
         int billQuantity = 2;
         if (payReqs.getBillQuantity() != null && payReqs.getBillQuantity() > 0){
@@ -220,6 +229,8 @@ public class PdfHandler {
                 if (sumColumnList.size() > 0) {
                     for (int i = 0; i < sumColumnList.size(); i++) {
                         SumColEntity sumColEntity = sumColumnList.get(i);
+                        if (sumColEntity.isBold == null )
+                            sumColEntity.isBold = false;
 
                         row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.name));
                         String name = row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.name));
@@ -253,6 +264,8 @@ public class PdfHandler {
                         tableL4.addCell(new Phrase(name, sumColEntity.isBold ? font7Bd : font7));
                         tableL4.addCell(new Phrase(current, sumColEntity.isBold ? font7Bd : font7));
                         for (SumAddColEntity sumAddCol : sumAddColList){
+                            if (sumAddCol.isBold == null)
+                                sumAddCol.isBold = false;
                             if (sumAddCol.sumIndex == i + 1){
                                 int colIndex = columnNameListFromFile.indexOf(sumAddCol.colName);
                                 String addSum = "";
@@ -368,7 +381,9 @@ public class PdfHandler {
 //            pdfPTable.addCell(table);
 //            pdfPTable.completeRow();
         } else {
-            return table;
+            pdfPTable.setWidths(new int[] {1,0});
+            pdfPTable.addCell(table);
+            pdfPTable.completeRow();
         }
 
         return pdfPTable;

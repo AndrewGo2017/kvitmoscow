@@ -65,7 +65,7 @@ public class FileSumAddField extends BaseEntity{
     }
 
     public void setBold(Boolean bold) {
-        isBold = bold;
+        isBold = bold == null ? false : bold;
     }
 
     public Boolean getIsBold() {
@@ -73,6 +73,6 @@ public class FileSumAddField extends BaseEntity{
     }
 
     public void setIsBold(Boolean isBold) {
-        this.isBold = isBold;
+        this.isBold = isBold == null ? false : isBold;
     }
 }
