@@ -160,7 +160,9 @@ public class FileHandler {
             lastMask = pdfHandler.getPeriodFromLastLine();
 
         } else {
-            baos = new ConversionRegisterInHandler().handle(fileRowList, mainColumns, columnNameListFromFile);
+            ConversionRegisterInHandler conversionRegisterInHandler = new ConversionRegisterInHandler();
+            baos = conversionRegisterInHandler.handle(fileRowList, mainColumns, columnNameListFromFile);
+            lastMask = conversionRegisterInHandler.getPeriodFromFirstLine();
         }
 
         return baos;

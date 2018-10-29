@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PdfHandler {
-    private String periodFromLastLine;
+    private String periodFromLastLine = "_";
 
     public ByteArrayOutputStream handle(
             List<FileRow> fileRowList,
@@ -56,7 +56,7 @@ public class PdfHandler {
 
         int rowCount = 0;
 
-        try {
+//        try {
             for (FileRow row : fileRowList) {
                 rowCount++;
 
@@ -103,6 +103,7 @@ public class PdfHandler {
                     tableL1.addCell(new PdfCellBuilder(period, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
 
                 } else {
+                    periodFromLastLine = "_";
                     tableL1.addCell(new Phrase());
                 }
 
@@ -182,20 +183,7 @@ public class PdfHandler {
                             counterColCount += maxIndex;
 
                             tableL3 = new PdfPTable(counterColCount);
-                            if (counterColCount == 4) {
-                                tableL3.setWidths(new int[]{4, 2, 2, 2});
-                                tableL3.setWidthPercentage(60);
-                            } else if (counterColCount == 3) {
-                                tableL3.setWidths(new int[]{4, 2, 2});
-                                tableL3.setWidthPercentage(50);
-                            } else if (counterColCount == 2) {
-                                tableL3.setWidths(new int[]{4, 2});
-                                tableL3.setWidthPercentage(40);
-                            } else{
-                                tableL3.setWidthPercentage(97);
-                            }
-
-                            tableL3 = new PdfPTable(counterColCount);
+                            setTableWidth(tableL3);
 
                             tableL3.getDefaultCell().setHorizontalAlignment(1);
                             tableL3.getDefaultCell().setVerticalAlignment(1);
@@ -244,18 +232,7 @@ public class PdfHandler {
                             sumColCount += maxIndex;
 
                             tableL4 = new PdfPTable(sumColCount);
-                            if (sumColCount == 4) {
-                                tableL4.setWidths(new int[]{4, 2, 2, 2});
-                                tableL4.setWidthPercentage(60);
-                            } else if (sumColCount == 3) {
-                                tableL4.setWidths(new int[]{4, 2, 2});
-                                tableL4.setWidthPercentage(50);
-                            } else if (sumColCount == 2) {
-                                tableL4.setWidths(new int[]{4, 2});
-                                tableL4.setWidthPercentage(40);
-                            } else{
-                                tableL4.setWidthPercentage(98);
-                            }
+                            setTableWidth(tableL4);
 
                             tableL4.getDefaultCell().setHorizontalAlignment(1);
                             tableL4.getDefaultCell().setVerticalAlignment(1);
@@ -310,17 +287,16 @@ public class PdfHandler {
 
                 tableL0.addCell(splitter3);
                 if (tableL3 != null){
-                    tableL0.addCell(tableL3);
+                    tableL0.addCell(getNewTableOfNewSize(tableL3));
                 } else {
                     tableL0.addCell(splitter2);
                 }
-
 
                 tableL0.addCell(splitter3);
                 tableL0.addCell(splitter2);
 
                 tableL0.addCell(splitter3);
-                tableL0.addCell(tableL4);
+                tableL0.addCell(getNewTableOfNewSize(tableL4));
 
                 PdfPTable borderTable = new PdfPTable(1);
                 borderTable.setWidthPercentage(100);
@@ -336,9 +312,9 @@ public class PdfHandler {
                     document.newPage();
 
             }
-        } catch (Exception e) {
-            throw new Exception("ряд  " + rowCount + ";\n" + e.getMessage());
-        }
+//        } catch (Exception e) {
+//            throw new Exception("ряд  " + rowCount + ";\n" + e.getMessage());
+//        }
 
         //close pdf
         document.close();
@@ -353,5 +329,48 @@ public class PdfHandler {
 
     public String getPeriodFromLastLine() {
         return periodFromLastLine;
+    }
+
+    private void setTableWidth(PdfPTable table) throws DocumentException {
+        int colCount = table.getNumberOfColumns();
+        PdfPTable newTable = table;
+        if (colCount == 4) {
+            table.setWidths(new int[]{4, 2, 2, 2});
+            table.setWidthPercentage(60);
+        } else if (colCount == 3) {
+            table.setWidths(new int[]{4, 2, 2});
+            table.setWidthPercentage(50);
+        } else if (colCount == 2) {
+            table.setWidths(new int[]{4, 2});
+            table.setWidthPercentage(40);
+        } else{
+            table.setWidthPercentage(97);
+        }
+    }
+
+    private PdfPTable getNewTableOfNewSize(PdfPTable table) throws DocumentException {
+        int colNum = table.getNumberOfColumns();
+
+        PdfPTable pdfPTable = new PdfPTable(2);
+        pdfPTable.getDefaultCell().setBorder(0);
+        pdfPTable.setWidthPercentage(100);
+
+        if (colNum > 1 &&  colNum < 3){
+            pdfPTable.setWidths(new int[] {6,4});
+            pdfPTable.addCell(table);
+            pdfPTable.completeRow();
+        } else if (colNum == 3){
+            pdfPTable.setWidths(new int[] {8,2});
+            pdfPTable.addCell(table);
+            pdfPTable.completeRow();
+//        } else if (colNum == 4){
+//            pdfPTable.setWidths(new int[] {8,2});
+//            pdfPTable.addCell(table);
+//            pdfPTable.completeRow();
+        } else {
+            return table;
+        }
+
+        return pdfPTable;
     }
 }
