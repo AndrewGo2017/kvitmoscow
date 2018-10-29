@@ -211,6 +211,8 @@ create table file_sum_fields (
   ,
   value            text
   ,
+  is_bold          boolean
+  ,
   foreign key (user_settings_id) references user_settings (id)
 );
 

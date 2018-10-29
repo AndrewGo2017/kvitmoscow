@@ -17,14 +17,14 @@ public class FileSumFieldServiceImpl implements FileSumFieldService {
     @Autowired
     private UserSettingRepository userSettingRepository;
 
-
     @Override
     public FileSumField save(FileSumFieldTo entity) {
         FileSumField fileSumField = new FileSumField(
                 entity.getId(),
                 userSettingRepository.getOne(entity.getUserSetting()),
                 entity.getName(),
-                entity.getValue()
+                entity.getValue(),
+                entity.getIsBold()
         );
         return fileSumFieldRepository.save(fileSumField);
     }

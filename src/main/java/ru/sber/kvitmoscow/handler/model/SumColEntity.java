@@ -6,4 +6,5 @@ import lombok.AllArgsConstructor;
 public class SumColEntity {
     public String name;
     public String current;
+    public Boolean isBold;
 }

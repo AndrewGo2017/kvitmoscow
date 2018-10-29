@@ -10,7 +10,9 @@ import ru.sber.kvitmoscow.handler.bill.qr.QrStructure;
 import ru.sber.kvitmoscow.handler.model.*;
 import ru.sber.kvitmoscow.model.UserSetting;
 
+import javax.persistence.criteria.Predicate;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PdfHandler {
@@ -24,6 +26,7 @@ public class PdfHandler {
             List<SumAddColEntity> sumAddColList,
             List<UniqueColEntity> uniqueColumnList,
             List<CounterColEntity> counterColumnList,
+            List<CounterAddColEntity> counterAddColList,
             List<String> columnNameListFromFile
     ) throws Exception {
 
@@ -168,46 +171,76 @@ public class PdfHandler {
                 PdfPTable tableL3 = null;
                 if (counterColumnList.size() > 0) {
                     for (int i = 0; i < counterColumnList.size(); i++) {
-                        int counterColCount = 1;
                         CounterColEntity counterColEntity = counterColumnList.get(i);
 
                         String name = !counterColEntity.name.equals("") ? row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.name)) : "";
-                        String measure = !counterColEntity.value.equals("") ?  row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.value)) : "";
-
+                        String value = !counterColEntity.value.equals("") ?  row.getRowData().get(columnNameListFromFile.indexOf(counterColEntity.value)) : "";
 
                         if (i == 0) {
-                            int couterCol = 1;
+                            int counterColCount = 2;
+                            int maxIndex = counterAddColList.stream().map(e -> e.counterAddIndex).mapToInt(e -> e).filter(e -> e >= 0).max().orElse(0);
+                            counterColCount += maxIndex;
+
+                            tableL3 = new PdfPTable(counterColCount);
+                            if (counterColCount == 4) {
+                                tableL3.setWidths(new int[]{4, 2, 2, 2});
+                                tableL3.setWidthPercentage(60);
+                            } else if (counterColCount == 3) {
+                                tableL3.setWidths(new int[]{4, 2, 2});
+                                tableL3.setWidthPercentage(50);
+                            } else if (counterColCount == 2) {
+                                tableL3.setWidths(new int[]{4, 2});
+                                tableL3.setWidthPercentage(40);
+                            } else{
+                                tableL3.setWidthPercentage(97);
+                            }
 
                             tableL3 = new PdfPTable(counterColCount);
 
                             tableL3.getDefaultCell().setHorizontalAlignment(1);
                             tableL3.getDefaultCell().setVerticalAlignment(1);
-                            tableL3.setWidthPercentage(100);
                             tableL3.setHorizontalAlignment(0);
 
                             tableL3.addCell(new Phrase("Счетчик", font7Bd));
+                            tableL3.addCell(new Phrase("Пред показания", font7Bd));
 
+                            List<Integer> indexes = new ArrayList<>();
+                            for (CounterAddColEntity counterAddCol : counterAddColList){
+                                if (!indexes.contains(counterAddCol.counterAddIndex)){
+                                    tableL3.addCell(new Phrase(counterAddCol.header, font7Bd));
+                                    indexes.add(counterAddCol.counterAddIndex);
+                                }
+                            }
                         }
-
                         tableL3.addCell(new Phrase(name, font7));
-
+                        tableL3.addCell(new Phrase(value, font7));
+                        for (CounterAddColEntity counterAddCol : counterAddColList){
+                            if (counterAddCol.counterIndex == i + 1){
+                                int colIndex = columnNameListFromFile.indexOf(counterAddCol.colName);
+                                String addCounter = "";
+                                if (colIndex != -1){
+                                    addCounter = row.getRowData().get(colIndex);
+                                }
+                                tableL3.addCell(new Phrase(addCounter, font7));
+                            }
+                        }
                     }
                 }
 
                 //sum reqs
                 PdfPTable tableL4 = null;
-
                 if (sumColumnList.size() > 0) {
                     for (int i = 0; i < sumColumnList.size(); i++) {
                         SumColEntity sumColEntity = sumColumnList.get(i);
 
                         row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.name));
                         String name = row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.name));
-                        double current = toDouble(row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.current)));
+//                        double current = toDouble(row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.current)));
+                        String current = row.getRowData().get(columnNameListFromFile.indexOf(sumColEntity.current));
 
                         if (i == 0) {
                             int sumColCount = 2;
-                            int maxIndex = sumAddColList.stream().map(e -> e.index).mapToInt(e -> e).filter(e -> e >= 0).max().orElse(0);
+                            int maxIndex = sumAddColList.stream().map(e -> e.sumAddIndex).mapToInt(e -> e).filter(e -> e >= 0).max().orElse(0);
                             sumColCount += maxIndex;
 
                             tableL4 = new PdfPTable(sumColCount);
@@ -224,36 +257,35 @@ public class PdfHandler {
                                 tableL4.setWidthPercentage(98);
                             }
 
-                            tableL4.setWidthPercentage(100);
                             tableL4.getDefaultCell().setHorizontalAlignment(1);
                             tableL4.getDefaultCell().setVerticalAlignment(1);
                             tableL4.setHorizontalAlignment(0);
 
                             tableL4.addCell(new Phrase("Статья", font7Bd));
                             tableL4.addCell(new Phrase("Начислено", font7Bd));
+
+                            List<Integer> indexes = new ArrayList<>();
                             for (SumAddColEntity sumAddCol : sumAddColList){
-                                if (sumAddCol.index == i + 1){
+                                if (!indexes.contains(sumAddCol.sumAddIndex)){
                                     tableL4.addCell(new Phrase(sumAddCol.header, font7Bd));
+                                    indexes.add(sumAddCol.sumAddIndex);
                                 }
                             }
                         }
 
-                        tableL4.addCell(new Phrase(name, font7));
-                        tableL4.addCell(new Phrase(Double.toString(current), font7));
+                        tableL4.addCell(new Phrase(name, sumColEntity.isBold ? font7Bd : font7));
+                        tableL4.addCell(new Phrase(current, sumColEntity.isBold ? font7Bd : font7));
                         for (SumAddColEntity sumAddCol : sumAddColList){
-                            if (sumAddCol.index == i + 1){
+                            if (sumAddCol.sumIndex == i + 1){
                                 int colIndex = columnNameListFromFile.indexOf(sumAddCol.colName);
                                 String addSum = "";
                                 if (colIndex != -1){
                                     addSum = row.getRowData().get(colIndex);
                                 }
-                                tableL4.addCell(new Phrase(addSum, font7Bd));
+                                tableL4.addCell(new Phrase(addSum, sumAddCol.isBold ? font7Bd : font7));
                             }
                         }
                     }
-//                    tableL4.addCell(new PdfCellBuilder( "Итого к оплате", font7Bd).border(0).horizontalAlignment(1).verticalAlignment(1).build());
-//                    tableL4.addCell(new PdfCellBuilder(Double.toString(DoubleRounder.round(totalSum, 2)), font7Bd).border(0).horizontalAlignment(1).verticalAlignment(1).build());
-//
                 }
 
                 //QR

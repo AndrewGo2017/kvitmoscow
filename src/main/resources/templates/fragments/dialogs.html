@@ -454,7 +454,7 @@
                     <option th:each="userSetting : ${userSettings}"
                             th:value="${userSetting.id}"
                             th:text="${userSetting.name}"
-                            th:selected="${fileUniqueField != null ? fileUniqueField.userSetting.id == userSetting.id : false}">
+                            th:selected="${fileSumField != null ? fileSumField.userSetting.id == userSetting.id : false}">
                     </option>
                 </select>
             </div>
@@ -476,6 +476,13 @@
                 <input th:value="${fileSumField != null} ? ${fileSumField.value} : '' "
                        class="dialog-data form-control" name="value"/>
             </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Выделено</label>
+
+            <input type="checkbox" th:checked="${fileSumField != null} ? ${fileSumField.isBold} : false "
+                   class="dialog-data form-control" name="isBold"/>
         </div>
 
     </form>
@@ -564,6 +571,47 @@
             <div class="col-xs-9">
                 <input th:value="${fileCounterField != null} ? ${fileCounterField.value} : '' "
                        class="dialog-data form-control" name="mesure"/>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<!--FileCounterAddField-->
+<div th:fragment="fileCounterAddFieldDialog" class="modal-body">
+    <form name="detailsForm" class="form-horizontal">
+        <input th:value="${fileCounterAddField != null} ? ${fileCounterAddField.id} : '' " class="dialog-data" type="hidden"
+               name="id">
+
+        <div class="form-group no-displayable">
+            <label class="control-label col-xs-3">Пользовательская настройка</label>
+
+            <div class="col-xs-9">
+                <select class="btn btn-default parameterized dialog-data form-control" name="userSetting">
+                    <option th:each="userSetting : ${userSettings}"
+                            th:value="${userSetting.id}"
+                            th:text="${userSetting.name}"
+                            th:selected="${fileCounterAddField != null ? fileCounterAddField.userSetting.id == userSetting.id : false}">
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Наименвоание (заголовок)</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileCounterAddField != null} ? ${fileCounterAddField.name} : '' "
+                       class="dialog-data form-control" name="name"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-3">Имя поле в файле</label>
+
+            <div class="col-xs-9">
+                <input th:value="${fileCounterAddField != null} ? ${fileCounterAddField.value} : '' "
+                       class="dialog-data form-control" name="value"/>
             </div>
         </div>
 

@@ -212,6 +212,7 @@
             <th>Id</th>
             <th>Наименование</th>
             <th>Знаечение (текущее)</th>
+            <th>Выделение</th>
         </tr>
         </thead>
         <tbody>
@@ -228,6 +229,8 @@
             <td th:text="${fileSumField.id}"></td>
             <td th:utext="${fileSumField.name}"></td>
             <td th:utext="${fileSumField.value}"></td>
+            <td th:utext="${fileSumField.isBold != null} ? ${fileSumField.isBold ? 'да' : 'нет'} : 'нет'"></td>
+
         </tr>
         </tbody>
     </table>
@@ -296,6 +299,40 @@
             <td th:text="${fileCounterField.id}"></td>
             <td th:utext="${fileCounterField.name}"></td>
             <td th:utext="${fileCounterField.value}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!--FileCounterAddField-->
+<div th:fragment="fileCounterAddFieldList">
+    <table class="display main-table" style="width:100%">
+        <thead>
+        <tr>
+            <th></th>
+            <th></th>
+
+            <th>#</th>
+            <th>Id</th>
+            <th>Наименвоание (заголовок)</th>
+            <th>Имя поле в файле</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fileCounterAddField,iter: ${fileCounterAddFields}">
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|updateRow('${fileCounterAddField.id}')|">Редактировать
+                    <span class='ui-icon ui-icon-gear' aria-hidden='true'></span></button>
+            </td>
+            <td>
+                <button class="ui-button ui-corner-all" th:onclick="|removeRow('${fileCounterAddField.id}')|">Удалить
+                    <span class='ui-icon ui-icon-trash' aria-hidden='true'></span></button>
+            </td>
+            <td th:text="${iter.count}"></td>
+            <td th:text="${fileCounterAddField.id}"></td>
+            <td th:utext="${fileCounterAddField.name}"></td>
+            <td th:utext="${fileCounterAddField.value}"></td>
         </tr>
         </tbody>
     </table>
