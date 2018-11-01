@@ -7,6 +7,7 @@ import ru.sber.kvitmoscow.repository.FileCounterAddFieldRepository;
 import ru.sber.kvitmoscow.repository.UserSettingRepository;
 import ru.sber.kvitmoscow.to.FileCounterAddFieldTo;
 
+import javax.security.auth.message.AuthException;
 import java.util.List;
 
 @Service
@@ -20,6 +21,7 @@ public class FileCounterAddFieldServiceImpl implements FileCounterAddFieldServic
 
     @Override
     public FileCounterAddField save(FileCounterAddFieldTo entity) {
+
         FileCounterAddField fileCounterU = new FileCounterAddField(
                 entity.getId(),
                 userSettingRepository.getOne(entity.getUserSetting()),
