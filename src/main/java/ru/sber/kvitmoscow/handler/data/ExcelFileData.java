@@ -40,6 +40,9 @@ public class ExcelFileData implements FileData {
         List<FileRow> fileRowList = new ArrayList<>();
         int rowCounter = 0;
         for (Row row : sheet){
+            String firstColValue = formatter.formatCellValue(row.getCell(0)).trim();
+            if (firstColValue.isEmpty()) break;
+
             if (rowCounter == 0) {
                 rowCounter++;
                 continue;
@@ -49,7 +52,7 @@ public class ExcelFileData implements FileData {
             fileRow.setRowIndex(rowCounter);
             List<String> cellDataList = new ArrayList<>();
             for (Cell cell : row){
-                cellDataList.add(formatter.formatCellValue(cell));
+                cellDataList.add(formatter.formatCellValue(cell).isEmpty() ? "-" : formatter.formatCellValue(cell));
             }
             fileRow.setRowData(cellDataList);
             fileRowList.add(fileRow);

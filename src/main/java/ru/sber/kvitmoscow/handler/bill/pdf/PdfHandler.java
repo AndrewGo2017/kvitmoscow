@@ -345,6 +345,8 @@ public class PdfHandler {
     }
 
     private void setTableWidth(PdfPTable table) throws DocumentException {
+        if (table == null) return;
+
         int colCount = table.getNumberOfColumns();
         PdfPTable newTable = table;
         if (colCount == 4) {
