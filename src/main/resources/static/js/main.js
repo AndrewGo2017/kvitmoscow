@@ -182,17 +182,23 @@ function sentFile() {
 }
 
 function handleBlob(data, fileName){
-    var blob = new Blob([data]);
+    var blob = new Blob([data], {type: "application/octet-stream"});
 
     if(window.navigator.msSaveOrOpenBlob) {
         window.navigator.msSaveOrOpenBlob(blob, fileName);
     } else {
+
         var a = document.createElement('a');
         var url = window.URL.createObjectURL(blob);
         a.href = url;
         a.download = fileName;
+        document.body.appendChild(a);
         a.click();
-        window.URL.revokeObjectURL(url);
+
+        setTimeout(function(){
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 100);
     }
 }
 

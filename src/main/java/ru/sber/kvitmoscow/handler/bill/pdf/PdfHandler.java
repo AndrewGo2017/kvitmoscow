@@ -65,7 +65,7 @@ public class PdfHandler {
 
         int rowCount = 0;
 
-        try {
+//        try {
             for (FileRow row  : fileRowList) {
                 rowCount++;
 
@@ -159,8 +159,7 @@ public class PdfHandler {
 
                 //unique
                 for (int i = 0; i < uniqueColumnList.size(); i++) {
-                    row.getRowData().get(columnNameListFromFile.indexOf(uniqueColumnList.get(i).name));
-                    String name = row.getRowData().get(columnNameListFromFile.indexOf(uniqueColumnList.get(i).name));
+                    String name = uniqueColumnList.get(i).name;
                     String value = row.getRowData().get(columnNameListFromFile.indexOf(uniqueColumnList.get(i).value));
 
                     tableL2.addCell(new Phrase(name, font10));
@@ -330,9 +329,9 @@ public class PdfHandler {
                     document.newPage();
 
             }
-        } catch (Exception e) {
-            throw new Exception("ряд  " + rowCount + " ; " + e.getMessage());
-        }
+//        } catch (Exception e) {
+//            throw new Exception("ряд  " + rowCount + " ; " + e.getMessage());
+//        }
 
         //close pdf
         document.close();

@@ -58,7 +58,7 @@ public class FuncController {
             baos = exampleHandler.handle(userSetting);
             baos.writeTo(response.getOutputStream());
         } else {
-            try {
+//            try {
                 if (file == null){
                     throw new Exception("Не выбран файл!");
                 }
@@ -77,14 +77,14 @@ public class FuncController {
                 response.setHeader("fileName", fileName);
                 baos.writeTo(response.getOutputStream());
                 baos.flush();
-            } catch (Exception e) {
-                response.addHeader("err", "err");
-
-                baos = new ByteArrayOutputStream();
-                    String message = "{ \"message\": \"" + e.getMessage() + "\" }";
-                baos.write(message.getBytes());
-                baos.writeTo(response.getOutputStream());
-            }
+//            } catch (Exception e) {
+//                response.addHeader("err", "err");
+//
+//                baos = new ByteArrayOutputStream();
+//                    String message = "{ \"message\": \"" + e.getMessage() + "\" }";
+//                baos.write(message.getBytes());
+//                baos.writeTo(response.getOutputStream());
+//            }
         }
         baos.flush();
     }

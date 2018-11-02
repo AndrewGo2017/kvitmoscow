@@ -35,7 +35,7 @@ public class ExcelFileData implements FileData {
     public List<FileRow> handle() throws Exception {
         DataFormatter formatter = new DataFormatter();
 
-        checkStructure(sheet, columnNameListFromSettingsWithNoEmpty);
+        checkStructure(columnNameListFromSettingsWithNoEmpty);
 
         List<FileRow> fileRowList = new ArrayList<>();
         int rowCounter = 0;
@@ -61,7 +61,7 @@ public class ExcelFileData implements FileData {
         return fileRowList;
     }
 
-    private void checkStructure(Sheet sheet, List<String> columnNameListFromSettingsWithNoEmpty) throws Exception {
+    private void checkStructure(List<String> columnNameListFromSettingsWithNoEmpty) throws Exception {
         List<String> noColumnList = new ArrayList<>();
         columnNameListFromSettingsWithNoEmpty.forEach(s -> {
             if (!getColumnNameListFromFile().contains(s)) {
