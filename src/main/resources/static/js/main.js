@@ -131,8 +131,8 @@ function sentFile() {
     var form = $('#fileupload')[0];
     var data = new FormData(form);
 
-    var userSettingId = $('#userSetting').val();
-    var functionId = $('#function').val();
+    // var userSettingId = $('#userSetting').val();
+    // var functionId = $('#function').val();
 
     $.ajax({
         type: "POST",
