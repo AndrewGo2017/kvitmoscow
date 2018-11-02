@@ -152,14 +152,23 @@ function sentFile() {
                     var dataView = new DataView(data);
                     var decoder = new TextDecoder('utf-8');
                     var response = JSON.parse(decoder.decode(dataView));
+                    console.log('1');
                 } else {
                     // Fallback decode as ASCII
-                    var decodedString = String.fromCharCode.apply(null, new Uint8Array(data));
+                    console.log('2');
+                    var string = btoa(unescape(encodeURIComponent(string))),
+                        charList = string.split(''),
+                        uintArray = [];
+                    for (var i = 0; i < charList.length; i++) {
+                        uintArray.push(charList[i].charCodeAt(0));
+                    }
+
+                    var encodedString = String.fromCharCode.apply(null, new Uint8Array(data));
+                    var decodedString = decodeURIComponent(escape(encodedString));
                     var response = JSON.parse(decodedString);
                 }
 
                 showErrorMessage(response.message)
-
             } else {
                 var fileName = d2.getResponseHeader('fileName');
 
@@ -173,15 +182,18 @@ function sentFile() {
 }
 
 function handleBlob(data, fileName){
-    var reader = new FileReader();
     var blob = new Blob([data]);
 
-    var a = document.createElement('a');
-    var url = window.URL.createObjectURL(blob);
-    a.href = url;
-    a.download = fileName;
-    a.click();
-    window.URL.revokeObjectURL(url);
+    if(window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, fileName);
+    } else {
+        var a = document.createElement('a');
+        var url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
 }
 
 /*

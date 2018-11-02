@@ -65,8 +65,8 @@ public class PdfHandler {
 
         int rowCount = 0;
 
-//        try {
-            for (FileRow row : fileRowList) {
+        try {
+            for (FileRow row  : fileRowList) {
                 rowCount++;
 
                 PdfPTable tableL0 = new PdfPTable(2);
@@ -309,7 +309,12 @@ public class PdfHandler {
                 tableL0.addCell(splitter2);
 
                 tableL0.addCell(splitter3);
-                tableL0.addCell(getNewTableOfNewSize(tableL4));
+                if (tableL4 != null) {
+                    tableL0.addCell(getNewTableOfNewSize(tableL4));
+                } else{
+                    tableL0.addCell(splitter2);
+                }
+
 
                 PdfPTable borderTable = new PdfPTable(1);
                 borderTable.setWidthPercentage(100);
@@ -325,9 +330,9 @@ public class PdfHandler {
                     document.newPage();
 
             }
-//        } catch (Exception e) {
-//            throw new Exception("ряд  " + rowCount + ";\n" + e.getMessage());
-//        }
+        } catch (Exception e) {
+            throw new Exception("ряд  " + rowCount + " ; " + e.getMessage());
+        }
 
         //close pdf
         document.close();

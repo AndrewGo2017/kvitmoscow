@@ -1,6 +1,7 @@
 package ru.sber.kvitmoscow.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,17 +53,17 @@ public class FuncController {
                        Model m) throws Exception {
         response.setContentType("application/octet-stream");
         response.setCharacterEncoding("Cp1251");
+        ByteArrayOutputStream baos = null;
         if (function == 3){
-            ByteArrayOutputStream baos = exampleHandler.handle(userSetting);
+            baos = exampleHandler.handle(userSetting);
             baos.writeTo(response.getOutputStream());
-            baos.flush();
         } else {
             try {
                 if (file == null){
                     throw new Exception("Не выбран файл!");
                 }
 
-                ByteArrayOutputStream baos = fileHandler.handle(file, userSetting, function);
+                baos = fileHandler.handle(file, userSetting, function);
 
                 String fileName = "";
                 if (function == 1) {
@@ -79,27 +80,34 @@ public class FuncController {
             } catch (Exception e) {
                 response.addHeader("err", "err");
 
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                String message = "{ \"message\": \"" + e.getMessage() + "\" }";
+                baos = new ByteArrayOutputStream();
+                    String message = "{ \"message\": \"" + e.getMessage() + "\" }";
                 baos.write(message.getBytes());
                 baos.writeTo(response.getOutputStream());
             }
         }
-
+        baos.flush();
     }
 
 
 
     @GetMapping("/example/{userSettingId}")
-    public ResponseEntity<byte[]> createExample(HttpServletResponse response, @PathVariable("userSettingId") Integer userSettingId) throws IOException {
+    public ResponseEntity createExample(HttpServletResponse response, @PathVariable("userSettingId") Integer userSettingId) throws IOException {
         response.setContentType("application/octet-stream");
         response.setCharacterEncoding("Cp1251");
         response.setHeader("Content-Disposition", "filename=example.xlsx");
 
         ByteArrayOutputStream baos = exampleHandler.handle(userSettingId);
-        return ResponseEntity.ok(baos.toByteArray());
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .header("Content-Disposition", "filename=example.xlsx")
+                .body(baos.toByteArray());
+
+
 //        baos.writeTo(response.getOutputStream());
 //        baos.flush();
     }
+
+
 }
 
