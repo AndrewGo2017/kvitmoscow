@@ -65,7 +65,7 @@ public class PdfHandler {
 
         int rowCount = 0;
 
-//        try {
+        try {
             for (FileRow row  : fileRowList) {
                 rowCount++;
 
@@ -329,9 +329,9 @@ public class PdfHandler {
                     document.newPage();
 
             }
-//        } catch (Exception e) {
-//            throw new Exception("ряд  " + rowCount + " ; " + e.getMessage());
-//        }
+        } catch (Exception e) {
+            throw new Exception("ряд  " + rowCount + " ; " + e.toString());
+        }
 
         //close pdf
         document.close();

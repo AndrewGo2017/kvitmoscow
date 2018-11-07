@@ -546,26 +546,32 @@ shows dialog with linked dictionaries
  */
 function showDictionaries(id) {
     //creates dictionary dialog
-    var paramStr = '?idParam=' + id;
-    var mfield = $('#dialog-dictionary-mfield');
-    var mfieldHref = mfield.attr('href');
-    mfield.attr('href', mfieldHref + '?idParam=' + id);
+    // var paramStr = '?idParam=' + id;
+    // var mfield = $('#dialog-dictionary-mfield');
+    // var mfieldHref = mfield.attr('href');
+    // mfield.attr('href', mfieldHref + '?idParam=' + id);
+    //
+    // var ufield = $('#dialog-dictionary-ufield');
+    // var ufieldHref = ufield.attr('href');
+    // ufield.attr('href', ufieldHref + '?idParam=' + id);
+    //
+    // var sfield = $('#dialog-dictionary-sfield');
+    // var sfieldHref = sfield.attr('href');
+    // sfield.attr('href', sfieldHref + '?idParam=' + id);
+    //
+    // var cfield = $('#dialog-dictionary-cfield');
+    // var cfieldHref = cfield.attr('href');
+    // cfield.attr('href', cfieldHref + '?idParam=' + id);
+    //
+    // var safield = $('#dialog-dictionary-safield');
+    // var safieldHref = safield.attr('href');
+    // safield.attr('href', safieldHref + '?idParam=' + id);
 
-    var ufield = $('#dialog-dictionary-ufield');
-    var ufieldHref = ufield.attr('href');
-    ufield.attr('href', ufieldHref + '?idParam=' + id);
-
-    var sfield = $('#dialog-dictionary-sfield');
-    var sfieldHref = sfield.attr('href');
-    sfield.attr('href', sfieldHref + '?idParam=' + id);
-
-    var cfield = $('#dialog-dictionary-cfield');
-    var cfieldHref = cfield.attr('href');
-    cfield.attr('href', cfieldHref + '?idParam=' + id);
-
-    var safield = $('#dialog-dictionary-safield');
-    var safieldHref = safield.attr('href');
-    safield.attr('href', safieldHref + '?idParam=' + id);
+    addHrefAttr($('#dialog-dictionary-mfield'), id);
+    addHrefAttr($('#dialog-dictionary-ufield'), id);
+    addHrefAttr($('#dialog-dictionary-sfield'), id);
+    addHrefAttr($('#dialog-dictionary-cfield'), id);
+    addHrefAttr($('#dialog-dictionary-safield'), id);
 
     var dictionaryDialog = $('#dictionaryDialog');
     dictionaryDialog.removeClass('invisible');
@@ -577,6 +583,16 @@ function showDictionaries(id) {
         width: '250'
     });
 }
+
+function addHrefAttr(obj, id) {
+    var paramStr = '?idParam=' + id;
+    var fieldHref = obj.attr('href');
+    fieldHref = fieldHref.replace(paramStr, '');
+    var hrefAttr = fieldHref + paramStr;
+    obj.attr('href', hrefAttr);
+}
+
+
 
 /*
 create standard file structures by filling dictionaries
