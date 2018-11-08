@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import ru.sber.kvitmoscow.service.UserService;
 
 @Configuration
@@ -26,7 +27,8 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter   {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/pic/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/user/**").hasRole("ADMIN")
+                .anyRequest().hasRole("USER")
                 .and()
                 .formLogin()
                 .usernameParameter("name")
@@ -46,5 +48,10 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter   {
         authProvider.setUserDetailsService(userService);
         authProvider.setPasswordEncoder(encoder());
         return authProvider;
+    }
+
+    @Bean
+    public SpringSecurityDialect springSecurityDialect(){
+        return new SpringSecurityDialect();
     }
 }

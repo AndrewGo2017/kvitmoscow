@@ -22,18 +22,20 @@
     <nav th:style="'background:url(' + @{/pic/bar.jpg} + ');'" class="nav navbar navbar-expand-md navbar-dark bg-dark">
         <img th:src="@{/pic/logo.png}" class="navbar-brand logo" width="70" height="70" href="#"/>
 
-        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/setting}">Главная</a>
-                </li>
-                <!--<li class="nav-item">-->
+        <div sec:authorize="hasRole('ROLE_USER')">
+            <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/setting}">Главная</a>
+                    </li>
+                    <!--<li class="nav-item">-->
                     <!--<a class="nav-link" href="#" id="dictionaries">Структура</a>-->
-                <!--</li>-->
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/func}">Функции</a>
-                </li>
-            </ul>
+                    <!--</li>-->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/func}">Функции</a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
@@ -42,6 +44,7 @@
                 </li>
             </ul>
         </div>
+
     </nav>
 </div>
 
@@ -92,7 +95,6 @@
 <div th:fragment="dialog-info" id="infoDialog">
     <div></div>
 </div>
-
 
 
 </body>
