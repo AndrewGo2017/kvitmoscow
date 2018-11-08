@@ -248,8 +248,7 @@ function createRow() {
 
     var dialog_buttons = {
         Добавить: function () {
-            createOrUpdate(dialog_data);
-            dialog.dialog('close');
+            createOrUpdate(dialog_data, dialog);
         },
         Отмена: function () {
             dialog.dialog('close');
@@ -280,8 +279,7 @@ function updateRow(id) {
             if (entity.indexOf('constant') >= 0) {
             dialog_buttons = {
                 Изменить: function () {
-                    createOrUpdate(dialog_data);
-                    dialog.dialog('close');
+                    createOrUpdate(dialog_data, dialog);
                 },
                 Отмена: function () {
                     dialog.dialog('close');
@@ -290,13 +288,11 @@ function updateRow(id) {
             } else {
                 dialog_buttons = {
                     Изменить: function () {
-                        createOrUpdate(dialog_data);
-                        dialog.dialog('close');
+                        createOrUpdate(dialog_data, dialog);
                     },
                     Добавить: function () {
                         dialog_data.find('input[name=id]').val('');
-                        createOrUpdate(dialog_data);
-                        dialog.dialog('close');
+                        createOrUpdate(dialog_data, dialog);
                     },
                     Отмена: function () {
                         dialog.dialog('close');
@@ -328,7 +324,7 @@ function updateRow(id) {
 /*
 creates or updates table row with form data
  */
-function createOrUpdate(data) {
+function createOrUpdate(data, dialog) {
     showLoadEffect(true);
     //disabled objects ain't submitted
     $('.parameterized').attr('disabled', false);
@@ -336,6 +332,7 @@ function createOrUpdate(data) {
         .done(function () {
             showLoadEffect(false);
             fillMainTable();
+            dialog.dialog('close');
         })
         .fail(function (xhr) {
             var err = JSON.parse(xhr.responseText);
@@ -591,8 +588,6 @@ function addHrefAttr(obj, id) {
     var hrefAttr = fieldHref + paramStr;
     obj.attr('href', hrefAttr);
 }
-
-
 
 /*
 create standard file structures by filling dictionaries
