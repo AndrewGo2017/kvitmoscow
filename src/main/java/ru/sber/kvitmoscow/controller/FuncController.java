@@ -46,7 +46,7 @@ public class FuncController {
     }
 
     @PostMapping
-    public void upload(HttpServletResponse response,
+    public ResponseEntity upload(HttpServletResponse response,
                        @RequestParam(value = "file", required = false) MultipartFile file,
                        @RequestParam("userSetting") Integer userSetting,
                        @RequestParam("function") Integer function,
@@ -56,7 +56,12 @@ public class FuncController {
         ByteArrayOutputStream baos = null;
         if (function == 3){
             baos = exampleHandler.handle(userSetting);
-            baos.writeTo(response.getOutputStream());
+//            baos.writeTo(response.getOutputStream());
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType("application/octet-stream"))
+//                    .header("Content-Disposition", "filename=" + fileName)
+                    .body(baos.toByteArray());
         } else {
             try {
                 if (file == null){
@@ -76,18 +81,32 @@ public class FuncController {
                     }
                 }
                 response.setHeader("fileName", fileName);
-                baos.writeTo(response.getOutputStream());
+//                baos.writeTo(response.getOutputStream());
 //                baos.flush();
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType("application/octet-stream"))
+                        .header("Content-Disposition", "filename=" + fileName)
+                        .body(baos.toByteArray());
             } catch (Exception e) {
                 response.addHeader("err", "err");
 
                 baos = new ByteArrayOutputStream();
                     String message = "{ \"message\": \"" + e.getMessage() + "\" }";
                 baos.write(message.getBytes());
-                baos.writeTo(response.getOutputStream());
+//                baos.writeTo(response.getOutputStream());
+
+                return ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType("application/octet-stream"))
+                        .header("err", "err")
+                        .body(baos.toByteArray());
             }
         }
-        baos.flush();
+//        baos.flush();flush
+
+//        return ResponseEntity.ok()
+//                .contentType(MediaType.parseMediaType("application/octet-stream"))
+//                .header("Content-Disposition", "filename=example.xlsx")
+//                .body(baos.toByteArray());
     }
 
 
