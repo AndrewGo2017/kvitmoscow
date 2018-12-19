@@ -173,6 +173,8 @@ create table file_main_fields (
 -- alter table file_main_fields add column contract_name text;
 -- alter table file_main_fields add column purpose_name text;
 
+
+
 -- editable
 create table file_unique_fields (
   id               serial primary key

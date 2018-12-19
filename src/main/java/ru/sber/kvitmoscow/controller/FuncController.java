@@ -77,7 +77,7 @@ public class FuncController {
                 }
                 response.setHeader("fileName", fileName);
                 baos.writeTo(response.getOutputStream());
-                baos.flush();
+//                baos.flush();
             } catch (Exception e) {
                 response.addHeader("err", "err");
 
