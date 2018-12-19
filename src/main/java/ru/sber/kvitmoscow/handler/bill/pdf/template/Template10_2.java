@@ -1,43 +1,48 @@
-package ru.sber.kvitmoscow.handler.bill.pdf;
+package ru.sber.kvitmoscow.handler.bill.pdf.template;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import org.decimal4j.util.DoubleRounder;
+import ru.sber.kvitmoscow.handler.bill.pdf.PdfCellBuilder;
+import ru.sber.kvitmoscow.handler.bill.pdf.PdfParagraphBuilder;
 import ru.sber.kvitmoscow.handler.bill.qr.QrHandler;
 import ru.sber.kvitmoscow.handler.bill.qr.QrStructure;
 import ru.sber.kvitmoscow.handler.model.*;
 import ru.sber.kvitmoscow.model.UserSetting;
 
-import javax.persistence.criteria.Predicate;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PdfHandler {
-    private static String FONT_TIMES_PATH = "static/font/times.ttf";
-    private static String FONT_TIMES_ALIAS = "mytime";
-    private static String FONT_TIMES_BOLD_PATH = "static/font/timesbd.ttf";
-    private static String FONT_TIMES_BOLD_ALIAS = "mytimebd";
-    private static String FONT_ENCODING = "Cp1251";
-    private static int FONT3_SIZE = 4;
-    private static int FONT7_SIZE = 8;
-    private static int FONT10_SIZE = 11;
+public class Template10_2 extends BaseTemplate {
 
     private String periodFromLastLine = "_";
 
-    public ByteArrayOutputStream handle(
-            List<FileRow> fileRowList,
-            UserSetting payReqs,
-            MainColEntity mainColumns,
-            List<SumColEntity> sumColumnList,
-            List<SumAddColEntity> sumAddColList,
-            List<UniqueColEntity> uniqueColumnList,
-            List<CounterColEntity> counterColumnList,
-            List<CounterAddColEntity> counterAddColList,
-            List<String> columnNameListFromFile
-    ) throws Exception {
+    private List<FileRow> fileRowList;
+    private UserSetting payReqs;
+    private MainColEntity mainColumns;
+    private List<SumColEntity> sumColumnList;
+    private List<SumAddColEntity> sumAddColList;
+    private List<UniqueColEntity> uniqueColumnList;
+    private List<CounterColEntity> counterColumnList;
+    private List<CounterAddColEntity> counterAddColList;
+    private List<String> columnNameListFromFile;
+
+    public Template10_2(List<FileRow> fileRowList, UserSetting payReqs, MainColEntity mainColumns, List<SumColEntity> sumColumnList, List<SumAddColEntity> sumAddColList, List<UniqueColEntity> uniqueColumnList, List<CounterColEntity> counterColumnList, List<CounterAddColEntity> counterAddColList, List<String> columnNameListFromFile) {
+        super(payReqs.getFontSize());
+        this.fileRowList = fileRowList;
+        this.payReqs = payReqs;
+        this.mainColumns = mainColumns;
+        this.sumColumnList = sumColumnList;
+        this.sumAddColList = sumAddColList;
+        this.uniqueColumnList = uniqueColumnList;
+        this.counterColumnList = counterColumnList;
+        this.counterAddColList = counterAddColList;
+        this.columnNameListFromFile = columnNameListFromFile;
+    }
+
+    public ByteArrayOutputStream handle() throws Exception {
 
         Document document = new Document();
         if (payReqs.getSheetPosition().getId() == 2){
@@ -47,16 +52,6 @@ public class PdfHandler {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter.getInstance(document, baos);
         document.open();
-
-        FontFactory.register(FONT_TIMES_PATH, FONT_TIMES_ALIAS);
-        FontFactory.register(FONT_TIMES_BOLD_PATH, FONT_TIMES_BOLD_ALIAS);
-
-        Font font3 =  FontFactory.getFont(FONT_TIMES_ALIAS, FONT_ENCODING, true,  FONT3_SIZE + payReqs.getFontSize());
-        Font font7 = FontFactory.getFont(FONT_TIMES_ALIAS, FONT_ENCODING, true, FONT7_SIZE + payReqs.getFontSize() );
-        Font font10 =  FontFactory.getFont(FONT_TIMES_ALIAS, FONT_ENCODING, true, FONT10_SIZE + payReqs.getFontSize() );
-
-        Font font7Bd = FontFactory.getFont(FONT_TIMES_BOLD_ALIAS, FONT_ENCODING, true, FONT7_SIZE + payReqs.getFontSize());
-        Font font10Bd = FontFactory.getFont(FONT_TIMES_BOLD_ALIAS, FONT_ENCODING, true, FONT10_SIZE + payReqs.getFontSize() );
 
         int billQuantity = 2;
         if (payReqs.getBillQuantity() != null && payReqs.getBillQuantity() > 0){
@@ -123,7 +118,7 @@ public class PdfHandler {
                     tableL1.addCell(new PdfCellBuilder(mainColumns.getPeriodName(), font7).border(0).borderWidth(0).horizontalAlignment(1).build());
 
                 } else {
-                    tableL1.addCell(new PdfCellBuilder("", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
+                    tableL1.addCell(new Phrase());
                 }
                 tableL1.addCell(new Phrase(" ", font7));
                 tableL1.addCell(new PdfCellBuilder("(кор счет)", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
@@ -339,59 +334,7 @@ public class PdfHandler {
         return baos;
     }
 
-    private double toDouble(String str) {
-        String newStr = str.replace(",", ".").replace(" ", "");
-        return Double.parseDouble(newStr);
-    }
-
     public String getPeriodFromLastLine() {
         return periodFromLastLine;
-    }
-
-    private void setTableWidth(PdfPTable table) throws DocumentException {
-        if (table == null) return;
-
-        int colCount = table.getNumberOfColumns();
-        PdfPTable newTable = table;
-        if (colCount == 4) {
-            table.setWidths(new int[]{4, 2, 2, 2});
-            table.setWidthPercentage(60);
-        } else if (colCount == 3) {
-            table.setWidths(new int[]{4, 2, 2});
-            table.setWidthPercentage(50);
-        } else if (colCount == 2) {
-            table.setWidths(new int[]{4, 2});
-            table.setWidthPercentage(40);
-        } else{
-            table.setWidthPercentage(97);
-        }
-    }
-
-    private PdfPTable getNewTableOfNewSize(PdfPTable table) throws DocumentException {
-        int colNum = table.getNumberOfColumns();
-
-        PdfPTable pdfPTable = new PdfPTable(2);
-        pdfPTable.getDefaultCell().setBorder(0);
-        pdfPTable.setWidthPercentage(100);
-
-        if (colNum > 1 &&  colNum < 3){
-            pdfPTable.setWidths(new int[] {6,4});
-            pdfPTable.addCell(table);
-            pdfPTable.completeRow();
-        } else if (colNum == 3){
-            pdfPTable.setWidths(new int[] {8,2});
-            pdfPTable.addCell(table);
-            pdfPTable.completeRow();
-//        } else if (colNum == 4){
-//            pdfPTable.setWidths(new int[] {8,2});
-//            pdfPTable.addCell(table);
-//            pdfPTable.completeRow();
-        } else {
-            pdfPTable.setWidths(new int[] {1,0});
-            pdfPTable.addCell(table);
-            pdfPTable.completeRow();
-        }
-
-        return pdfPTable;
     }
 }

@@ -27,11 +27,19 @@ public class FileMainFieldServiceImpl implements FileMainFieldService {
                 entity.getFio(),
                 entity.getPeriod(),
                 entity.getSum(),
+                entity.getKbk(),
+                entity.getOktmo(),
+                entity.getContract(),
+                entity.getPurpose(),
                 entity.getLsName(),
                 entity.getAdrName(),
                 entity.getFioName(),
                 entity.getPeriodName(),
-                entity.getSumName()
+                entity.getSumName(),
+                entity.getKbkName(),
+                entity.getOktmoName(),
+                entity.getContractName(),
+                entity.getPurposeName()
         );
 
         return fileMainFieldRepository.save(fileMainField);

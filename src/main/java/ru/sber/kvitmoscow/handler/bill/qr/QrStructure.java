@@ -21,4 +21,10 @@ public class QrStructure {
     String adr;
 
     String addInfo;
+
+    String kbk;
+    String oktmo;
+    String contract;
+    String purpose;
+
 }

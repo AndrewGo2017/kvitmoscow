@@ -134,6 +134,14 @@ create table file_main_fields (
   ,
   sum              text
   ,
+  kbk              text
+  ,
+  oktmo            text
+  ,
+  contract         text
+  ,
+  purpose          text
+  ,
   ls_name          text
   ,
   adr_name         text
@@ -144,8 +152,26 @@ create table file_main_fields (
   ,
   sum_name         text
   ,
+  kbk_name         text
+  ,
+  oktmo_name       text
+  ,
+  contract_name    text
+  ,
+  purpose_name     text
+  ,
   foreign key (user_settings_id) references user_settings (id) on delete cascade
 );
+
+-- alter table file_main_fields add column kbk text;
+-- alter table file_main_fields add column oktmo text;
+-- alter table file_main_fields add column contract text;
+-- alter table file_main_fields add column purpose text;
+--
+-- alter table file_main_fields add column kbk_name text;
+-- alter table file_main_fields add column oktmo_name text;
+-- alter table file_main_fields add column contract_name text;
+-- alter table file_main_fields add column purpose_name text;
 
 -- editable
 create table file_unique_fields (

@@ -24,15 +24,34 @@ public class QrHandler {
                 .append("PersonalAcc=").append(qrStructure.pAcc).append(del)
                 .append("BankName=").append(qrStructure.bank).append(del)
                 .append("BIC=").append(qrStructure.bic).append(del )
-                .append("CorrespAcc=").append(qrStructure.cAcc).append(del)
-                .append("PayeeINN=").append(qrStructure.inn).append(del)
-                .append("KPP=").append(qrStructure.kpp).append(del)
-                .append("PersAcc=").append(qrStructure.ls).append(del)
-                .append("Sum=").append((long)(qrStructure.sum * 100)).append(del)
-                .append("LastName=").append(qrStructure.fio).append(del)
-                .append("PayerAddress=").append(qrStructure.adr).append(del)
-                .append(qrStructure.addInfo).append(del)
-                ;
+                .append("CorrespAcc=").append(qrStructure.cAcc.isEmpty() ? "0" : qrStructure.cAcc).append(del)
+                .append("PayeeINN=").append(qrStructure.inn).append(del);
+
+        if (!qrStructure.kpp.isEmpty()){
+            stringBuilder.append("KPP=").append(qrStructure.kpp).append(del);
+        }
+        if (!qrStructure.ls.isEmpty()){
+            stringBuilder.append("PersAcc=").append(qrStructure.ls).append(del);
+        }
+        stringBuilder.append("Sum=").append((long)(qrStructure.sum * 100)).append(del);
+        if (!qrStructure.fio.isEmpty()){
+            stringBuilder.append("LastName=").append(qrStructure.fio).append(del);
+        }
+        if (!qrStructure.kbk.isEmpty()){
+            stringBuilder.append("CBC=").append(qrStructure.kbk).append(del);
+        }
+        if (!qrStructure.oktmo.isEmpty()){
+            stringBuilder.append("OKTMO=").append(qrStructure.oktmo).append(del);
+        }
+        if (!qrStructure.contract.isEmpty()){
+            stringBuilder.append("Contract=").append(qrStructure.contract).append(del);
+        }
+        if (!qrStructure.purpose.isEmpty()){
+            stringBuilder.append("Purpose=").append(qrStructure.purpose).append(del);
+        }
+        if (!qrStructure.adr.isEmpty()){
+            stringBuilder.append(qrStructure.addInfo).append(del);
+        }
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
@@ -47,8 +66,6 @@ public class QrHandler {
         MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
         byte[] pngData = pngOutputStream.toByteArray();
         return pngData;
-
-
 
     }
 

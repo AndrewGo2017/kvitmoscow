@@ -344,6 +344,42 @@
                                    class="dialog-data form-control" name="sum"/>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Договор (поле)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.contract} : '' "
+                                   class="dialog-data form-control" name="contract"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Назначение (поле)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.purpose} : '' "
+                                   class="dialog-data form-control" name="purpose"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">КБК (поле)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.kbk} : '' "
+                                   class="dialog-data form-control" name="kbk"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">ОКТМО (поле)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.oktmo} : '' "
+                                   class="dialog-data form-control" name="oktmo"/>
+                        </div>
+                    </div>
                 </td>
                 <td>
 
@@ -390,6 +426,42 @@
                         <div class="col-xs-9">
                             <input th:value="${fileMainField != null} ? ${fileMainField.sumName} : '' "
                                    class="dialog-data form-control" name="sumName"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Договор (наименвоание)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.contractName} : '' "
+                                   class="dialog-data form-control" name="contractName"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Назначение (наименвоание)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.purposeName} : '' "
+                                   class="dialog-data form-control" name="purposeName"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">КБК (наименвоание)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.kbkName} : '' "
+                                   class="dialog-data form-control" name="kbkName"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">ОКТМО (наименвоание)</label>
+
+                        <div class="col-xs-9">
+                            <input th:value="${fileMainField != null} ? ${fileMainField.oktmoName} : '' "
+                                   class="dialog-data form-control" name="oktmoName"/>
                         </div>
                     </div>
                 </td>
@@ -580,7 +652,8 @@
 <!--FileCounterAddField-->
 <div th:fragment="fileCounterAddFieldDialog" class="modal-body">
     <form name="detailsForm" class="form-horizontal">
-        <input th:value="${fileCounterAddField != null} ? ${fileCounterAddField.id} : '' " class="dialog-data" type="hidden"
+        <input th:value="${fileCounterAddField != null} ? ${fileCounterAddField.id} : '' " class="dialog-data"
+               type="hidden"
                name="id">
 
         <div class="form-group no-displayable">

@@ -138,6 +138,16 @@
             <th>Период(наименование)</th>
             <th>Сумма(поле)</th>>
             <th>Сумма(наименование)</th>
+
+            <th>КБК(поле)</th>>
+            <th>КБК(наименование)</th>
+            <th>ОКТМО(поле)</th>>
+            <th>ОКТМО(наименование)</th>
+            <th>Договор(поле)</th>>
+            <th>Договор(наименование)</th>
+            <th>Назначение(поле)</th>>
+            <th>Назначение(наименование)</th>
+
         </tr>
         </thead>
         <tbody>
@@ -161,7 +171,17 @@
             <td th:utext="${fileMainField.period}"></td>
             <td th:utext="${fileMainField.periodName}"></td>
             <td th:utext="${fileMainField.sum}"></td>
-            <td th:utext="${fileMainField.sumName}"></td>
+            <td th:utext="${fileMainField.sumName}"></td>x
+
+            <td th:utext="${fileMainField.kbk}"></td>
+            <td th:utext="${fileMainField.kbkName}"></td>
+            <td th:utext="${fileMainField.oktmo}"></td>
+            <td th:utext="${fileMainField.oktmoName}"></td>
+            <td th:utext="${fileMainField.contract}"></td>
+            <td th:utext="${fileMainField.contractName}"></td>
+            <td th:utext="${fileMainField.purpose}"></td>
+            <td th:utext="${fileMainField.purposeName}"></td>
+
         </tr>
         </tbody>
     </table>

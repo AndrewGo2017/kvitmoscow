@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import ru.sber.kvitmoscow.Authorization;
+import ru.sber.kvitmoscow.handler.bill.pdf.template.Template10_2;
+import ru.sber.kvitmoscow.handler.bill.pdf.template.Template1_7;
 import ru.sber.kvitmoscow.handler.conversion.ConversionRegisterInHandler;
 import ru.sber.kvitmoscow.handler.data.ExcelFileData;
 import ru.sber.kvitmoscow.handler.data.FileData;
@@ -66,18 +68,30 @@ public class FileHandler {
             columnNameListFromSettings.add(f.getAdr());
             columnNameListFromSettings.add(f.getPeriod());
             columnNameListFromSettings.add(f.getSum());
+            columnNameListFromSettings.add(f.getKbk());
+            columnNameListFromSettings.add(f.getOktmo());
+            columnNameListFromSettings.add(f.getContract());
+            columnNameListFromSettings.add(f.getPurpose());
 
             mainColumns.setLs(f.getLs());
             mainColumns.setAdr(f.getAdr());
             mainColumns.setFio(f.getFio());
             mainColumns.setPeriod(f.getPeriod());
             mainColumns.setSum(f.getSum());
+            mainColumns.setKbk(f.getKbk());
+            mainColumns.setOktmo(f.getOktmo());
+            mainColumns.setContract(f.getContract());
+            mainColumns.setPurpose(f.getPurpose());
 
             mainColumns.setLsName(f.getLsName());
             mainColumns.setAdrName(f.getAdrName());
             mainColumns.setFioName(f.getFioName());
             mainColumns.setPeriodName(f.getPeriodName());
             mainColumns.setSumName(f.getSumName());
+            mainColumns.setKbkName(f.getKbkName());
+            mainColumns.setOktmoName(f.getOktmoName());
+            mainColumns.setContractName(f.getContractName());
+            mainColumns.setPurposeName(f.getPurposeName());
         });
 
         fileUniqueFieldService.getAllByUserSettingId(userSettingId).forEach(f -> {
@@ -128,7 +142,9 @@ public class FileHandler {
         String fileName = Objects.requireNonNull(file.getOriginalFilename()).toUpperCase();
         String extension = FilenameUtils.getExtension(fileName);
 
-        int fileTypeId = userSettingService.get(userSettingId).getFileType().getId();
+        UserSetting userSetting = userSettingService.get(userSettingId);
+        int fileTypeId = userSetting.getFileType().getId();
+
         if (fileTypeId == 1) {
             if (!extension.equals("XLS") && !extension.equals("XLSX")) {
                 throw new Exception("Выбран неверный тип файла. Ожидаемый тип Excel (.xls или .xlsx)");
@@ -139,7 +155,6 @@ public class FileHandler {
             }
         }
 
-
         FileData fileData = null;
         if (extension.equals("XLS") || extension.equals("XLSX")) {
             fileData = new ExcelFileData(inputStream, extension, columnNameListFromSettingsWithNoEmpty);
@@ -148,6 +163,7 @@ public class FileHandler {
         }
 
         //get pay reqs ???????
+        String templateName = userSetting.getTemplate().getName();
         List<UserSetting> userSettings = userSettingService.getAllByUserId(Authorization.id());
         UserSetting payReqs = userSettings.get(0);
 
@@ -155,14 +171,22 @@ public class FileHandler {
         List<String> columnNameListFromFile = fileData.getColumnNameListFromFile();
         ByteArrayOutputStream baos = null;
         if (functionId == 1) {
-            PdfHandler pdfHandler = new PdfHandler();
-            baos = pdfHandler.handle(fileRowList, payReqs, mainColumns, sumColumnList, sumAddColumnList, uniqueColumnList, counterColumnList, counterAddColumnList, columnNameListFromFile);
-            lastMask = pdfHandler.getPeriodFromLastLine();
-
+            if (templateName.equals("ШАБЛОН 10_2")){
+                Template10_2 pdfHandler = new Template10_2(fileRowList, payReqs, mainColumns, sumColumnList, sumAddColumnList, uniqueColumnList, counterColumnList, counterAddColumnList, columnNameListFromFile);
+                baos = pdfHandler.handle();
+                lastMask = pdfHandler.getPeriodFromLastLine();
+            } else {
+                Template1_7 pdfHandler = new Template1_7(fileRowList, payReqs, mainColumns, uniqueColumnList, columnNameListFromFile);
+                baos = pdfHandler.handle();
+            }
         } else {
-            ConversionRegisterInHandler conversionRegisterInHandler = new ConversionRegisterInHandler();
-            baos = conversionRegisterInHandler.handle(fileRowList, mainColumns, columnNameListFromFile);
-            lastMask = conversionRegisterInHandler.getPeriodFromFirstLine();
+            if (templateName.equals("ШАБЛОН 10_2")){
+                ConversionRegisterInHandler conversionRegisterInHandler = new ConversionRegisterInHandler();
+                baos = conversionRegisterInHandler.handle(fileRowList, mainColumns, columnNameListFromFile);
+                lastMask = conversionRegisterInHandler.getPeriodFromFirstLine();
+            } else {
+                throw new Exception( templateName + " не поддерживает данную функцию.");
+            }
         }
 
         return baos;

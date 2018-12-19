@@ -19,4 +19,14 @@ public class MainColEntity {
     public String fioName;
     public String periodName;
     public String sumName;
+
+    public String contract;
+    public String purpose;
+    public String kbk;
+    public String oktmo;
+
+    public String contractName;
+    public String purposeName;
+    public String kbkName;
+    public String oktmoName;
 }
