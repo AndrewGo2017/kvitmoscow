@@ -5,7 +5,7 @@ values ('ROLE_USER'),('ROLE_ADMIN');
 -- update roles set name = 'ROLE_ADMIN' where id = 2;
 
 insert into  users(role_id, name, password, email)
-values (1, '1', '1', 'email'), (1, 'berezina', '123', ''), (2, '2', '2', 'email'), (1, 'berezina', '123', '') ;
+values (2, 'admina', '1937', 'email'), (1, 'berezina', '123', ''), (2, '2', '2', 'email'), (1, 'berezina', '123', '') ;
 
 insert into users (role_id, name, password, email) values (1, 'pirogova', 'pir123', '');
 

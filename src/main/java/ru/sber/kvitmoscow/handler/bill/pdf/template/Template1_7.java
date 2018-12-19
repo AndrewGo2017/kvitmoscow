@@ -88,7 +88,7 @@ public class Template1_7 extends BaseTemplate {
                 tableL1.addCell(new PdfCellBuilder(" ", font7).border(0).borderWidth(0).build());
                 tableL1.addCell(new PdfCellBuilder("(бик)", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
 
-                if (!mainColumns.getPeriod().isEmpty() && !payReqs.getOrgCorAcc().isEmpty()) {
+                if (!mainColumns.getPeriod().isEmpty() || !payReqs.getOrgCorAcc().isEmpty()) {
                     if (!mainColumns.getPeriod().isEmpty()) {
                         String period = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getPeriod()));
                         tableL1.addCell(new PdfCellBuilder(period, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
