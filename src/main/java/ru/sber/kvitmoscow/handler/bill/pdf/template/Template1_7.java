@@ -76,7 +76,7 @@ public class Template1_7 extends BaseTemplate {
                 tableL1.addCell(new PdfCellBuilder(" ", font10).borderWidth(0).build());
                 tableL1.addCell(new PdfCellBuilder(payReqs.getOrgPayAcc(), font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
 
-                tableL1.addCell(new PdfCellBuilder("(инн / кпп получателя плателя)", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
+                tableL1.addCell(new PdfCellBuilder("(инн / кпп получателя платежа)", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
                 tableL1.addCell(new PdfCellBuilder(" ", font7).border(0).borderWidth(0).horizontalAlignment(0).build());
                 tableL1.addCell(new PdfCellBuilder("(номер счета получателя)", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
 
@@ -128,9 +128,9 @@ public class Template1_7 extends BaseTemplate {
                     tableL1.addCell(new PdfCellBuilder(" ", font10).borderWidth(0).build());
                     tableL1.addCell(new PdfCellBuilder(oktmo, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
 
-                    tableL1.addCell(new PdfCellBuilder("(кбк)", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
+                    tableL1.addCell(new PdfCellBuilder("("+mainColumns.getKbkName().toLowerCase()+")", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
                     tableL1.addCell(new PdfCellBuilder(" ", font7).border(0).borderWidth(0).horizontalAlignment(0).build());
-                    tableL1.addCell(new PdfCellBuilder("(октмо)", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
+                    tableL1.addCell(new PdfCellBuilder("("+mainColumns.getOktmoName().toLowerCase()+")", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
                 }
 
 
