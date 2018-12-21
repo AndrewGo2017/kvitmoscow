@@ -175,7 +175,7 @@
                                 <option th:each="fileTemplate : ${fileTemplates}"
                                         th:value="${fileTemplate.id}"
                                         th:text="${fileTemplate.name}"
-                                        th:selected="${userSetting != null ? userSetting.template.id == fileTemplate.id : false}">
+                                        th:selected="${userSetting != null ? userSetting.fileTemplate.id == fileTemplate.id : false}">
                                 </option>
                             </select>
                         </div>
