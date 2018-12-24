@@ -46,23 +46,15 @@ public class FuncController {
     }
 
     @PostMapping
-    public ResponseEntity upload(HttpServletResponse response,
+    public ResponseEntity upload(
                        @RequestParam(value = "file", required = false) MultipartFile file,
                        @RequestParam("userSetting") Integer userSetting,
                        @RequestParam("function") Integer function,
                        Model m) throws Exception {
-        response.setContentType("application/octet-stream");
-        response.setCharacterEncoding("Cp1251");
+//        response.setContentType("application/octet-stream");
+//        response.setCharacterEncoding("Cp1251");
         ByteArrayOutputStream baos = null;
-        if (function == 3){
-            baos = exampleHandler.handle(userSetting);
-//            baos.writeTo(response.getOutputStream());
 
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType("application/octet-stream"))
-//                    .header("Content-Disposition", "filename=" + fileName)
-                    .body(baos.toByteArray());
-        } else {
             try {
                 if (file == null){
                     throw new Exception("Не выбран файл!");
@@ -80,15 +72,15 @@ public class FuncController {
                         fileName = mask + "_" + fileHandler.getLastMask() + ".txt";
                     }
                 }
-                response.setHeader("fileName", fileName);
+//                response.setHeader("fileName", fileName);
 //                baos.writeTo(response.getOutputStream());
 //                baos.flush();
                 return ResponseEntity.ok()
                         .contentType(MediaType.parseMediaType("application/octet-stream"))
-                        .header("Content-Disposition", "filename=" + fileName)
+                        .header("filename", fileName)
                         .body(baos.toByteArray());
             } catch (Exception e) {
-                response.addHeader("err", "err");
+//                response.addHeader("err", "err");
 
                 baos = new ByteArrayOutputStream();
                     String message = "{ \"message\": \"" + e.getMessage() + "\" }";
@@ -100,7 +92,7 @@ public class FuncController {
                         .header("err", "err")
                         .body(baos.toByteArray());
             }
-        }
+
 //        baos.flush();flush
 
 //        return ResponseEntity.ok()
