@@ -55,7 +55,7 @@ public class FuncController {
 //        response.setCharacterEncoding("Cp1251");
         ByteArrayOutputStream baos = null;
 
-            try {
+//            try {
                 if (file == null){
                     throw new Exception("Не выбран файл!");
                 }
@@ -79,19 +79,19 @@ public class FuncController {
                         .contentType(MediaType.parseMediaType("application/octet-stream"))
                         .header("filename", fileName)
                         .body(baos.toByteArray());
-            } catch (Exception e) {
-//                response.addHeader("err", "err");
-
-                baos = new ByteArrayOutputStream();
-                    String message = "{ \"message\": \"" + e.getMessage() + "\" }";
-                baos.write(message.getBytes());
-//                baos.writeTo(response.getOutputStream());
-
-                return ResponseEntity.ok()
-                        .contentType(MediaType.parseMediaType("application/octet-stream"))
-                        .header("err", "err")
-                        .body(baos.toByteArray());
-            }
+//            } catch (Exception e) {
+////                response.addHeader("err", "err");
+//
+//                baos = new ByteArrayOutputStream();
+//                    String message = "{ \"message\": \"" + e.getMessage() + "\" }";
+//                baos.write(message.getBytes());
+////                baos.writeTo(response.getOutputStream());
+//
+//                return ResponseEntity.ok()
+//                        .contentType(MediaType.parseMediaType("application/octet-stream"))
+//                        .header("err", "err")
+//                        .body(baos.toByteArray());
+//            }
 
 //        baos.flush();flush
 

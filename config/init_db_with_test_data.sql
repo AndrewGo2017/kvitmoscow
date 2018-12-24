@@ -57,7 +57,3 @@ insert into  file_counter_add_fields(user_setting_id, name, value)
        (2, 'Дата тек пок', 'DTP'),
        (2, 'Пред пок', 'CP'),
        (2, 'Расход', 'CR');
-
-
-
-

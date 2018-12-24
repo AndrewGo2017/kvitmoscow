@@ -63,15 +63,15 @@ public class FileHandler {
         List<CounterAddColEntity> counterAddColumnList = new ArrayList<>();
 
         fileMainFieldService.getAllByUserSettingId(userSettingId).forEach(f -> {
-            columnNameListFromSettings.add(f.getLs());
-            columnNameListFromSettings.add(f.getFio());
-            columnNameListFromSettings.add(f.getAdr());
-            columnNameListFromSettings.add(f.getPeriod());
-            columnNameListFromSettings.add(f.getSum());
-            columnNameListFromSettings.add(f.getKbk());
-            columnNameListFromSettings.add(f.getOktmo());
-            columnNameListFromSettings.add(f.getContract());
-            columnNameListFromSettings.add(f.getPurpose());
+            columnNameListFromSettings.add(f.getLs() == null ? "" : f.getLs());
+            columnNameListFromSettings.add(f.getFio() == null ? "" : f.getFio());
+            columnNameListFromSettings.add(f.getAdr()== null ? "" : f.getAdr());
+            columnNameListFromSettings.add(f.getPeriod()== null ? "" : f.getPeriod());
+            columnNameListFromSettings.add(f.getSum()== null ? "" : f.getSum());
+            columnNameListFromSettings.add(f.getKbk()== null ? "" : f.getKbk());
+            columnNameListFromSettings.add(f.getOktmo()== null ? "" : f.getOktmo());
+            columnNameListFromSettings.add(f.getContract()== null ? "" : f.getContract());
+            columnNameListFromSettings.add(f.getPurpose()== null ? "" : f.getPurpose());
 
             mainColumns.setLs(f.getLs());
             mainColumns.setAdr(f.getAdr());
@@ -134,7 +134,6 @@ public class FileHandler {
                             });
                 });
 
-
         List<String> columnNameListFromSettingsWithNoEmpty = columnNameListFromSettings.stream().filter(e -> !e.isEmpty()).collect(Collectors.toList());
 
         InputStream inputStream = file.getInputStream();
@@ -163,7 +162,7 @@ public class FileHandler {
         }
 
         //get pay reqs ???????
-        String templateName = userSetting.getTemplate().getName();
+        String templateName = userSetting.getFileTemplate().getName();
         List<UserSetting> userSettings = userSettingService.getAllByUserId(Authorization.id());
         UserSetting payReqs = userSettings.get(0);
 
@@ -171,7 +170,7 @@ public class FileHandler {
         List<String> columnNameListFromFile = fileData.getColumnNameListFromFile();
         ByteArrayOutputStream baos = null;
         if (functionId == 1) {
-            if (templateName.equals("ШАБЛОН 10_2")){
+            if (templateName.toUpperCase().equals("ШАБЛОН 10_2")) {
                 Template10_2 pdfHandler = new Template10_2(fileRowList, payReqs, mainColumns, sumColumnList, sumAddColumnList, uniqueColumnList, counterColumnList, counterAddColumnList, columnNameListFromFile);
                 baos = pdfHandler.handle();
                 lastMask = pdfHandler.getPeriodFromLastLine();
@@ -180,12 +179,12 @@ public class FileHandler {
                 baos = pdfHandler.handle();
             }
         } else {
-            if (templateName.equals("ШАБЛОН 10_2")){
+            if (templateName.toUpperCase().equals("ШАБЛОН 10_2")) {
                 ConversionRegisterInHandler conversionRegisterInHandler = new ConversionRegisterInHandler();
                 baos = conversionRegisterInHandler.handle(fileRowList, mainColumns, columnNameListFromFile);
                 lastMask = conversionRegisterInHandler.getPeriodFromFirstLine();
             } else {
-                throw new Exception( templateName + " не поддерживает данную функцию.");
+                throw new Exception(templateName + " не поддерживает данную функцию.");
             }
         }
 

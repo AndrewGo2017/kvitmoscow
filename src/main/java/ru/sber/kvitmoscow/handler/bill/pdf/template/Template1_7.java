@@ -47,7 +47,7 @@ public class Template1_7 extends BaseTemplate {
 
         int rowCount = 0;
 
-        try {
+//        try {
             for (FileRow row : fileRowList) {
                 rowCount++;
 
@@ -227,9 +227,9 @@ public class Template1_7 extends BaseTemplate {
                     document.newPage();
 
             }
-        } catch (Exception e) {
-            throw new Exception("ряд  " + rowCount + " ; " + e.toString());
-        }
+//        } catch (Exception e) {
+//            throw new Exception("ряд  " + rowCount + " ; " + e.toString());
+//        }
 
         //close pdf
         document.close();

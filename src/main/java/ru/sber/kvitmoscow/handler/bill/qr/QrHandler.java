@@ -27,29 +27,29 @@ public class QrHandler {
                 .append("CorrespAcc=").append(qrStructure.cAcc.isEmpty() ? "0" : qrStructure.cAcc).append(del)
                 .append("PayeeINN=").append(qrStructure.inn).append(del);
 
-        if (!qrStructure.kpp.isEmpty()){
+        if (qrStructure.kpp != null && !qrStructure.kpp.isEmpty()){
             stringBuilder.append("KPP=").append(qrStructure.kpp).append(del);
         }
-        if (!qrStructure.ls.isEmpty()){
+        if (qrStructure.ls != null && !qrStructure.ls.isEmpty()){
             stringBuilder.append("PersAcc=").append(qrStructure.ls).append(del);
         }
         stringBuilder.append("Sum=").append((long)(qrStructure.sum * 100)).append(del);
-        if (!qrStructure.fio.isEmpty()){
+        if (qrStructure.fio != null && !qrStructure.fio.isEmpty()){
             stringBuilder.append("LastName=").append(qrStructure.fio).append(del);
         }
-        if (!qrStructure.kbk.isEmpty()){
+        if (qrStructure.kbk != null && !qrStructure.kbk.isEmpty()){
             stringBuilder.append("CBC=").append(qrStructure.kbk).append(del);
         }
-        if (!qrStructure.oktmo.isEmpty()){
+        if (qrStructure.oktmo != null && !qrStructure.oktmo.isEmpty()){
             stringBuilder.append("OKTMO=").append(qrStructure.oktmo).append(del);
         }
-        if (!qrStructure.contract.isEmpty()){
+        if (qrStructure.contract != null && !qrStructure.contract.isEmpty()){
             stringBuilder.append("Contract=").append(qrStructure.contract).append(del);
         }
-        if (!qrStructure.purpose.isEmpty()){
+        if (qrStructure.purpose != null && !qrStructure.purpose.isEmpty()){
             stringBuilder.append("Purpose=").append(qrStructure.purpose).append(del);
         }
-        if (!qrStructure.adr.isEmpty()){
+        if (qrStructure.adr != null && !qrStructure.adr.isEmpty()){
             stringBuilder.append(qrStructure.addInfo).append(del);
         }
 
