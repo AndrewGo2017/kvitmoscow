@@ -4,8 +4,8 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import lombok.NonNull;
 import ru.sber.kvitmoscow.handler.bill.pdf.PdfCellBuilder;
-import ru.sber.kvitmoscow.handler.bill.pdf.PdfParagraphBuilder;
 import ru.sber.kvitmoscow.handler.bill.qr.QrHandler;
 import ru.sber.kvitmoscow.handler.bill.qr.QrStructure;
 import ru.sber.kvitmoscow.handler.model.*;
@@ -20,26 +20,18 @@ public class Template10_2 extends BaseTemplate {
     private String periodFromLastLine = "_";
 
     private List<FileRow> fileRowList;
-    private UserSetting payReqs;
-    private MainColEntity mainColumns;
     private List<SumColEntity> sumColumnList;
     private List<SumAddColEntity> sumAddColList;
-    private List<UniqueColEntity> uniqueColumnList;
     private List<CounterColEntity> counterColumnList;
     private List<CounterAddColEntity> counterAddColList;
-    private List<String> columnNameListFromFile;
 
     public Template10_2(List<FileRow> fileRowList, UserSetting payReqs, MainColEntity mainColumns, List<SumColEntity> sumColumnList, List<SumAddColEntity> sumAddColList, List<UniqueColEntity> uniqueColumnList, List<CounterColEntity> counterColumnList, List<CounterAddColEntity> counterAddColList, List<String> columnNameListFromFile) {
-        super(payReqs.getFontSize());
+        super(payReqs, mainColumns, columnNameListFromFile, uniqueColumnList);
         this.fileRowList = fileRowList;
-        this.payReqs = payReqs;
-        this.mainColumns = mainColumns;
         this.sumColumnList = sumColumnList;
         this.sumAddColList = sumAddColList;
-        this.uniqueColumnList = uniqueColumnList;
         this.counterColumnList = counterColumnList;
         this.counterAddColList = counterAddColList;
-        this.columnNameListFromFile = columnNameListFromFile;
     }
 
     public ByteArrayOutputStream handle() throws Exception {
@@ -60,116 +52,18 @@ public class Template10_2 extends BaseTemplate {
 
         int rowCount = 0;
 
-//        try {
+        try {
             for (FileRow row  : fileRowList) {
                 rowCount++;
 
-                PdfPTable tableL0 = new PdfPTable(2);
-                tableL0.setPaddingTop(0);
-                tableL0.setHorizontalAlignment(0);
-                tableL0.setWidths(new float[]{2.5f, 7.5f});
-                tableL0.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-                tableL0.getDefaultCell().setPadding(0);
+                PdfPTable tableL0 =  getTableL0(2.5f, 7.5f);
 
-                PdfPTable tableL1 = new PdfPTable(3);
-                tableL1.setHorizontalAlignment(0);
-                tableL1.setWidths(new float[]{4.5f, 1f, 4.5f});
-                tableL1.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-                tableL1.getDefaultCell().setPadding(1);
-                tableL1.setHorizontalAlignment(1);
+                PdfPTable tableL1 = getTableL1(row, 4.5f, 1, 4.5f);
 
-                //header
-
-                tableL1.addCell(new PdfCellBuilder(new PdfParagraphBuilder(" " + payReqs.getOrgName() , font7Bd).build()).border(0).colSpan(3).padding(0).build());
-                tableL1.addCell(new PdfCellBuilder(new PdfParagraphBuilder(" " + payReqs.getOrgAddInfo(), font7).build()).border(0).colSpan(3).padding(0).build());
-
-
-                //pay reqs
-                tableL1.addCell(new PdfCellBuilder(payReqs.getOrgInn() + " / " + payReqs.getOrgKpp(), font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
-                tableL1.addCell(new PdfCellBuilder(" ", font10).borderWidth(0).build());
-                tableL1.addCell(new PdfCellBuilder(payReqs.getOrgPayAcc(), font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
-
-                tableL1.addCell(new PdfCellBuilder("(инн / кпп получателя плателя)", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
-                tableL1.addCell(new PdfCellBuilder(" ", font7).border(0).borderWidth(0).horizontalAlignment(0).build());
-                tableL1.addCell(new PdfCellBuilder("(номер счета получателя)", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
-
-                tableL1.addCell(new PdfCellBuilder(payReqs.getOrgBank(), font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
-                tableL1.addCell(new PdfCellBuilder(" ", font10).borderWidth(0).build());
-                tableL1.addCell(new PdfCellBuilder(payReqs.getOrgBic(), font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
-
-                tableL1.addCell(new PdfCellBuilder("(наименование банка)", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
-                tableL1.addCell(new PdfCellBuilder(" ", font7).border(0).borderWidth(0).build());
-                tableL1.addCell(new PdfCellBuilder("(бик)", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
-
-                if (!mainColumns.getPeriod().isEmpty()) {
-                    String period = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getPeriod()));
-                    periodFromLastLine = period;
-                    tableL1.addCell(new PdfCellBuilder(period, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
-
-                } else {
-                    periodFromLastLine = "_";
-                    tableL1.addCell(new Phrase());
-                }
-
-                tableL1.addCell(new PdfCellBuilder(" ", font7).border(0).borderWidth(0).horizontalAlignment(0).build());
-                tableL1.addCell(new PdfCellBuilder(payReqs.getOrgCorAcc(), font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
-
-                if (!mainColumns.getPeriod().isEmpty()) {
-                    tableL1.addCell(new PdfCellBuilder(mainColumns.getPeriodName(), font7).border(0).borderWidth(0).horizontalAlignment(1).build());
-
-                } else {
-                    tableL1.addCell(new Phrase());
-                }
-                tableL1.addCell(new Phrase(" ", font7));
-                tableL1.addCell(new PdfCellBuilder("(кор счет)", font7).border(0).borderWidth(0).horizontalAlignment(1).build());
-
+                CommonReqs commonReqs = getQrStructure(mainColumns, row, columnNameListFromFile, uniqueColumnList);
 
                 //main reqs
-                PdfPTable tableL2 = new PdfPTable(2);
-                tableL2.setHorizontalAlignment(0);
-                tableL2.setWidths(new float[]{3, 7});
-                tableL2.getDefaultCell().setBorder(Rectangle.NO_BORDER);
-                tableL2.getDefaultCell().setPadding(1);
-                tableL2.getDefaultCell().setHorizontalAlignment(0);
-
-                String ls = "";
-                if (!mainColumns.getLs().isEmpty()) {
-                    tableL2.addCell(new Phrase(mainColumns.getLsName(), font10));
-                    ls = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getLs()));
-                    tableL2.addCell(new PdfCellBuilder(ls, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
-
-                }
-                String fio = "";
-                if (!mainColumns.getFio().isEmpty()) {
-                    tableL2.addCell(new Phrase(mainColumns.getFioName(), font10));
-                    fio = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getFio()));
-                    tableL2.addCell(new PdfCellBuilder(fio, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
-                }
-                String adr = "";
-                if (!mainColumns.getAdr().isEmpty()) {
-                    tableL2.addCell(new Phrase(mainColumns.getAdrName(), font10));
-                    adr = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getAdr()));
-                    tableL2.addCell(new PdfCellBuilder(adr, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
-                }
-
-                //unique
-                for (int i = 0; i < uniqueColumnList.size(); i++) {
-                    String name = uniqueColumnList.get(i).name;
-                    String value = row.getRowData().get(columnNameListFromFile.indexOf(uniqueColumnList.get(i).value));
-
-                    tableL2.addCell(new Phrase(name, font10));
-                    tableL2.addCell(new PdfCellBuilder(value, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
-                }
-
-                //sum
-                Double sum = 0d;
-                if (sumColumnList.size() > 0){
-                    if (!mainColumns.getSum().equals("")){
-                        tableL2.addCell(new Phrase(mainColumns.getSumName(), font10));
-                        sum = toDouble( row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getSum())) );
-                        tableL2.addCell(new PdfCellBuilder(sum.toString(), font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
-                    }
-                }
+                PdfPTable tableL2 = getTableL2( row, commonReqs, 3, 7);
 
                 //counters
                 PdfPTable tableL3 = null;
@@ -273,8 +167,8 @@ public class Template10_2 extends BaseTemplate {
                 }
 
                 //QR
-                Image imgQR = Image.getInstance(new QrHandler().handle(
-                        new QrStructure(payReqs.getOrgName(), payReqs.getOrgPayAcc(), payReqs.getOrgBank(), payReqs.getOrgBic(), payReqs.getOrgCorAcc(), payReqs.getOrgInn(), payReqs.getOrgKpp(), ls, sum, fio, adr, payReqs.getQrAddInfo(), null, null, null, null)
+                Image imgQR = Image.getInstance(QrHandler.handle(
+                        new QrStructure(payReqs.getOrgName(), payReqs.getOrgPayAcc(), payReqs.getOrgBank(), payReqs.getOrgBic(), payReqs.getOrgCorAcc(), payReqs.getOrgInn(), payReqs.getOrgKpp(), commonReqs.getLs(), commonReqs.getSum(), commonReqs.getFio(), commonReqs.getAdr(), payReqs.getQrAddInfo(), null, null, null, null)
                 ));
                 imgQR.setWidthPercentage(70);
                 imgQR.setAlignment(1);
@@ -324,11 +218,11 @@ public class Template10_2 extends BaseTemplate {
                     document.newPage();
 
             }
-//        } catch (Exception e) {
-//            throw new Exception("ряд  " + rowCount + " ; " + e.toString());
-//        }
+        } catch (Exception e) {
+            throw new Exception("ряд  " + rowCount + " ; " + e.toString());
+        }
 
-        //close pdf
+
         document.close();
 
         return baos;

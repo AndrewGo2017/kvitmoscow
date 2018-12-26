@@ -10,8 +10,8 @@ import ru.sber.kvitmoscow.handler.bill.pdf.template.Template1_7;
 import ru.sber.kvitmoscow.handler.conversion.ConversionRegisterInHandler;
 import ru.sber.kvitmoscow.handler.data.ExcelFileData;
 import ru.sber.kvitmoscow.handler.data.FileData;
+import ru.sber.kvitmoscow.handler.data.FileFormat;
 import ru.sber.kvitmoscow.handler.data.TextFileData;
-import ru.sber.kvitmoscow.handler.bill.pdf.PdfHandler;
 import ru.sber.kvitmoscow.handler.model.*;
 import ru.sber.kvitmoscow.model.FileCounterAddField;
 import ru.sber.kvitmoscow.model.FileSumAddField;
@@ -28,6 +28,8 @@ import java.util.stream.IntStream;
 
 @Component
 public class FileHandler {
+    private static String TEMPLATE_10_2 = "ШАБЛОН 10_2";
+
     @Autowired
     private UserSettingService userSettingService;
 
@@ -63,35 +65,55 @@ public class FileHandler {
         List<CounterAddColEntity> counterAddColumnList = new ArrayList<>();
 
         fileMainFieldService.getAllByUserSettingId(userSettingId).forEach(f -> {
-            columnNameListFromSettings.add(f.getLs() == null ? "" : f.getLs());
-            columnNameListFromSettings.add(f.getFio() == null ? "" : f.getFio());
-            columnNameListFromSettings.add(f.getAdr()== null ? "" : f.getAdr());
-            columnNameListFromSettings.add(f.getPeriod()== null ? "" : f.getPeriod());
-            columnNameListFromSettings.add(f.getSum()== null ? "" : f.getSum());
-            columnNameListFromSettings.add(f.getKbk()== null ? "" : f.getKbk());
-            columnNameListFromSettings.add(f.getOktmo()== null ? "" : f.getOktmo());
-            columnNameListFromSettings.add(f.getContract()== null ? "" : f.getContract());
-            columnNameListFromSettings.add(f.getPurpose()== null ? "" : f.getPurpose());
+            String ls = f.getLs() == null ? "" : f.getLs();
+            String fio = f.getFio() == null ? "" : f.getFio();
+            String adr = f.getAdr() == null ? "" : f.getAdr();
+            String period = f.getPeriod() == null ? "" : f.getPeriod();
+            String sum = f.getSum() == null ? "" : f.getSum();
+            String kbk = f.getKbk() == null ? "" : f.getKbk();
+            String oktmo = f.getOktmo() == null ? "" : f.getOktmo();
+            String contract = f.getContract() == null ? "" : f.getContract();
+            String purpose = f.getPurpose() == null ? "" : f.getPurpose();
 
-            mainColumns.setLs(f.getLs());
-            mainColumns.setAdr(f.getAdr());
-            mainColumns.setFio(f.getFio());
-            mainColumns.setPeriod(f.getPeriod());
-            mainColumns.setSum(f.getSum());
-            mainColumns.setKbk(f.getKbk());
-            mainColumns.setOktmo(f.getOktmo());
-            mainColumns.setContract(f.getContract());
-            mainColumns.setPurpose(f.getPurpose());
+            String lsName = f.getLsName() == null ? "" : f.getLsName();
+            String fioName = f.getFioName() == null ? "" : f.getFioName();
+            String adrName = f.getAdrName() == null ? "" : f.getAdrName();
+            String periodName = f.getPeriodName() == null ? "" : f.getPeriodName();
+            String sumName = f.getSumName() == null ? "" : f.getSumName();
+            String kbkName = f.getKbkName() == null ? "" : f.getKbkName();
+            String oktmoName = f.getOktmoName() == null ? "" : f.getOktmoName();
+            String contractName = f.getContractName() == null ? "" : f.getContractName();
+            String purposeName = f.getPurposeName() == null ? "" : f.getPurposeName();
 
-            mainColumns.setLsName(f.getLsName());
-            mainColumns.setAdrName(f.getAdrName());
-            mainColumns.setFioName(f.getFioName());
-            mainColumns.setPeriodName(f.getPeriodName());
-            mainColumns.setSumName(f.getSumName());
-            mainColumns.setKbkName(f.getKbkName());
-            mainColumns.setOktmoName(f.getOktmoName());
-            mainColumns.setContractName(f.getContractName());
-            mainColumns.setPurposeName(f.getPurposeName());
+            columnNameListFromSettings.add(ls);
+            columnNameListFromSettings.add(fio);
+            columnNameListFromSettings.add(adr);
+            columnNameListFromSettings.add(period);
+            columnNameListFromSettings.add(sum);
+            columnNameListFromSettings.add(kbk);
+            columnNameListFromSettings.add(oktmo);
+            columnNameListFromSettings.add(contract);
+            columnNameListFromSettings.add(purpose);
+
+            mainColumns.setLs(ls);
+            mainColumns.setAdr(adr);
+            mainColumns.setFio(fio);
+            mainColumns.setPeriod(period);
+            mainColumns.setSum(sum);
+            mainColumns.setKbk(kbk);
+            mainColumns.setOktmo(oktmo);
+            mainColumns.setContract(contract);
+            mainColumns.setPurpose(purpose);
+
+            mainColumns.setLsName(lsName);
+            mainColumns.setAdrName(adrName);
+            mainColumns.setFioName(fioName);
+            mainColumns.setPeriodName(periodName);
+            mainColumns.setSumName(sumName);
+            mainColumns.setKbkName(kbkName);
+            mainColumns.setOktmoName(oktmoName);
+            mainColumns.setContractName(contractName);
+            mainColumns.setPurposeName(purposeName);
         });
 
         fileUniqueFieldService.getAllByUserSettingId(userSettingId).forEach(f -> {
@@ -145,20 +167,24 @@ public class FileHandler {
         int fileTypeId = userSetting.getFileType().getId();
 
         if (fileTypeId == 1) {
-            if (!extension.equals("XLS") && !extension.equals("XLSX")) {
+            if (!extension.equals(FileFormat.ExcelNew.getValue()) && !extension.equals(FileFormat.ExcelOld.getValue())) {
                 throw new Exception("Выбран неверный тип файла. Ожидаемый тип Excel (.xls или .xlsx)");
             }
         } else if (fileTypeId == 2) {
-            if (!extension.equals("TXT") && !extension.equals("CSV")) {
-                throw new Exception("Выбран неверный тип файла. Ожидаемый тип TEXT (.txt или .csv)");
+            if (!extension.equals(FileFormat.Text.getValue()) && !extension.equals(FileFormat.CSV.getValue())) {
+                throw new Exception("Выбран неверный тип файла. Ожидаемый тип Text (.txt или .csv)");
             }
+        }  else {
+            throw new Exception("Ошибка функции. Обратитесь к админестратору");
         }
 
         FileData fileData = null;
-        if (extension.equals("XLS") || extension.equals("XLSX")) {
+        if (extension.equals(FileFormat.ExcelNew.getValue()) || extension.equals(FileFormat.ExcelOld.getValue())) {
             fileData = new ExcelFileData(inputStream, extension, columnNameListFromSettingsWithNoEmpty);
-        } else if (extension.equals("TXT") || extension.equals("CSV")) {
+        } else if (extension.equals(FileFormat.Text.getValue()) || extension.equals(FileFormat.CSV.getValue())) {
             fileData = new TextFileData(inputStream, columnNameListFromSettingsWithNoEmpty);
+        } else {
+            throw new Exception("Ошибка формата. Обратитесь к админестратору");
         }
 
         //get pay reqs ???????
@@ -170,7 +196,7 @@ public class FileHandler {
         List<String> columnNameListFromFile = fileData.getColumnNameListFromFile();
         ByteArrayOutputStream baos = null;
         if (functionId == 1) {
-            if (templateName.toUpperCase().equals("ШАБЛОН 10_2")) {
+            if (templateName.toUpperCase().equals(TEMPLATE_10_2)) {
                 Template10_2 pdfHandler = new Template10_2(fileRowList, payReqs, mainColumns, sumColumnList, sumAddColumnList, uniqueColumnList, counterColumnList, counterAddColumnList, columnNameListFromFile);
                 baos = pdfHandler.handle();
                 lastMask = pdfHandler.getPeriodFromLastLine();
@@ -179,7 +205,7 @@ public class FileHandler {
                 baos = pdfHandler.handle();
             }
         } else {
-            if (templateName.toUpperCase().equals("ШАБЛОН 10_2")) {
+            if (templateName.toUpperCase().equals(TEMPLATE_10_2)) {
                 ConversionRegisterInHandler conversionRegisterInHandler = new ConversionRegisterInHandler();
                 baos = conversionRegisterInHandler.handle(fileRowList, mainColumns, columnNameListFromFile);
                 lastMask = conversionRegisterInHandler.getPeriodFromFirstLine();

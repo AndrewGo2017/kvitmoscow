@@ -4,7 +4,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 
 public class PdfCellBuilder {
-    PdfPCell cell;
+    private PdfPCell cell;
 
     public PdfCellBuilder() {
         this.cell = new PdfPCell();

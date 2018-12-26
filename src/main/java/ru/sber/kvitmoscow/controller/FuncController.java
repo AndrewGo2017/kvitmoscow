@@ -15,13 +15,15 @@ import ru.sber.kvitmoscow.model.UserSetting;
 import ru.sber.kvitmoscow.service.FunctionService;
 import ru.sber.kvitmoscow.service.UserSettingService;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.List;
 
 @Controller
 @RequestMapping("/func")
 public class FuncController {
+    private static MediaType STREAM_MEDIA_TYPE = MediaType.parseMediaType("application/octet-stream");
+
+
     @Autowired
     private FileHandler fileHandler;
 
@@ -47,79 +49,51 @@ public class FuncController {
 
     @PostMapping
     public ResponseEntity upload(
-                       @RequestParam(value = "file", required = false) MultipartFile file,
-                       @RequestParam("userSetting") Integer userSetting,
-                       @RequestParam("function") Integer function,
-                       Model m) throws Exception {
-//        response.setContentType("application/octet-stream");
-//        response.setCharacterEncoding("Cp1251");
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam("userSetting") Integer userSetting,
+            @RequestParam("function") Integer function) throws Exception {
         ByteArrayOutputStream baos = null;
 
-//            try {
-                if (file == null){
-                    throw new Exception("Не выбран файл!");
+        try {
+            if (file == null) {
+                return createResponse(createBaosWithMessage("Не выбран файл!"), STREAM_MEDIA_TYPE, "err", "err");
+            }
+
+            baos = fileHandler.handle(file, userSetting, function);
+
+            String fileName = "";
+            if (function == 1) {
+                fileName = "kvit.pdf";
+            } else {
+                String mask = userSettingService.get(userSetting).getFileMask();
+                mask = mask.isEmpty() ? "_" : mask;
+                if (!mask.isEmpty()) {
+                    fileName = mask + "_" + fileHandler.getLastMask() + ".txt";
                 }
-
-                baos = fileHandler.handle(file, userSetting, function);
-
-                String fileName = "";
-                if (function == 1) {
-                    fileName = "kvit.pdf";
-                } else {
-                    String mask = userSettingService.get(userSetting).getFileMask();
-                    mask = mask.isEmpty() ? "_" : mask;
-                    if (!mask.isEmpty()) {
-                        fileName = mask + "_" + fileHandler.getLastMask() + ".txt";
-                    }
-                }
-//                response.setHeader("fileName", fileName);
-//                baos.writeTo(response.getOutputStream());
-//                baos.flush();
-                return ResponseEntity.ok()
-                        .contentType(MediaType.parseMediaType("application/octet-stream"))
-                        .header("filename", fileName)
-                        .body(baos.toByteArray());
-//            } catch (Exception e) {
-////                response.addHeader("err", "err");
-//
-//                baos = new ByteArrayOutputStream();
-//                    String message = "{ \"message\": \"" + e.getMessage() + "\" }";
-//                baos.write(message.getBytes());
-////                baos.writeTo(response.getOutputStream());
-//
-//                return ResponseEntity.ok()
-//                        .contentType(MediaType.parseMediaType("application/octet-stream"))
-//                        .header("err", "err")
-//                        .body(baos.toByteArray());
-//            }
-
-//        baos.flush();flush
-
-//        return ResponseEntity.ok()
-//                .contentType(MediaType.parseMediaType("application/octet-stream"))
-//                .header("Content-Disposition", "filename=example.xlsx")
-//                .body(baos.toByteArray());
+            }
+            return createResponse(baos, STREAM_MEDIA_TYPE, "filename", fileName);
+        } catch (Exception e) {
+            return createResponse(createBaosWithMessage(e.getMessage()), STREAM_MEDIA_TYPE, "err", "err");
+        }
     }
-
-
 
     @GetMapping("/example/{userSettingId}")
-    public ResponseEntity createExample(HttpServletResponse response, @PathVariable("userSettingId") Integer userSettingId) throws IOException {
-        response.setContentType("application/octet-stream");
-        response.setCharacterEncoding("Cp1251");
-        response.setHeader("Content-Disposition", "filename=example.xlsx");
-
+    public ResponseEntity createExample(@PathVariable("userSettingId") Integer userSettingId) throws IOException {
         ByteArrayOutputStream baos = exampleHandler.handle(userSettingId);
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .header("Content-Disposition", "filename=example.xlsx")
-                .body(baos.toByteArray());
-
-
-//        baos.writeTo(response.getOutputStream());
-//        baos.flush();
+        return createResponse(baos, STREAM_MEDIA_TYPE, "Content-Disposition", "filename=example.xlsx");
     }
 
+    private ResponseEntity createResponse(ByteArrayOutputStream baos, MediaType contentType, String headerName, String headerValue ){
+        return ResponseEntity.ok()
+                .contentType(contentType)
+                .header(headerName, headerValue)
+                .body(baos.toByteArray());
+    }
 
+    private ByteArrayOutputStream createBaosWithMessage(String str) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        String message = "{ \"message\": \"" + str + "\" }";
+        baos.write(message.getBytes());
+        return baos;
+    }
 }
-

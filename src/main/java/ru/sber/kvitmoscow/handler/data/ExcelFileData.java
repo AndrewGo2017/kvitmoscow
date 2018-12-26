@@ -21,10 +21,10 @@ public class ExcelFileData implements FileData {
         this.columnNameListFromSettingsWithNoEmpty = columnNameListFromSettingsWithNoEmpty;
 
         Workbook workbook = null;
-        if (extension.equals("XLS")) {
+        if (extension.equals(FileFormat.ExcelOld.getValue())) {
             workbook = new HSSFWorkbook(inputStream);
             this.sheet = workbook.getSheetAt(0);
-        } else if (extension.equals("XLSX")) {
+        } else if (extension.equals(FileFormat.ExcelNew.getValue())) {
             workbook = new XSSFWorkbook(inputStream);
             this.sheet = workbook.getSheetAt(0);
         } else {

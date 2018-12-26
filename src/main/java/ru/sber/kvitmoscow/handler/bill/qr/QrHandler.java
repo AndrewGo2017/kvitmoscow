@@ -12,8 +12,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class QrHandler {
-    public byte[] handle(QrStructure qrStructure) throws IOException, WriterException {
+    public static byte[] handle(QrStructure qrStructure) throws IOException, WriterException {
         String ver = "ST00012";
         String del = "|";
 
@@ -54,7 +55,7 @@ public class QrHandler {
         }
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        Map<EncodeHintType, Object> hints = new HashMap<EncodeHintType, Object>();
+        Map<EncodeHintType, Object> hints = new HashMap<>();
         hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
 
         BitMatrix bitMatrix = qrCodeWriter.encode(stringBuilder.toString(), BarcodeFormat.QR_CODE, 150, 150, hints);
