@@ -137,7 +137,7 @@ function sentFile() {
     $.ajax({
         type: "POST",
         xhrFields: {
-            responseType: 'arraybuffer'
+                responseType: 'arraybuffer'
         },
         enctype: 'multipart/form-data',
         url: "",

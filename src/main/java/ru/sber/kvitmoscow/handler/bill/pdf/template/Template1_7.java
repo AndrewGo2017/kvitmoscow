@@ -46,9 +46,11 @@ public class Template1_7 extends BaseTemplate {
 
                 PdfPTable tableL1 = getTableL1(row, 4.5f, 1, 4.5f);
 
+                String kbk = "";
+                String oktmo = "";
                 if (!mainColumns.getKbk().isEmpty() && !mainColumns.getOktmo().isEmpty()) {
-                    String kbk = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getKbk()));
-                    String oktmo = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getOktmo()));
+                    kbk = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getKbk()));
+                    oktmo = row.getRowData().get(columnNameListFromFile.indexOf(mainColumns.getOktmo()));
 
                     tableL1.addCell(new PdfCellBuilder(kbk, font10).border(Rectangle.BOTTOM).horizontalAlignment(1).build());
                     tableL1.addCell(new PdfCellBuilder(" ", font10).borderWidth(0).build());
@@ -68,7 +70,7 @@ public class Template1_7 extends BaseTemplate {
 
                 //QR
                 Image imgQR = Image.getInstance(QrHandler.handle(
-                        new QrStructure(payReqs.getOrgName(), payReqs.getOrgPayAcc(), payReqs.getOrgBank(), payReqs.getOrgBic(), payReqs.getOrgCorAcc(), payReqs.getOrgInn(), payReqs.getOrgKpp(), commonReqs.getLs(), commonReqs.getSum(), commonReqs.getFio(), commonReqs.getAdr(), payReqs.getQrAddInfo(), mainColumns.getKbk(), mainColumns.getOktmo(), commonReqs.getContract(), commonReqs.getPurpose())
+                        new QrStructure(payReqs.getOrgName(), payReqs.getOrgPayAcc(), payReqs.getOrgBank(), payReqs.getOrgBic(), payReqs.getOrgCorAcc(), payReqs.getOrgInn(), payReqs.getOrgKpp(), commonReqs.getLs(), commonReqs.getSum(), commonReqs.getFio(), commonReqs.getAdr(), payReqs.getQrAddInfo(), kbk, oktmo, commonReqs.getContract(), commonReqs.getPurpose())
                 ));
                 imgQR.setWidthPercentage(70);
                 imgQR.setAlignment(1);

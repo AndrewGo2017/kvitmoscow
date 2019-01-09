@@ -24,7 +24,7 @@ public class BaseEntity {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         BaseEntity baseEntity = (BaseEntity) obj;
-        if (id == null) return false;
+        if (baseEntity.id == null) return false;
         return this.id.equals(baseEntity.id);
     }
 

@@ -269,3 +269,6 @@ create table file_counter_add_fields (
   ,
   foreign key (user_setting_id) references user_settings (id) on delete cascade
 );
+
+
+select * from users;
